@@ -1,62 +1,56 @@
 package com.karts.back.entity;
 
-import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.OneToOne;
 
-@Table(name = "sesion")
+@Entity
 public class Sesion {
 
 	@Id
-	@Column(name = "sesionId")
-	private int sesionId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 
-	@Column(name = "idClasificacionSingle", nullable = false)
-	private int idClasificacionSingle;
+	@OneToOne
+	private ClasificacionPilotos clasiPilotos;
 	
-	@Column(name = "idClasificacionTeams", nullable = false)
-	private int idClasificacionTeams;
+	@OneToOne
+	private ClasificacionEquipos clasiEquipos;
 
 	public int getSesionId() {
-		return sesionId;
+		return id;
 	}
 
 	public void setSesionId(int sesionId) {
-		this.sesionId = sesionId;
+		this.id = sesionId;
 	}
 
-	public int getIdClasificacionSingle() {
-		return idClasificacionSingle;
+	public ClasificacionPilotos getClasiPilotos() {
+		return clasiPilotos;
 	}
 
-	public void setIdClasificacionSingle(int idClasificacionSingle) {
-		this.idClasificacionSingle = idClasificacionSingle;
+	public void setClasiPilotos(ClasificacionPilotos clasiPilotos) {
+		this.clasiPilotos = clasiPilotos;
 	}
 
-	public int getIdClasificacionTeams() {
-		return idClasificacionTeams;
+	public ClasificacionEquipos getClasiEquipos() {
+		return clasiEquipos;
 	}
 
-	public void setIdClasificacionTeams(int idClasificacionTeams) {
-		this.idClasificacionTeams = idClasificacionTeams;
+	public void setClasiEquipos(ClasificacionEquipos clasiEquipos) {
+		this.clasiEquipos = clasiEquipos;
 	}
 
-	public Sesion(int sesionId, int idClasificacionSingle, int idClasificacionTeams) {
-		super();
-		this.sesionId = sesionId;
-		this.idClasificacionSingle = idClasificacionSingle;
-		this.idClasificacionTeams = idClasificacionTeams;
-	}
-
-	public Sesion(int idClasificacionSingle, int idClasificacionTeams) {
-		super();
-		this.idClasificacionSingle = idClasificacionSingle;
-		this.idClasificacionTeams = idClasificacionTeams;
-	}
-
-	
 	public Sesion() {
 		super();
+	}
+
+	public Sesion(ClasificacionPilotos clasiPilotos, ClasificacionEquipos clasiEquipos) {
+		super();
+		this.clasiPilotos = clasiPilotos;
+		this.clasiEquipos = clasiEquipos;
 	}
 	
 }

@@ -1,17 +1,17 @@
 package com.karts.back.entity;
 
-import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Table(name="pilotos")
-public class Pilotos {
+@Entity
+public class Piloto {
 
 	@Id
-	@Column(name = "alias", nullable = false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private String alias;
 	
-	@Column(name = "nombre", nullable = false)
 	private String nombre;
 
 	public String getAlias() {
@@ -30,13 +30,13 @@ public class Pilotos {
 		this.nombre = nombre;
 	}
 
-	public Pilotos(String alias, String nombre) {
+	public Piloto(String alias, String nombre) {
 		super();
 		this.alias = alias;
 		this.nombre = nombre;
 	}
 
-	public Pilotos() {
+	public Piloto() {
 		super();
 	}
 	

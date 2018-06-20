@@ -1,16 +1,6 @@
-package com.karts.back.entity;
+package com.karts.back.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class Reglamento {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+public class ReglamentoDTO {
 
 	private int puntos1;
 	private int puntos2;
@@ -28,7 +18,7 @@ public class Reglamento {
 	private int puntos14;
 	private int puntos15;
 	private int puntosPole;
-	private String normativaParrilla;
+	private String normativa;
 	public int getPuntos1() {
 		return puntos1;
 	}
@@ -125,18 +115,18 @@ public class Reglamento {
 	public void setPuntosPole(int puntosPole) {
 		this.puntosPole = puntosPole;
 	}
-	public String getNormativaParrilla() {
-		return normativaParrilla;
+	public String getNormativa() {
+		return normativa;
 	}
-	public void setNormativaParrilla(String normativaParrilla) {
-		this.normativaParrilla = normativaParrilla;
+	public void setNormativa(String normativa) {
+		this.normativa = normativa;
 	}
-	public Reglamento() {
+	public ReglamentoDTO() {
 		super();
 	}
-	public Reglamento(int puntos1, int puntos2, int puntos3, int puntos4, int puntos5, int puntos6, int puntos7,
+	public ReglamentoDTO(int puntos1, int puntos2, int puntos3, int puntos4, int puntos5, int puntos6, int puntos7,
 			int puntos8, int puntos9, int puntos10, int puntos11, int puntos12, int puntos13, int puntos14,
-			int puntos15, int puntosPole, String normativaParrilla) {
+			int puntos15, int puntosPole, String normativa) {
 		super();
 		this.puntos1 = puntos1;
 		this.puntos2 = puntos2;
@@ -154,7 +144,15 @@ public class Reglamento {
 		this.puntos14 = puntos14;
 		this.puntos15 = puntos15;
 		this.puntosPole = puntosPole;
-		this.normativaParrilla = normativaParrilla;
+		this.normativa = normativa;
+	}
+	@Override
+	public String toString() {
+		return "ReglamentoDTO [puntos1=" + puntos1 + ", puntos2=" + puntos2 + ", puntos3=" + puntos3 + ", puntos4="
+				+ puntos4 + ", puntos5=" + puntos5 + ", puntos6=" + puntos6 + ", puntos7=" + puntos7 + ", puntos8="
+				+ puntos8 + ", puntos9=" + puntos9 + ", puntos10=" + puntos10 + ", puntos11=" + puntos11 + ", puntos12="
+				+ puntos12 + ", puntos13=" + puntos13 + ", puntos14=" + puntos14 + ", puntos15=" + puntos15
+				+ ", puntosPole=" + puntosPole + ", normativa=" + normativa + "]";
 	}
 
 }

@@ -1,31 +1,38 @@
 package com.karts.back.entity;
 
-import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-@Table(name = "campeonato")
+@Entity
 public class Campeonato {
 
 	@Id
-	@Column(name = "idCampeonato", nullable = false)
-	private int idCampeonato;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 	
-	@Column(name = "nombreCampeonato", nullable = false)
 	private String nombreCampeonato;
 	
-	@Column(name = "idReglamento", nullable = false)
-	private int idReglamento;
+	@ManyToOne
+	private Reglamento reglamento;
+
+	@OneToOne
+	private ClasificacionPilotos clasificacionPilotos;
 	
-	@Column(name = "year", nullable = false)
+	@OneToOne
+	private ClasificacionEquipos clasificacionEquipos;
+	
 	private int year;
 
 	public int getIdCampeonato() {
-		return idCampeonato;
+		return id;
 	}
 
 	public void setIdCampeonato(int idCampeonato) {
-		this.idCampeonato = idCampeonato;
+		this.id = idCampeonato;
 	}
 
 	public String getNombreCampeonato() {
@@ -36,12 +43,12 @@ public class Campeonato {
 		this.nombreCampeonato = nombreCampeonato;
 	}
 
-	public int getIdReglamento() {
-		return idReglamento;
+	public Reglamento getIdReglamento() {
+		return reglamento;
 	}
 
-	public void setIdReglamento(int idReglamento) {
-		this.idReglamento = idReglamento;
+	public void setIdReglamento(Reglamento reglamento) {
+		this.reglamento = reglamento;
 	}
 
 	public int getYear() {
@@ -52,18 +59,18 @@ public class Campeonato {
 		this.year = year;
 	}
 
-	public Campeonato(int idCampeonato, String nombreCampeonato, int idReglamento, int year) {
+	public Campeonato(int idCampeonato, String nombreCampeonato, Reglamento reglamento, int year) {
 		super();
-		this.idCampeonato = idCampeonato;
+		this.id = idCampeonato;
 		this.nombreCampeonato = nombreCampeonato;
-		this.idReglamento = idReglamento;
+		this.reglamento = reglamento;
 		this.year = year;
 	}
 	
-	public Campeonato(String nombreCampeonato, int idReglamento, int year) {
+	public Campeonato(String nombreCampeonato, Reglamento reglamento, int year) {
 		super();
 		this.nombreCampeonato = nombreCampeonato;
-		this.idReglamento = idReglamento;
+		this.reglamento = reglamento;
 		this.year = year;
 	}
 

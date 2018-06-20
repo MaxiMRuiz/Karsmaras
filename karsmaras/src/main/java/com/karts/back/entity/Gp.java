@@ -2,47 +2,49 @@ package com.karts.back.entity;
 
 import java.sql.Date;
 
-import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
-@Table(name = "gp")
+@Entity
 public class Gp {
 
 	@Id
-	@Column(name = "idGp", nullable = false)
-	private int idGp;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
 	
-	@Column(name = "fecha", nullable = false)
 	private Date fecha;
 	
-	@Column(name = "clasificacion", nullable = false)
-	private int clasificacion;
+	@OneToOne
+	private Sesion clasificacion;
 
-	@Column(name = "carrera1", nullable = false)
-	private int carrera1;
+	@OneToOne
+	private Sesion carrera1;
 
-	@Column(name = "carrera2", nullable = false)
-	private int carrera2;
+	@OneToOne
+	private Sesion carrera2;
 
-	@Column(name = "idResultadoSingle", nullable = false)
-	private int idResultadoSingle;
+	@OneToOne
+	private ClasificacionEquipos clasiEquipos;
 
-	@Column(name = "idCampeonatoSingle", nullable = false)
-	private int idCampeonatoSingle;
+	@ManyToOne
+	private Campeonato campeonatoEquipos;
 
-	@Column(name = "idResultadoTeams", nullable = false)
-	private int idResultadoTeams;
+	@OneToOne
+	private ClasificacionPilotos clasiPilotos;
 
-	@Column(name = "idCampeonatoTeams", nullable = false)
-	private int idCampeonatoTeams;
+	@ManyToOne
+	private Campeonato campeonatoPilotos;
 
 	public int getIdGp() {
-		return idGp;
+		return id;
 	}
 
 	public void setIdGp(int idGp) {
-		this.idGp = idGp;
+		this.id = idGp;
 	}
 
 	public Date getFecha() {
@@ -53,64 +55,76 @@ public class Gp {
 		this.fecha = fecha;
 	}
 
-	public int getClasificacion() {
+	public Sesion getClasificacion() {
 		return clasificacion;
 	}
 
-	public void setClasificacion(int clasificacion) {
+	public void setClasificacion(Sesion clasificacion) {
 		this.clasificacion = clasificacion;
 	}
 
-	public int getCarrera1() {
+	public Sesion getCarrera1() {
 		return carrera1;
 	}
 
-	public void setCarrera1(int carrera1) {
+	public void setCarrera1(Sesion carrera1) {
 		this.carrera1 = carrera1;
 	}
 
-	public int getCarrera2() {
+	public Sesion getCarrera2() {
 		return carrera2;
 	}
 
-	public void setCarrera2(int carrera2) {
+	public void setCarrera2(Sesion carrera2) {
 		this.carrera2 = carrera2;
 	}
 
-	public int getIdResultadoSingle() {
-		return idResultadoSingle;
+	public ClasificacionEquipos getClasiEquipos() {
+		return clasiEquipos;
 	}
 
-	public void setIdResultadoSingle(int idResultadoSingle) {
-		this.idResultadoSingle = idResultadoSingle;
+	public void setClasiEquipos(ClasificacionEquipos clasiEquipos) {
+		this.clasiEquipos = clasiEquipos;
 	}
 
-	public int getIdCampeonatoSingle() {
-		return idCampeonatoSingle;
+	public Campeonato getCampeonatoEquipos() {
+		return campeonatoEquipos;
 	}
 
-	public void setIdCampeonatoSingle(int idCampeonatoSingle) {
-		this.idCampeonatoSingle = idCampeonatoSingle;
+	public void setCampeonatoEquipos(Campeonato campeonatoEquipos) {
+		this.campeonatoEquipos = campeonatoEquipos;
 	}
 
-	public int getIdResultadoTeams() {
-		return idResultadoTeams;
+	public ClasificacionPilotos getClasiPilotos() {
+		return clasiPilotos;
 	}
 
-	public void setIdResultadoTeams(int idResultadoTeams) {
-		this.idResultadoTeams = idResultadoTeams;
+	public void setClasiPilotos(ClasificacionPilotos clasiPilotos) {
+		this.clasiPilotos = clasiPilotos;
 	}
 
-	public int getIdCampeonatoTeams() {
-		return idCampeonatoTeams;
+	public Campeonato getCampeonatoPilotos() {
+		return campeonatoPilotos;
 	}
 
-	public void setIdCampeonatoTeams(int idCampeonatoTeams) {
-		this.idCampeonatoTeams = idCampeonatoTeams;
+	public void setCampeonatoPilotos(Campeonato campeonatoPilotos) {
+		this.campeonatoPilotos = campeonatoPilotos;
 	}
 
 	public Gp() {
 		super();
-	}	
+	}
+
+	public Gp(Date fecha, Sesion clasificacion, Sesion carrera1, Sesion carrera2, ClasificacionEquipos clasiEquipos,
+			Campeonato campeonatoEquipos, ClasificacionPilotos clasiPilotos, Campeonato campeonatoPilotos) {
+		this.fecha = fecha;
+		this.clasificacion = clasificacion;
+		this.carrera1 = carrera1;
+		this.carrera2 = carrera2;
+		this.clasiEquipos = clasiEquipos;
+		this.campeonatoEquipos = campeonatoEquipos;
+		this.clasiPilotos = clasiPilotos;
+		this.campeonatoPilotos = campeonatoPilotos;
+	}
 	
 }

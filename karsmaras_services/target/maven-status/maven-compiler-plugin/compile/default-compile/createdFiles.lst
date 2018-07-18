@@ -1,0 +1,11 @@
+com\karts\back\entity\ClasificacionPilotos.class
+com\karts\back\entity\Sesion.class
+com\karts\back\entity\Reglamento.class
+com\karts\back\entity\Resultado.class
+com\karts\back\entity\ClasificacionEquipos.class
+com\karts\back\entity\Gp.class
+com\karts\back\entity\Piloto.class
+com\karts\back\entity\Vuelta.class
+com\karts\back\KarsmarasApplication.class
+com\karts\back\entity\Equipo.class
+com\karts\back\entity\Campeonato.class

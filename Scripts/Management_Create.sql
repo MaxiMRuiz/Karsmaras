@@ -1,11 +1,13 @@
 create database USER_DB;
 
+use USER_DB;
+
 CREATE USER 'karsmarasUsers'@'%' IDENTIFIED BY 'karsmaras';
 GRANT ALL PRIVILEGES  ON *.* TO 'karsmarasUsers'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 CREATE TABLE `ROLES` (
-	`id_rol` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`Name` VARCHAR(50) NOT NULL,
 	`Description` VARCHAR(255) NOT NULL,
 	PRIMARY KEY (`id_rol`)
@@ -19,7 +21,7 @@ INSERT INTO ROLES (Name,Description) VALUES ('DRIVER','Perfil de piloto en la pl
 
 
 CREATE TABLE `USERS` (
-	`user_id` INT(10) NOT NULL AUTO_INCREMENT,
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
 	`Username` VARCHAR(50) NOT NULL,
 	`Password` VARCHAR(50) NOT NULL,
 	`Driver_id` INT(10) NULL,
@@ -35,12 +37,12 @@ COLLATE='latin1_spanish_ci'
 ENGINE=InnoDB;
 
 CREATE TABLE `FRIENDS` (
-	`friend1_id` INT(10) NOT NULL,
-	`friend2_id` INT(10) NOT NULL,
-	INDEX `friends1` (`friend1_id`),
-	INDEX `friends2` (`friend2_id`),
-	CONSTRAINT `FK_Friends1` FOREIGN KEY (`friend1_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE,
-	CONSTRAINT `FK_Friends2` FOREIGN KEY (`friend2_id`) REFERENCES `users` (`user_id`) ON UPDATE CASCADE ON DELETE CASCADE
+	`user` INT(10) NOT NULL,
+	`friend` INT(10) NOT NULL,
+	INDEX `friends1` (`user`),
+	INDEX `friends2` (`friend`),
+	CONSTRAINT `FK_Friends1` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT `FK_Friends2` FOREIGN KEY (`friend`) REFERENCES `users` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
 COLLATE='latin1_spanish_ci'
 ENGINE=InnoDB;

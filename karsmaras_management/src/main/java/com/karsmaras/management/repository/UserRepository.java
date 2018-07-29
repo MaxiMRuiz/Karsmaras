@@ -8,4 +8,6 @@ import com.karsmaras.management.entity.User;
 @Repository("UserRepository")
 public interface UserRepository extends JpaRepository<User, Serializable>{
 
+	User findByUsername(String username);
+
 }

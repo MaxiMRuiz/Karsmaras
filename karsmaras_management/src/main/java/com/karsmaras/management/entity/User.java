@@ -11,6 +11,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.karsmaras.management.dto.UserDto;
+
 @Entity
 public class User {
 
@@ -20,6 +23,7 @@ public class User {
 
 	private String username;
 
+	@JsonIgnore
 	private String password;
 
 	private int driverId;
@@ -29,15 +33,11 @@ public class User {
 	@ManyToOne
 	private Role role;
 
+	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "friends", joinColumns = {
-			@JoinColumn(name = "id") }, inverseJoinColumns = @JoinColumn(name = "user"))
+			@JoinColumn(name = "user") }, inverseJoinColumns = @JoinColumn(name = "friend"))
 	private List<User> friends;
-
-	@ManyToMany
-	@JoinTable(name = "friends", joinColumns = {
-			@JoinColumn(name = "id") }, inverseJoinColumns = @JoinColumn(name = "friend"))
-	private List<User> friendOf;
 
 	/**
 	 * 
@@ -57,7 +57,7 @@ public class User {
 	 * @param friendOf
 	 */
 	public User(int id, String username, String password, int driverId, int championshipId, Role role,
-			List<User> friends, List<User> friendOf) {
+			List<User> friends) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -66,7 +66,6 @@ public class User {
 		this.championshipId = championshipId;
 		this.role = role;
 		this.friends = friends;
-		this.friendOf = friendOf;
 	}
 
 	/**
@@ -78,8 +77,7 @@ public class User {
 	 * @param friends
 	 * @param friendOf
 	 */
-	public User(String username, String password, int driverId, int championshipId, Role role, List<User> friends,
-			List<User> friendOf) {
+	public User(String username, String password, int driverId, int championshipId, Role role, List<User> friends) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -87,7 +85,16 @@ public class User {
 		this.championshipId = championshipId;
 		this.role = role;
 		this.friends = friends;
-		this.friendOf = friendOf;
+	}
+
+	public User(UserDto dto) {
+		super();
+		this.username = dto.getUsername();
+		this.password = dto.getPassword();
+		this.driverId = dto.getDriverId();
+		this.championshipId = dto.getChampionshipId();
+		this.role = dto.getRole();
+		this.friends = dto.getFriends();
 	}
 
 	public int getId() {
@@ -146,12 +153,24 @@ public class User {
 		this.friends = friends;
 	}
 
-	public List<User> getFriendOf() {
-		return friendOf;
+	public void addFriend(User user) {
+		if (this.friends.indexOf(user) == -1) {
+			this.getFriends().add(user);
+		}
 	}
 
-	public void setFriendOf(List<User> friendOf) {
-		this.friendOf = friendOf;
+	public void removeFriend(User user) {
+		if (this.friends.indexOf(user) != -1) {
+			this.getFriends().remove(user);
+		}
+	}
+
+	public User copy(User userToUpdate) {
+		this.setChampionshipId(userToUpdate.getChampionshipId());
+		this.setDriverId(userToUpdate.getDriverId());
+		this.setRole(userToUpdate.getRole());
+		this.setUsername(userToUpdate.getUsername());
+		return this;
 	}
 
 }

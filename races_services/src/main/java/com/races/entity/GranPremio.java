@@ -1,19 +1,22 @@
 package com.races.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class GranPremio {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_campeonato")
 	private Campeonato campeonato;
 
 	private String ubicacion;
@@ -22,18 +25,18 @@ public class GranPremio {
 		super();
 	}
 
-	public GranPremio(int id, Campeonato campeonato, String ubicacion) {
+	public GranPremio(Long id, Campeonato campeonato, String ubicacion) {
 		super();
 		this.id = id;
 		this.campeonato = campeonato;
 		this.ubicacion = ubicacion;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

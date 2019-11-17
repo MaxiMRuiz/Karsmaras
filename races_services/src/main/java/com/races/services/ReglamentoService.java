@@ -2,7 +2,7 @@ package com.races.services;
 
 import java.util.List;
 
-import com.races.dto.ReglamentoDTO;
+import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 
 public interface ReglamentoService {
@@ -13,7 +13,7 @@ public interface ReglamentoService {
 
 	Reglamento getReglamento(Long id);
 
-	Reglamento updateReglamento(Long id, ReglamentoDTO reglamentoDto);
+	Reglamento updateReglamento(Long id, ReglamentoDto reglamentoDto);
 
 	boolean borrarReglamento(Long id);
 	

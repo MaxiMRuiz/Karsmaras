@@ -3,31 +3,35 @@ package com.races.entity;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Sesion {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	private Date fecha;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_gp")
 	private GranPremio granPremio;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_tipo_sesion")
 	private TipoSesion tipoSesion;
 
 	public Sesion() {
 		super();
 	}
 
-	public Sesion(Integer id, Date fecha, GranPremio granPremio, TipoSesion tipoSesion) {
+	public Sesion(Long id, Date fecha, GranPremio granPremio, TipoSesion tipoSesion) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -35,11 +39,11 @@ public class Sesion {
 		this.tipoSesion = tipoSesion;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

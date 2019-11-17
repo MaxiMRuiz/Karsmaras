@@ -10,7 +10,7 @@ public class TipoSesion {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 
 	private String descripcion;
 
@@ -18,7 +18,7 @@ public class TipoSesion {
 		super();
 	}
 
-	public TipoSesion(Integer id, String descripcion) {
+	public TipoSesion(Long id, String descripcion) {
 		super();
 		this.id = id;
 		this.descripcion = descripcion;
@@ -32,11 +32,11 @@ public class TipoSesion {
 		this.descripcion = descripcion;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

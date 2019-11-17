@@ -8,7 +8,7 @@ import com.races.entity.Inscripcion;
 
 public interface InscripcionService {
 
-	Inscripcion crearInscripcion(InscripcionDto campeonatoDto);
+	Inscripcion crearInscripcion(InscripcionDto inscripcionDto);
 
 	List<Inscripcion> getAllInscripciones(Long idCampeonato, Long idPiloto, Long idEquipo);
 

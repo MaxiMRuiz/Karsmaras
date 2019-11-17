@@ -14,7 +14,7 @@ public interface CampeonatoService {
 
 	Campeonato getCampeonato(Long id);
 
-	Campeonato updateCampeonato(Long id, CampeonatoDto reglamentoDto);
+	Campeonato updateCampeonato(Long id, CampeonatoDto campeonatoDto);
 
 	boolean borrarCampeonato(Long id);
 

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.races.dto.ReglamentoDTO;
+import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 import com.races.services.ReglamentoService;
 
@@ -65,7 +65,7 @@ public class ReglamentoController {
 
 	@PutMapping("/reglamento/{id}")
 	public ResponseEntity<Reglamento> putReglamento(@PathVariable(name = "id") Long id,
-			@RequestBody ReglamentoDTO reglamentoBody) {
+			@RequestBody ReglamentoDto reglamentoBody) {
 
 		Reglamento reglamento = reglamentoService.updateReglamento(id, reglamentoBody);
 		if (reglamento == null) {

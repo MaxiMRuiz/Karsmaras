@@ -1,6 +1,6 @@
 package com.races.dto;
 
-public class ReglamentoDTO {
+public class ReglamentoDto {
 
 	private Integer nEntrenamientos;
 	private Integer nClasificaciones;
@@ -8,11 +8,11 @@ public class ReglamentoDTO {
 	private Integer nPilotos;
 	private Integer nEquipos;
 
-	public ReglamentoDTO() {
+	public ReglamentoDto() {
 		super();
 	}
 
-	public ReglamentoDTO(Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
+	public ReglamentoDto(Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
 			Integer nEquipos) {
 		super();
 		this.nEntrenamientos = nEntrenamientos;

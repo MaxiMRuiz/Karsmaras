@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.races.dto.ReglamentoDTO;
+import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 import com.races.repository.ReglamentoRepository;
 import com.races.services.ReglamentoService;
@@ -37,7 +37,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 		return null;
 	}
 
-	public Reglamento updateReglamento(Long id, ReglamentoDTO reglamento) {
+	public Reglamento updateReglamento(Long id, ReglamentoDto reglamento) {
 		Optional<Reglamento> regOpt = reglaRepo.findById(id);
 		if (regOpt.isPresent()) {
 			Reglamento registro = regOpt.get();

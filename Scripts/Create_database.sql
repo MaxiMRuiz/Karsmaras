@@ -60,7 +60,7 @@ COLLATE='latin1_spanish_ci';
 
 
 CREATE TABLE `campeonato` (
-	`id` INT(11) NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`nombre` VARCHAR(255) NOT NULL,
 	`descripcion` VARCHAR(255) NULL DEFAULT NULL,
 	`temporada` VARCHAR(255) NOT NULL,
@@ -113,6 +113,7 @@ CREATE TABLE `equipo` (
 COLLATE='latin1_spanish_ci';
 
 CREATE TABLE `inscripcion` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_campeonato` INT NOT NULL,
 	`id_piloto` INT NOT NULL,
 	`id_equipo` INT NOT NULL,
@@ -123,7 +124,7 @@ CREATE TABLE `inscripcion` (
 COLLATE='latin1_spanish_ci';
 
 CREATE TABLE `resultado` (
-	`id` INT(11) NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_piloto` INT(11) NOT NULL,
 	`id_sesion` INT(11) NOT NULL,
 	`n_vueltas` SMALLINT UNSIGNED NOT NULL,
@@ -136,7 +137,7 @@ CREATE TABLE `resultado` (
 COLLATE='latin1_spanish_ci';
 
 CREATE TABLE `vuelta` (
-	`id` INT(11) NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_resultado` INT(11) NOT NULL,
 	`n_vuelta` SMALLINT UNSIGNED NOT NULL,
 	`tiempo` INT UNSIGNED NOT NULL,
@@ -146,7 +147,7 @@ CREATE TABLE `vuelta` (
 COLLATE='latin1_spanish_ci';
 
 CREATE TABLE `sancion` (
-	`id` INT(11) NOT NULL,
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_resultado` INT(11) NOT NULL,
 	`descripcion` TEXT NOT NULL,
 	`puntos` TINYINT UNSIGNED NULL DEFAULT NULL,

@@ -21,6 +21,12 @@ import com.races.dto.PilotoDto;
 import com.races.entity.Piloto;
 import com.races.services.PilotoService;
 
+/**
+ * Controlador para los servicios de Pilotos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class PilotoController {
 
@@ -30,46 +36,52 @@ public class PilotoController {
 	@Qualifier("PilotoService")
 	PilotoService pilotoService;
 
+	/**
+	 * Servicio de creacion de un nuevo piloto
+	 * 
+	 * @param pilotoDto
+	 * @return
+	 */
 	@PostMapping("/piloto")
 	public ResponseEntity<Piloto> creaPiloto(@RequestBody PilotoDto pilotoDto) {
 
 		LOGGER.info("Creando nuevo Piloto: " + pilotoDto.toString());
-
-		Piloto piloto = pilotoService.crearPiloto(pilotoDto);
-
-		return new ResponseEntity<>(piloto, HttpStatus.OK);
+		return new ResponseEntity<>(pilotoService.crearPiloto(pilotoDto), HttpStatus.OK);
 
 	}
 
+	/**
+	 * Servicio para la obtencion de pilotos, con filtros por id, nombre, apellido,
+	 * apodo
+	 * 
+	 * @param id
+	 * @param nombre
+	 * @param apellido
+	 * @param apodo
+	 * @return
+	 */
 	@GetMapping("/piloto")
 	public ResponseEntity<List<Piloto>> getPiloto(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "nombre") String nombre,
 			@RequestParam(required = false, name = "apellido") String apellido,
 			@RequestParam(required = false, name = "apodo") String apodo) {
 
-		return new ResponseEntity<>(pilotoService.getAllPilotos(id,nombre,apellido,apodo), HttpStatus.OK);
+		return new ResponseEntity<>(pilotoService.getAllPilotos(id, nombre, apellido, apodo), HttpStatus.OK);
 
 	}
 
-	@PutMapping("/piloto/{id}")
-	public ResponseEntity<Piloto> putPiloto(@PathVariable(name = "id") Long id,
-			@RequestBody PilotoDto pilotoDto) {
-
-		Piloto piloto = pilotoService.updatePiloto(id, pilotoDto);
-		if (piloto == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<>(piloto, HttpStatus.OK);
-
-	}
-
+	/**
+	 * Servicio para el borrado de un piloto
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/piloto/{id}")
 	public ResponseEntity<Piloto> borrarPiloto(@PathVariable(name = "id") Long id) {
 
 		pilotoService.borrarPiloto(id);
-
 		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
-	
+
 }

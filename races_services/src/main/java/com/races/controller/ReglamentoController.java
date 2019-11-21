@@ -22,6 +22,12 @@ import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 import com.races.services.ReglamentoService;
 
+/**
+ * Controlador para los servicios de Reglamentos de campeonatos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class ReglamentoController {
 
@@ -32,7 +38,7 @@ public class ReglamentoController {
 	ReglamentoService reglamentoService;
 
 	/**
-	 * OK
+	 * Servicio de creacion de un nuevo reglamento
 	 * 
 	 * @param reglamentoDto
 	 * @return
@@ -48,6 +54,11 @@ public class ReglamentoController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/reglamento")
 	public ResponseEntity<List<Reglamento>> getReglamento(@RequestParam(required = false, name = "id") Long id) {
 
@@ -63,6 +74,12 @@ public class ReglamentoController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param reglamentoBody
+	 * @return
+	 */
 	@PutMapping("/reglamento/{id}")
 	public ResponseEntity<Reglamento> putReglamento(@PathVariable(name = "id") Long id,
 			@RequestBody ReglamentoDto reglamentoBody) {
@@ -75,6 +92,11 @@ public class ReglamentoController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/reglamento/{id}")
 	public ResponseEntity<Reglamento> deleteReglamento(@PathVariable(name = "id") Long id) {
 

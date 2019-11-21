@@ -20,6 +20,12 @@ import com.races.dto.PuntuacionDto;
 import com.races.entity.Puntuacion;
 import com.races.services.PuntuacionService;
 
+/**
+ * Controlador para los servicios de Puntuaciones de Reglamentos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class PuntuacionController {
 
@@ -29,13 +35,13 @@ public class PuntuacionController {
 	PuntuacionService puntuacionService;
 
 	/**
-	 * OK
+	 * Servicio de creacion de una nueva puntuacion
 	 * 
-	 * @param reglamentoDto
+	 * @param puntuacionDto
 	 * @return
 	 */
 	@PostMapping("/puntuacion")
-	public ResponseEntity<Puntuacion> creaReglamento(@RequestBody PuntuacionDto puntuacionDto) {
+	public ResponseEntity<Puntuacion> crearPuntuacion(@RequestBody PuntuacionDto puntuacionDto) {
 
 		LOGGER.info("Creando nueva Puntuacion: " + puntuacionDto.toString());
 
@@ -45,8 +51,16 @@ public class PuntuacionController {
 
 	}
 
+	/**
+	 * 
+	 * @param idReglamento
+	 * @param posicion
+	 * @param puntos
+	 * @param idTipoSesion
+	 * @return
+	 */
 	@GetMapping("/puntuacion")
-	public ResponseEntity<List<Puntuacion>> getReglamento(
+	public ResponseEntity<List<Puntuacion>> buscarPuntuacion(
 			@RequestParam(required = false, name = "idReglamento") Long idReglamento,
 			@RequestParam(required = false, name = "posicion") Integer posicion,
 			@RequestParam(required = false, name = "puntos") Integer puntos,
@@ -57,8 +71,14 @@ public class PuntuacionController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param puntuacionDto
+	 * @return
+	 */
 	@PutMapping("/puntuacion/{id}")
-	public ResponseEntity<Puntuacion> putReglamento(@PathVariable(name = "id") Long id,
+	public ResponseEntity<Puntuacion> actualizarPuntuacion(@PathVariable(name = "id") Long id,
 			@RequestBody PuntuacionDto puntuacionDto) {
 
 		Puntuacion puntuacion = puntuacionService.updatePuntuacion(id, puntuacionDto);
@@ -69,8 +89,14 @@ public class PuntuacionController {
 
 	}
 
+	/**
+	 * Servicio para el borrado de una puntuacion
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/puntuacion/{id}")
-	public ResponseEntity<Puntuacion> deleteReglamento(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Puntuacion> borrarPuntuacion(@PathVariable(name = "id") Long id) {
 
 		puntuacionService.borrarPuntuacion(id);
 

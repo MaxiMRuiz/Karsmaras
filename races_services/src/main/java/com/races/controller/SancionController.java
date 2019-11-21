@@ -18,7 +18,12 @@ import com.races.dto.SancionDto;
 import com.races.entity.Sancion;
 import com.races.services.SancionService;
 
-
+/**
+ * Controlador para los servicios de Sanciones en Sesiones
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class SancionController {
 
@@ -28,7 +33,7 @@ public class SancionController {
 	SancionService sancionService;
 
 	/**
-	 * OK
+	 * Servicio de creacion de una nueva sancion
 	 * 
 	 * @param reglamentoDto
 	 * @return
@@ -44,6 +49,10 @@ public class SancionController {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/sancion")
 	public ResponseEntity<List<Sancion>> getReglamento() {
 
@@ -51,6 +60,11 @@ public class SancionController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/sancion/{id}")
 	public ResponseEntity<Sancion> deleteReglamento(@PathVariable(name = "id") Long id) {
 

@@ -18,6 +18,12 @@ import com.races.dto.VueltaDto;
 import com.races.entity.Vuelta;
 import com.races.services.VueltaService;
 
+/**
+ * Controlador para los servicios de Vueltas de Sesiones
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class VueltaController {
 
@@ -27,9 +33,9 @@ public class VueltaController {
 	VueltaService vueltaService;
 
 	/**
-	 * OK
+	 * Servicio de creacion de una nueva vuelta
 	 * 
-	 * @param reglamentoDto
+	 * @param vueltaDto
 	 * @return
 	 */
 	@PostMapping("/vuelta")
@@ -43,6 +49,10 @@ public class VueltaController {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/vuelta")
 	public ResponseEntity<List<Vuelta>> getReglamento() {
 
@@ -50,6 +60,11 @@ public class VueltaController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/vuelta/{id}")
 	public ResponseEntity<Vuelta> deleteReglamento(@PathVariable(name = "id") Long id) {
 

@@ -18,6 +18,12 @@ import com.races.dto.ResultadoDto;
 import com.races.entity.Resultado;
 import com.races.services.ResultadoService;
 
+/**
+ * Controlador para los servicios de Resultados de Grandes Premios
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class ResultadoController {
 
@@ -27,7 +33,7 @@ public class ResultadoController {
 	ResultadoService resultadoService;
 
 	/**
-	 * OK
+	 * Servicio de creacion de un nuevo resultado
 	 * 
 	 * @param reglamentoDto
 	 * @return
@@ -43,6 +49,10 @@ public class ResultadoController {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/resultado")
 	public ResponseEntity<List<Resultado>> getReglamento() {
 
@@ -50,6 +60,11 @@ public class ResultadoController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/resultado/{id}")
 	public ResponseEntity<Resultado> deleteReglamento(@PathVariable(name = "id") Long id) {
 

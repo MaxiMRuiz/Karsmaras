@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
- * Request Interceptor of all request
+ * Request Interceptor de todas las peticiones
  * 
  * @author Maximino Mañanes Ruiz
  */
@@ -19,22 +19,21 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	private static final Log LOGGER = LogFactory.getLog(RequestTimeInterceptor.class);
 
 	/**
-	 * Method pre-execution of every request 
+	 * Metodo pre ejecucion de todas las peticiones
 	 * 
 	 * @param request
 	 * @param response
 	 * @param handler
 	 * 
-	 * @throws OnboardingException
+	 * @throws Exception
 	 */
 	@Override
 	public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler)
 			throws Exception {
 
 		try {
-			// Request start time
 			request.setAttribute("startTime", System.currentTimeMillis());
-			
+
 			return true;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
@@ -43,7 +42,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	/**
-	 * Method post-execution of every request to check the execution.
+	 * Método Post Ejecucion de todas las peticiones
 	 * 
 	 * @param request
 	 * @param response
@@ -54,11 +53,10 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	public void afterCompletion(final HttpServletRequest request, final HttpServletResponse response,
 			final Object handler, final Exception exception) {
 		try {
-			// Get request duration
 			long startTime = (long) request.getAttribute("startTime");
-			LOGGER.info("RequestInterceptor - URL to : '" + request.getRequestURL().toString()
-					+ "' -- in: " + (System.currentTimeMillis() - startTime) + "ms.");
-			
+			LOGGER.info("RequestInterceptor - URL to : '" + request.getRequestURL().toString() + "' -- in: "
+					+ (System.currentTimeMillis() - startTime) + "ms.");
+
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 		}

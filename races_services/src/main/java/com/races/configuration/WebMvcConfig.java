@@ -6,12 +6,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.races.component.RequestTimeInterceptor;
 
+/**
+ * Clase de configuracion donde establecer el interceptor de peticiones
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
+	/**
+	 * Añade el interceptor del proyecto
+	 */
 	@Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new RequestTimeInterceptor());
-    }
-	
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new RequestTimeInterceptor());
+	}
+
 }

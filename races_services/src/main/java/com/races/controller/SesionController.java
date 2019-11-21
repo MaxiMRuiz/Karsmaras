@@ -18,6 +18,12 @@ import com.races.dto.SesionDto;
 import com.races.entity.Sesion;
 import com.races.services.SesionService;
 
+/**
+ * Controlador para los servicios de Sesiones de Grandes Premios
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class SesionController {
 
@@ -27,7 +33,7 @@ public class SesionController {
 	SesionService sesionService;
 
 	/**
-	 * OK
+	 * Servicio de creacion de una nueva sesion
 	 * 
 	 * @param reglamentoDto
 	 * @return
@@ -43,6 +49,10 @@ public class SesionController {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/sesion")
 	public ResponseEntity<List<Sesion>> getReglamento() {
 
@@ -50,6 +60,11 @@ public class SesionController {
 
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@DeleteMapping("/sesion/{id}")
 	public ResponseEntity<Sesion> deleteReglamento(@PathVariable(name = "id") Long id) {
 

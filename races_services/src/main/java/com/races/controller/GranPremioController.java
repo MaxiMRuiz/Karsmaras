@@ -15,10 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.races.component.RacesException;
 import com.races.dto.GranPremioDto;
 import com.races.entity.GranPremio;
 import com.races.services.GranPremioService;
 
+/**
+ * Controlador para los servicios de Grandes premios
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @RestController
 public class GranPremioController {
 
@@ -27,33 +34,59 @@ public class GranPremioController {
 	@Autowired
 	GranPremioService gpService;
 
+	/**
+	 * Servicio de creacion de un nuevo gran premio
+	 * 
+	 * @param gpDto
+	 * @return Gran Premio creado
+	 */
 	@PostMapping("/gp")
-	public ResponseEntity<GranPremio> creaCampeonato(@RequestBody GranPremioDto gpDto) {
+	public ResponseEntity<GranPremio> crearGp(@RequestBody GranPremioDto gpDto) {
 
-		LOGGER.info("Creando nuevo Campeonato: " + gpDto.toString());
-
-		GranPremio campeonato = gpService.crearGranPremio(gpDto);
-
-		return new ResponseEntity<>(campeonato, HttpStatus.OK);
-
+		try {
+			LOGGER.info("Creando nuevo GP en " + gpDto.getUbicacion() + " para el Campeonato ["
+					+ gpDto.getIdCampeonato() + "]");
+			return new ResponseEntity<>(gpService.crearGranPremio(gpDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error(ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
+	/**
+	 * Servicio de obtencion del listado de Grandes Premios
+	 * 
+	 * @param id           Filtro por ID
+	 * @param ubicacion    Filtrio por Ubicacion
+	 * @param idCampeonato Filtro por ID del Campeonato
+	 * @return Lista de GP aplicando los filtros
+	 */
 	@GetMapping("/gp")
-	public ResponseEntity<List<GranPremio>> getCampeonato(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<GranPremio>> getListGp(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "ubicacion") String ubicacion,
 			@RequestParam(required = false, name = "idCampeonato") Long idCampeonato) {
 
-		List<GranPremio> list = gpService.getAllGrandesPremios(id, ubicacion, idCampeonato);
-
-		return new ResponseEntity<>(list, HttpStatus.OK);
+		LOGGER.info("Obteniendo Grandes Premios");
+		return new ResponseEntity<>(gpService.getAllGrandesPremios(id, ubicacion, idCampeonato), HttpStatus.OK);
 
 	}
 
+	/**
+	 * Servicio de borrado de Gran Premio por Id
+	 * 
+	 * @param id
+	 * @return 200/404
+	 */
 	@DeleteMapping("/gp/{id}")
-	public ResponseEntity<GranPremio> deleteCampeonato(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<GranPremio> deleteGp(@PathVariable(name = "id") Long id) {
 
-		gpService.borrarGranPremio(id);
-
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			LOGGER.info("Borrando el Gran Premio: " + id);
+			gpService.borrarGranPremio(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error(ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 }

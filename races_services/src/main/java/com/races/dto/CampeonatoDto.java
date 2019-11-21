@@ -1,5 +1,8 @@
 package com.races.dto;
 
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
+
 public class CampeonatoDto {
 
 	private String nombre;
@@ -10,7 +13,8 @@ public class CampeonatoDto {
 
 	private Long reglamento;
 
-	public CampeonatoDto(String nombre, String descripcion, String temporada, Long reglamento) {
+	public CampeonatoDto(@NonNull String nombre, @Nullable String descripcion, @NonNull String temporada,
+			@NonNull Long reglamento) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -53,5 +57,5 @@ public class CampeonatoDto {
 	public void setReglamento(Long reglamento) {
 		this.reglamento = reglamento;
 	}
-	
+
 }

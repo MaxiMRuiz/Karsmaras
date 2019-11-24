@@ -7,6 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.races.entity.Piloto;
 
+/**
+ * Repositorio para la entidad Piloto
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("PilotoRepository")
 public interface PilotoRepository extends JpaRepository<Piloto, Serializable>{
 

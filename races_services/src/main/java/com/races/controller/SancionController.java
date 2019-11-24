@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.races.component.RacesException;
 import com.races.dto.SancionDto;
 import com.races.entity.Sancion;
 import com.races.services.SancionService;
@@ -39,38 +41,49 @@ public class SancionController {
 	 * @return
 	 */
 	@PostMapping("/sancion")
-	public ResponseEntity<Sancion> creaReglamento(@RequestBody SancionDto sancionDto) {
+	public ResponseEntity<Sancion> crearSancion(@RequestBody SancionDto sancionDto) {
 
-		LOGGER.info("Creando nueva sancion: " + sancionDto.toString());
-
-		Sancion sancion = sancionService.crearSancion(sancionDto);
-
-		return new ResponseEntity<>(sancion, HttpStatus.OK);
-
+		try {
+			LOGGER.info("Creando nueva Sancion: R[" + sancionDto.getIdResultado() + "]");
+			return new ResponseEntity<>(sancionService.crearSancion(sancionDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error("Error creando Sancion: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 	/**
+	 * Servicio de busqueda de sanciones
 	 * 
 	 * @return
 	 */
 	@GetMapping("/sancion")
-	public ResponseEntity<List<Sancion>> getReglamento() {
+	public ResponseEntity<List<Sancion>> buscarSanciones(@RequestParam(required = false, name = "id") Long id,
+			@RequestParam(required = false, name = "idResultado") Long idResultado,
+			@RequestParam(required = false, name = "puntos") Integer puntos,
+			@RequestParam(required = false, name = "tiempo") Integer tiempo) {
 
-		return new ResponseEntity<>(sancionService.getAllSancion(), HttpStatus.OK);
+		LOGGER.info("Buscando sanciones");
+		return new ResponseEntity<>(sancionService.buscarSanciones(id, idResultado, puntos, tiempo), HttpStatus.OK);
 
 	}
 
 	/**
+	 * Servicio para el borrado de una sancion
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/sancion/{id}")
-	public ResponseEntity<Sancion> deleteReglamento(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarSancion(@PathVariable(name = "id") Long id) {
 
-		sancionService.removeSancion(id);
-
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			LOGGER.info("Eliminando Sancion " + id);
+			return new ResponseEntity<>(sancionService.borrarSancion(id), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error borrando la Sancion " + id + ": " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

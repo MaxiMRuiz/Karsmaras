@@ -3,6 +3,12 @@ package com.races.dto;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+/**
+ * Dto para Campeonatos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class CampeonatoDto {
 
 	private String nombre;
@@ -13,6 +19,14 @@ public class CampeonatoDto {
 
 	private Long reglamento;
 
+	/**
+	 * Constructor con parametros
+	 * 
+	 * @param nombre
+	 * @param descripcion
+	 * @param temporada
+	 * @param reglamento
+	 */
 	public CampeonatoDto(@NonNull String nombre, @Nullable String descripcion, @NonNull String temporada,
 			@NonNull Long reglamento) {
 		super();
@@ -22,6 +36,9 @@ public class CampeonatoDto {
 		this.reglamento = reglamento;
 	}
 
+	/**
+	 * Constructor por defecto
+	 */
 	public CampeonatoDto() {
 		super();
 	}

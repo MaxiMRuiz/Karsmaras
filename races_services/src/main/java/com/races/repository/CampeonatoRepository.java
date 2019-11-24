@@ -7,7 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.races.entity.Campeonato;
 
+/**
+ * Repositorio para la entidad Campeonato
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("CampeonatoRepository")
-public interface CampeonatoRepository extends JpaRepository<Campeonato, Serializable>{
+public interface CampeonatoRepository extends JpaRepository<Campeonato, Serializable> {
 
 }

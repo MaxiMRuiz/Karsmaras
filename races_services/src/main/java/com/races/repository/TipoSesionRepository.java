@@ -7,6 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.races.entity.TipoSesion;
 
+/**
+ * Repositorio para la entidad TipoSesion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("TipoSesionRepository")
 public interface TipoSesionRepository extends JpaRepository<TipoSesion, Serializable>{
 

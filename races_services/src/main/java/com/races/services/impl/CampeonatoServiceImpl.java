@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -32,20 +34,27 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 	@Autowired
 	ReglamentoService reglaService;
 
+	private static final Log LOGGER = LogFactory.getLog(CampeonatoServiceImpl.class);
+
 	public Campeonato crearCampeonato(CampeonatoDto campeonato) throws RacesException {
 
-		Reglamento reglamento = reglaService.getReglamento(campeonato.getReglamento());
+		try {
+			Reglamento reglamento = reglaService.buscarReglamento(campeonato.getReglamento());
 
-		Campeonato newCampeonato = new Campeonato();
-		newCampeonato.setDescripcion(campeonato.getDescripcion());
-		newCampeonato.setNombre(campeonato.getNombre());
-		newCampeonato.setTemporada(campeonato.getTemporada());
+			Campeonato newCampeonato = new Campeonato();
+			newCampeonato.setDescripcion(campeonato.getDescripcion());
+			newCampeonato.setNombre(campeonato.getNombre());
+			newCampeonato.setTemporada(campeonato.getTemporada());
 
-		newCampeonato.setReglamento(reglamento);
-		if (existsCampeonato(newCampeonato)) {
-			throw new RacesException("El campeonato indicado ya existe.");
-		} else {
-			return campeoRepo.save(newCampeonato);
+			newCampeonato.setReglamento(reglamento);
+			if (existeCampeonato(newCampeonato)) {
+				throw new RacesException("El campeonato indicado ya existe.");
+			} else {
+				return campeoRepo.save(newCampeonato);
+			}
+		} catch (RacesException e) {
+			LOGGER.error(e);
+			throw e;
 		}
 	}
 
@@ -55,12 +64,12 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 	 * @param newCampeonato
 	 * @return
 	 */
-	private boolean existsCampeonato(Campeonato campeonato) {
+	private boolean existeCampeonato(Campeonato campeonato) {
 		Example<Campeonato> probe = Example.of(campeonato);
 		return campeoRepo.findOne(probe).isPresent();
 	}
 
-	public List<Campeonato> getAllCampeonatos(Long id, String nombre, String temporada) {
+	public List<Campeonato> buscarCampeonatos(Long id, String nombre, String temporada) {
 		if (id == null && StringUtils.isBlank(nombre) && StringUtils.isBlank(temporada)) {
 			return campeoRepo.findAll();
 		} else {
@@ -69,7 +78,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		}
 	}
 
-	public Campeonato getCampeonato(Long id) throws RacesException {
+	public Campeonato buscarCampeonato(Long id) throws RacesException {
 		Optional<Campeonato> campeonato = campeoRepo.findById(id);
 		if (campeonato.isPresent()) {
 			return campeonato.get();
@@ -77,7 +86,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		throw new RacesException(Constants.CAMPEONATO_NO_EXISTE);
 	}
 
-	public Campeonato updateCampeonato(Long id, CampeonatoDto campeonato) throws RacesException {
+	public Campeonato actualizarCampeonato(Long id, CampeonatoDto campeonato) throws RacesException {
 		Optional<Campeonato> campOpt = campeoRepo.findById(id);
 		if (campOpt.isPresent()) {
 			Campeonato registro = campOpt.get();
@@ -100,7 +109,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		}
 	}
 
-	public boolean existsCampeonato(Long id) {
+	public boolean existeCampeonato(Long id) {
 		return campeoRepo.findById(id).isPresent();
 	}
 

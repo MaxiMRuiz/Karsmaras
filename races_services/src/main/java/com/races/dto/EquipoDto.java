@@ -1,15 +1,30 @@
 package com.races.dto;
 
+/**
+ * Dto para equipos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class EquipoDto {
 
 	private String nombre;
 
 	private String alias;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public EquipoDto() {
 		super();
 	}
 
+	/**
+	 * Constructor con parametros
+	 * 
+	 * @param nombre
+	 * @param alias
+	 */
 	public EquipoDto(String nombre, String alias) {
 		super();
 		this.nombre = nombre;
@@ -31,7 +46,5 @@ public class EquipoDto {
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
-	
-	
 
 }

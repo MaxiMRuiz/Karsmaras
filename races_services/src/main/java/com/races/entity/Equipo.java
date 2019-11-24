@@ -7,17 +7,30 @@ import javax.persistence.Id;
 
 import com.races.dto.EquipoDto;
 
+/**
+ * Entidad de la tabla Equipo
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Equipo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nombre;
-	
+
 	private String alias;
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param nombre
+	 * @param alias
+	 */
 	public Equipo(Long id, String nombre, String alias) {
 		super();
 		this.id = id;
@@ -25,14 +38,22 @@ public class Equipo {
 		this.alias = alias;
 	}
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Equipo() {
 		super();
 	}
 
+	/**
+	 * Constructor por DTO
+	 * 
+	 * @param equipoDto
+	 */
 	public Equipo(EquipoDto equipoDto) {
 		super();
-		this.nombre=equipoDto.getNombre();
-		this.alias=equipoDto.getAlias();
+		this.nombre = equipoDto.getNombre();
+		this.alias = equipoDto.getAlias();
 	}
 
 	public Long getId() {
@@ -58,5 +79,5 @@ public class Equipo {
 	public void setAlias(String alias) {
 		this.alias = alias;
 	}
-	
+
 }

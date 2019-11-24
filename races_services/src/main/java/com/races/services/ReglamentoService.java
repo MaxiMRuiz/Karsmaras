@@ -6,6 +6,12 @@ import com.races.component.RacesException;
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 
+/**
+ * Interfaz de servicios para Reglamento
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public interface ReglamentoService {
 
 	/**
@@ -16,14 +22,21 @@ public interface ReglamentoService {
 	 * @return Reglamento creado
 	 * @throws RacesException si ya existe el reglamento
 	 */
-	Reglamento crearReglamento(Reglamento reglamentoDto) throws RacesException;
+	Reglamento crearReglamento(ReglamentoDto reglamentoDto) throws RacesException;
 
 	/**
 	 * Método de recuperacion de todos los reglamentos de la BBDD.
 	 * 
+	 * @param id
+	 * @param nEntrenamientos
+	 * @param nClasificaciones
+	 * @param nCarreras
+	 * @param nPilotos
+	 * @param nEquipos
 	 * @return Lista de reglamentos. Si no existe ninguno, la lista será vacía.
 	 */
-	List<Reglamento> getAllReglamentos();
+	List<Reglamento> buscarReglamentos(Long id, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras,
+			Integer nPilotos, Integer nEquipos);
 
 	/**
 	 * Busqueda de un reglamento por Id
@@ -32,7 +45,7 @@ public interface ReglamentoService {
 	 * @return Reglamento asociado al id indicado
 	 * @throws RacesException Si el id indicado no existe en BBDD
 	 */
-	Reglamento getReglamento(Long id) throws RacesException;
+	Reglamento buscarReglamento(Long id) throws RacesException;
 
 	/**
 	 * Método para actualizar un reglamento
@@ -42,7 +55,7 @@ public interface ReglamentoService {
 	 * @return
 	 * @throws RacesException Si el id indicado no existe en BBDD
 	 */
-	Reglamento updateReglamento(Long id, ReglamentoDto reglamentoDto) throws RacesException;
+	Reglamento actualizarReglamento(Long id, ReglamentoDto reglamentoDto) throws RacesException;
 
 	/**
 	 * Metodo para eliminar el reglamento con el id indicado.
@@ -59,6 +72,6 @@ public interface ReglamentoService {
 	 * @param id
 	 * @return
 	 */
-	boolean existsReglamento(Long id);
+	boolean existeReglamento(Long id);
 
 }

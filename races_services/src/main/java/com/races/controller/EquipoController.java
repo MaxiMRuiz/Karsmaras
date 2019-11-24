@@ -44,13 +44,13 @@ public class EquipoController {
 	 * @return Equipo creado
 	 */
 	@PostMapping("/equipo")
-	public ResponseEntity<Equipo> creaEquipo(@RequestBody EquipoDto equipoDto) {
+	public ResponseEntity<Equipo> crearEquipo(@RequestBody EquipoDto equipoDto) {
 
 		try {
 			LOGGER.info("Creando nuevo Equipo: " + equipoDto.getNombre());
 			return new ResponseEntity<>(equipoService.crearEquipo(equipoDto), HttpStatus.OK);
 		} catch (RacesException ex) {
-			LOGGER.error("Error creando equipo " + equipoDto.getNombre() + ":" + ex.getMessage());
+			LOGGER.error("Error creando Equipo " + equipoDto.getNombre() + ":" + ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
@@ -65,12 +65,12 @@ public class EquipoController {
 	 * @return Lista de equipos
 	 */
 	@GetMapping("/equipo")
-	public ResponseEntity<List<Equipo>> getEquipo(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<Equipo>> buscarEquipo(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "nombre") String nombre,
 			@RequestParam(required = false, name = "alias") String alias) {
 
 		LOGGER.info("Servicio de busqueda de equipos");
-		return new ResponseEntity<>(equipoService.getAllEquipos(id, nombre, alias), HttpStatus.OK);
+		return new ResponseEntity<>(equipoService.buscarEquipos(id, nombre, alias), HttpStatus.OK);
 
 	}
 
@@ -82,11 +82,11 @@ public class EquipoController {
 	 * @return Equipo actualizado
 	 */
 	@PutMapping("/equipo/{id}")
-	public ResponseEntity<Equipo> putEquipo(@PathVariable(name = "id") Long id, @RequestBody EquipoDto equipoDto) {
+	public ResponseEntity<Equipo> actualizarEquipo(@PathVariable(name = "id") Long id, @RequestBody EquipoDto equipoDto) {
 
 		try {
 			LOGGER.info("Actualizando el Equipo: " + equipoDto.getNombre());
-			return new ResponseEntity<>(equipoService.updateEquipo(id, equipoDto), HttpStatus.OK);
+			return new ResponseEntity<>(equipoService.actualizarEquipo(id, equipoDto), HttpStatus.OK);
 		} catch (RacesException ex) {
 			LOGGER.error(ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,12 +100,11 @@ public class EquipoController {
 	 * @return 200/404
 	 */
 	@DeleteMapping("/equipo/{id}")
-	public ResponseEntity<Equipo> borrarEquipo(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarEquipo(@PathVariable(name = "id") Long id) {
 
 		try {
 			LOGGER.info("Borrando el Equipo: " + id);
-			equipoService.borrarEquipo(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(equipoService.borrarEquipo(id),HttpStatus.OK);
 		} catch (RacesException ex) {
 			LOGGER.error(ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

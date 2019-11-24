@@ -62,12 +62,12 @@ public class GranPremioController {
 	 * @return Lista de GP aplicando los filtros
 	 */
 	@GetMapping("/gp")
-	public ResponseEntity<List<GranPremio>> getListGp(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<GranPremio>> buscarGrandesPremios(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "ubicacion") String ubicacion,
 			@RequestParam(required = false, name = "idCampeonato") Long idCampeonato) {
 
 		LOGGER.info("Obteniendo Grandes Premios");
-		return new ResponseEntity<>(gpService.getAllGrandesPremios(id, ubicacion, idCampeonato), HttpStatus.OK);
+		return new ResponseEntity<>(gpService.buscarGrandesPremios(id, ubicacion, idCampeonato), HttpStatus.OK);
 
 	}
 
@@ -78,12 +78,11 @@ public class GranPremioController {
 	 * @return 200/404
 	 */
 	@DeleteMapping("/gp/{id}")
-	public ResponseEntity<GranPremio> deleteGp(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarGranPremio(@PathVariable(name = "id") Long id) {
 
 		try {
 			LOGGER.info("Borrando el Gran Premio: " + id);
-			gpService.borrarGranPremio(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(gpService.borrarGranPremio(id), HttpStatus.OK);
 		} catch (RacesException ex) {
 			LOGGER.error(ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

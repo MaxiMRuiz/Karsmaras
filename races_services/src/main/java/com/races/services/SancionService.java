@@ -2,19 +2,63 @@ package com.races.services;
 
 import java.util.List;
 
+import com.races.component.RacesException;
 import com.races.dto.SancionDto;
 import com.races.entity.Sancion;
 
+/**
+ * Interfaz de servicios para Sancion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public interface SancionService {
 
-	Sancion crearSancion(SancionDto sancionDto);
+	/**
+	 * Servicio de creacion de una nueva sancion en base a un DTO
+	 * 
+	 * @param sancionDto
+	 * @return
+	 * @throws RacesException
+	 */
+	Sancion crearSancion(SancionDto sancionDto) throws RacesException;
 
-	List<Sancion> getAllSancion();
+	/**
+	 * Servicio de busqueda de sanciones con filtros por id, idResultado, puntos y
+	 * tiempo
+	 * 
+	 * @param id
+	 * @param idResultado
+	 * @param puntos
+	 * @param tiempo
+	 * @return
+	 */
+	List<Sancion> buscarSanciones(Long id, Long idResultado, Integer puntos, Integer tiempo);
 
-	Sancion getSancion(Long id);
+	/**
+	 * Servicio de busqueda de una sancion en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RacesException
+	 */
+	Sancion buscarSancion(Long id) throws RacesException;
 
-	boolean existsSancion(Long id);
-	
-	boolean removeSancion(Long id);
-	
+	/**
+	 * Servicio de borrado de una sancion en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RacesException
+	 */
+	boolean borrarSancion(Long id) throws RacesException;
+
+	/**
+	 * Servicio de comprobacion de existencia de una sancion
+	 * 
+	 * @param id
+	 * @return
+	 */
+	boolean existeSancion(Long id);
+
 }

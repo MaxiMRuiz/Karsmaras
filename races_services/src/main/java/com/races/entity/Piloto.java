@@ -7,6 +7,12 @@ import javax.persistence.Id;
 
 import com.races.dto.PilotoDto;
 
+/**
+ * Entidad de la tabla Piloto
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Piloto {
 
@@ -20,6 +26,14 @@ public class Piloto {
 
 	private String apodo;
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param nombre
+	 * @param apellido
+	 * @param apodo
+	 */
 	public Piloto(Long id, String nombre, String apellido, String apodo) {
 		super();
 		this.id = id;
@@ -28,10 +42,18 @@ public class Piloto {
 		this.apodo = apodo;
 	}
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Piloto() {
 		super();
 	}
 
+	/**
+	 * Constructor por DTO
+	 * 
+	 * @param pilotoDto
+	 */
 	public Piloto(PilotoDto pilotoDto) {
 		super();
 		this.nombre = pilotoDto.getNombre();

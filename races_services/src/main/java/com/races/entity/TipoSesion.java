@@ -5,6 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Entidad de la tabla TipoSesion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class TipoSesion {
 
@@ -14,10 +20,19 @@ public class TipoSesion {
 
 	private String descripcion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public TipoSesion() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param descripcion
+	 */
 	public TipoSesion(Long id, String descripcion) {
 		super();
 		this.id = id;

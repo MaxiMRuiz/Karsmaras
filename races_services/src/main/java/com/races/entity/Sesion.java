@@ -10,6 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Sesion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Sesion {
 
@@ -27,10 +33,21 @@ public class Sesion {
 	@JoinColumn(name = "id_tipo_sesion")
 	private TipoSesion tipoSesion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Sesion() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param fecha
+	 * @param granPremio
+	 * @param tipoSesion
+	 */
 	public Sesion(Long id, Date fecha, GranPremio granPremio, TipoSesion tipoSesion) {
 		super();
 		this.id = id;

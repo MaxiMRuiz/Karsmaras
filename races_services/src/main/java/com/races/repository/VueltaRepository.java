@@ -7,7 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import com.races.entity.Vuelta;
 
+/**
+ * Repositorio para la entidad Vuelta
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("VueltaRepository")
-public interface VueltaRepository extends JpaRepository<Vuelta, Serializable>{
+public interface VueltaRepository extends JpaRepository<Vuelta, Serializable> {
 
 }

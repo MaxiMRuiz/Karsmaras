@@ -1,20 +1,61 @@
 package com.races.services;
 
+import java.util.Date;
 import java.util.List;
 
+import com.races.component.RacesException;
 import com.races.dto.SesionDto;
 import com.races.entity.Sesion;
 
+/**
+ * Interfaz de servicios para Sesion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public interface SesionService {
 
-	Sesion crearSesion(SesionDto sesionDto);
+	/**
+	 * Servicio de creacion de una Sesion en base a un dto
+	 * 
+	 * @param sesionDto
+	 * @return
+	 * @throws RacesException
+	 */
+	Sesion crearSesion(SesionDto sesionDto) throws RacesException;
 
-	List<Sesion> getAllSesion();
+	/**
+	 * Servicio de busqueda de Sesiones con filtros por id, idGp, fecha e
+	 * idTipoSesion
+	 * 
+	 * @return
+	 */
+	List<Sesion> buscarSesiones(Long id, Long idGp, Date fecha, Long idTipoSesion);
 
-	Sesion getSesion(Long id);
+	/**
+	 * Servicio de busqueda de una sesion en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RacesException
+	 */
+	Sesion buscarSesion(Long id) throws RacesException;
 
-	boolean existsSesion(Long id);
-	
-	boolean removeSesion(Long id);
-	
+	/**
+	 * Servicio de comprobacion de existencia de una sesion en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	boolean existeSesion(Long id);
+
+	/**
+	 * Servicio de borrado de una Sesion en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RacesException
+	 */
+	boolean borrarSesion(Long id) throws RacesException;
+
 }

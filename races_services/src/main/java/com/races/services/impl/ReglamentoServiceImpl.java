@@ -17,7 +17,7 @@ import com.races.repository.ReglamentoRepository;
 import com.races.services.ReglamentoService;
 
 /**
- * Servicio para operativas sobre campeonatos.
+ * Servicio para operativas sobre reglamentos.
  * 
  * @author Maximino Mañanes Ruiz
  *
@@ -29,29 +29,26 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	@Qualifier("ReglamentoRepository")
 	ReglamentoRepository reglaRepo;
 
-	public Reglamento crearReglamento(@NonNull Reglamento reglamento) throws RacesException {
-		if (existsReglamento(reglamento)) {
+	public Reglamento crearReglamento(@NonNull ReglamentoDto reglamentoDto) throws RacesException {
+		Reglamento reglamento = new Reglamento();
+		reglamento.setnCarreras(reglamentoDto.getnCarreras());
+		reglamento.setnClasificaciones(reglamentoDto.getnClasificaciones());
+		reglamento.setnEntrenamientos(reglamentoDto.getnEntrenamientos());
+		reglamento.setnEquipos(reglamentoDto.getnEquipos());
+		reglamento.setnPilotos(reglamentoDto.getnPilotos());
+		if (reglaRepo.findOne(Example.of(reglamento)).isPresent()) {
 			throw new RacesException("La combinacion del reglamento ya existe.");
 		}
 		return reglaRepo.save(reglamento);
 	}
 
-	/**
-	 * Metodo que comprueba si el reglamento indicado ya existe
-	 * 
-	 * @param reglamento
-	 * @return
-	 */
-	private boolean existsReglamento(@NonNull Reglamento reglamento) {
-		Example<Reglamento> probe = Example.of(reglamento);
-		return reglaRepo.findOne(probe).isPresent();
+	public List<Reglamento> buscarReglamentos(Long id, Integer nEntrenamientos, Integer nClasificaciones,
+			Integer nCarreras, Integer nPilotos, Integer nEquipos) {
+		return reglaRepo.findAll(
+				Example.of(new Reglamento(id, nEntrenamientos, nClasificaciones, nCarreras, nPilotos, nEquipos)));
 	}
 
-	public List<Reglamento> getAllReglamentos() {
-		return reglaRepo.findAll();
-	}
-
-	public Reglamento getReglamento(@NonNull Long id) throws RacesException {
+	public Reglamento buscarReglamento(@NonNull Long id) throws RacesException {
 		Optional<Reglamento> reglamento = reglaRepo.findById(id);
 		if (reglamento.isPresent()) {
 			return reglamento.get();
@@ -60,33 +57,24 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 		}
 	}
 
-	public Reglamento updateReglamento(@NonNull Long id, @NonNull ReglamentoDto reglamento) throws RacesException {
-		Optional<Reglamento> regOpt = reglaRepo.findById(id);
-		if (regOpt.isPresent()) {
-			Reglamento registro = regOpt.get();
-			registro.setnCarreras(reglamento.getnCarreras());
-			registro.setnClasificaciones(reglamento.getnClasificaciones());
-			registro.setnEntrenamientos(reglamento.getnEntrenamientos());
-			registro.setnEquipos(reglamento.getnEquipos());
-			registro.setnPilotos(reglamento.getnPilotos());
-			return reglaRepo.save(registro);
-		} else {
-			throw new RacesException(Constants.REGLAMENTO_NO_EXISTE);
-		}
+	public Reglamento actualizarReglamento(@NonNull Long id, @NonNull ReglamentoDto reglamento) throws RacesException {
+		Reglamento registro = buscarReglamento(id);
+		registro.setnCarreras(reglamento.getnCarreras());
+		registro.setnClasificaciones(reglamento.getnClasificaciones());
+		registro.setnEntrenamientos(reglamento.getnEntrenamientos());
+		registro.setnEquipos(reglamento.getnEquipos());
+		registro.setnPilotos(reglamento.getnPilotos());
+		return reglaRepo.save(registro);
 
 	}
 
 	public boolean borrarReglamento(@NonNull Long id) throws RacesException {
-		Optional<Reglamento> regOpt = reglaRepo.findById(id);
-		if (regOpt.isPresent()) {
-			reglaRepo.delete(regOpt.get());
-			return true;
-		} else {
-			throw new RacesException(Constants.REGLAMENTO_NO_EXISTE);
-		}
+		reglaRepo.delete(buscarReglamento(id));
+		return true;
 	}
 
-	public boolean existsReglamento(@NonNull Long id) {
+	public boolean existeReglamento(@NonNull Long id) {
 		return reglaRepo.findById(id).isPresent();
 	}
+
 }

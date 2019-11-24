@@ -44,7 +44,7 @@ public class CampeonatoController {
 	 * @return
 	 */
 	@PostMapping("/campeonato")
-	public ResponseEntity<Campeonato> creaCampeonato(@RequestBody CampeonatoDto campeonatoDto) {
+	public ResponseEntity<Campeonato> crearCampeonato(@RequestBody CampeonatoDto campeonatoDto) {
 
 		try {
 			LOGGER.info("Creando nuevo Campeonato: " + campeonatoDto.getNombre());
@@ -66,11 +66,11 @@ public class CampeonatoController {
 	 * @return
 	 */
 	@GetMapping("/campeonato")
-	public ResponseEntity<List<Campeonato>> getCampeonato(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<Campeonato>> buscarCampeonatos(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "nombre") String nombre,
 			@RequestParam(required = false, name = "temporada") String temporada) {
 		LOGGER.info("Busqueda de Campeonatos");
-		return new ResponseEntity<>(campeonatoService.getAllCampeonatos(id, nombre, temporada), HttpStatus.OK);
+		return new ResponseEntity<>(campeonatoService.buscarCampeonatos(id, nombre, temporada), HttpStatus.OK);
 
 	}
 
@@ -82,13 +82,12 @@ public class CampeonatoController {
 	 * @return
 	 */
 	@PutMapping("/campeonato/{id}")
-	public ResponseEntity<Campeonato> putCampeonato(@PathVariable(name = "id") Long id,
-			@RequestBody CampeonatoDto reglamentoDto) {
+	public ResponseEntity<Campeonato> actualizarCampeonato(@PathVariable(name = "id") Long id,
+			@RequestBody CampeonatoDto campeonatoDto) {
 
 		try {
 			LOGGER.info("Actualizando Campeonato " + id);
-			Campeonato reglamento = campeonatoService.updateCampeonato(id, reglamentoDto);
-			return new ResponseEntity<>(reglamento, HttpStatus.OK);
+			return new ResponseEntity<>(campeonatoService.actualizarCampeonato(id, campeonatoDto), HttpStatus.OK);
 		} catch (RacesException e) {
 			LOGGER.error("Error actualizando el Campeonato " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -102,12 +101,11 @@ public class CampeonatoController {
 	 * @return
 	 */
 	@DeleteMapping("/campeonato/{id}")
-	public ResponseEntity<Campeonato> deleteCampeonato(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarCampeonato(@PathVariable(name = "id") Long id) {
 
 		try {
 			LOGGER.info("Eliminando Campeonato " + id);
-			campeonatoService.borrarCampeonato(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(campeonatoService.borrarCampeonato(id), HttpStatus.OK);
 		} catch (RacesException e) {
 			LOGGER.error("Error borrando el Campeonato " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -1,5 +1,11 @@
 package com.races.dto;
 
+/**
+ * Dto para Reglamentos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class ReglamentoDto {
 
 	private Integer nEntrenamientos;
@@ -8,10 +14,22 @@ public class ReglamentoDto {
 	private Integer nPilotos;
 	private Integer nEquipos;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public ReglamentoDto() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param nEntrenamientos
+	 * @param nClasificaciones
+	 * @param nCarreras
+	 * @param nPilotos
+	 * @param nEquipos
+	 */
 	public ReglamentoDto(Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
 			Integer nEquipos) {
 		super();

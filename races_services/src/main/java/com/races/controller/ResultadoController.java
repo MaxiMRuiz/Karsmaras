@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
 import com.races.entity.Resultado;
 import com.races.services.ResultadoService;
@@ -39,38 +41,52 @@ public class ResultadoController {
 	 * @return
 	 */
 	@PostMapping("/resultado")
-	public ResponseEntity<Resultado> creaReglamento(@RequestBody ResultadoDto resultadoDto) {
+	public ResponseEntity<Resultado> crearResultado(@RequestBody ResultadoDto resultadoDto) {
 
-		LOGGER.info("Creando nueva Sesion: " + resultadoDto.toString());
-
-		Resultado sesion = resultadoService.crearResultado(resultadoDto);
-
-		return new ResponseEntity<>(sesion, HttpStatus.OK);
-
+		try {
+			LOGGER.info("Creando nuevo Resultado: P[" + resultadoDto.getIdPiloto() + "] - S["
+					+ resultadoDto.getIdSesion() + "]");
+			return new ResponseEntity<>(resultadoService.crearResultado(resultadoDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error("Error creando Resultado: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 	/**
+	 * Servicio de busqueda de Resultados con filtro por Id
 	 * 
 	 * @return
 	 */
 	@GetMapping("/resultado")
-	public ResponseEntity<List<Resultado>> getReglamento() {
+	public ResponseEntity<List<Resultado>> buscarResultados(@RequestParam(required = false, name = "id") Long id,
+			@RequestParam(required = false, name = "idPiloto") Long idPiloto,
+			@RequestParam(required = false, name = "idSesion") Long idSesion,
+			@RequestParam(required = false, name = "nVueltas") Integer nVueltas,
+			@RequestParam(required = false, name = "tiempo") Integer tiempo) {
 
-		return new ResponseEntity<>(resultadoService.getAllResultado(), HttpStatus.OK);
+		LOGGER.info("Buscando resultados - id [" + id + "]");
+		return new ResponseEntity<>(resultadoService.buscarResultados(id, idPiloto, idSesion, nVueltas, tiempo),
+				HttpStatus.OK);
 
 	}
 
 	/**
+	 * Servicio para el borrado de un resultado
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/resultado/{id}")
-	public ResponseEntity<Resultado> deleteReglamento(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarResultado(@PathVariable(name = "id") Long id) {
+		try {
+			LOGGER.info("Eliminando Puntuacion " + id);
+			return new ResponseEntity<>(resultadoService.borrarResultado(id), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error borrando la Puntuacion " + id + ": " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 
-		resultadoService.removeResultado(id);
-
-		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Resultado
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Resultado {
 
@@ -25,21 +31,31 @@ public class Resultado {
 
 	private Integer nVueltas;
 
-	private Integer posicion;
-
 	private Integer tiempo;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Resultado() {
 		super();
 	}
 
-	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer nVueltas, Integer posicion, Integer tiempo) {
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param piloto
+	 * @param sesion
+	 * @param nVueltas
+	 * @param posicion
+	 * @param tiempo
+	 */
+	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer nVueltas, Integer tiempo) {
 		super();
 		this.id = id;
 		this.piloto = piloto;
 		this.sesion = sesion;
 		this.nVueltas = nVueltas;
-		this.posicion = posicion;
 		this.tiempo = tiempo;
 	}
 
@@ -73,14 +89,6 @@ public class Resultado {
 
 	public void setnVueltas(Integer nVueltas) {
 		this.nVueltas = nVueltas;
-	}
-
-	public Integer getPosicion() {
-		return posicion;
-	}
-
-	public void setPosicion(Integer posicion) {
-		this.posicion = posicion;
 	}
 
 	public Integer getTiempo() {

@@ -11,9 +11,23 @@ import com.races.entity.Equipo;
 import com.races.entity.Inscripcion;
 import com.races.entity.Piloto;
 
+/**
+ * Repositorio para la entidad Inscripcion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("InscripcionRepository")
-public interface InscripcionRepository extends JpaRepository<Inscripcion, Serializable>{
+public interface InscripcionRepository extends JpaRepository<Inscripcion, Serializable> {
 
+	/**
+	 * Busqueda de Inscripcion por campeonato, piloto y equipo
+	 * 
+	 * @param campeonato
+	 * @param piloto
+	 * @param equipo
+	 * @return
+	 */
 	Optional<Inscripcion> findByCampeonatoAndPilotoAndEquipo(Campeonato campeonato, Piloto piloto, Equipo equipo);
 
 }

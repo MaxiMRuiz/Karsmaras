@@ -8,27 +8,45 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Campeonato
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Campeonato {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nombre;
-	
+
 	private String descripcion;
-	
+
 	private String temporada;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_reglamento")
 	private Reglamento reglamento;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Campeonato() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param nombre
+	 * @param descripcion
+	 * @param temporada
+	 * @param reglamento
+	 */
 	public Campeonato(Long id, String nombre, String descripcion, String temporada, Reglamento reglamento) {
 		super();
 		this.id = id;
@@ -77,5 +95,5 @@ public class Campeonato {
 	public void setReglamento(Reglamento reglamento) {
 		this.reglamento = reglamento;
 	}
-	
+
 }

@@ -2,19 +2,63 @@ package com.races.services;
 
 import java.util.List;
 
+import com.races.component.RacesException;
 import com.races.dto.VueltaDto;
 import com.races.entity.Vuelta;
 
+/**
+ * Interfaz de servicios para Vueltas
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public interface VueltaService {
 
-	Vuelta crearVuelta(VueltaDto vueltaDto);
+	/**
+	 * Servicio de creacion de una vuelta en base a un DTO
+	 * 
+	 * @param vueltaDto
+	 * @return
+	 * @throws RacesException
+	 */
+	Vuelta crearVuelta(VueltaDto vueltaDto) throws RacesException;
 
-	List<Vuelta> getAllVueltas();
+	/**
+	 * Servicio de busqueda de un listado de vueltas con filtros por id,
+	 * idResultado, numero de vuelta y tiempo
+	 * 
+	 * @param id
+	 * @param idResultado
+	 * @param nVuelta
+	 * @param tiempo
+	 * @return
+	 */
+	List<Vuelta> buscarVueltas(Long id, Long idResultado, Integer nVuelta, Integer tiempo);
 
-	Vuelta getVuelta(Long id);
+	/**
+	 * Servicio de busqueda de una vuelta en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RacesException
+	 */
+	Vuelta buscarVuelta(Long id) throws RacesException;
 
-	boolean existsVuelta(Long id);
-	
-	boolean removeVuelta(Long id);
-	
+	/**
+	 * Servicio de borrado de una vuelta en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 * @throws RacesException
+	 */
+	boolean borrarVuelta(Long id) throws RacesException;
+
+	/**
+	 * Servicio de comprobacion de existencia de una vuelta en base a su id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	boolean existeVuelta(Long id);
+
 }

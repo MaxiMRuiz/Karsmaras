@@ -1,5 +1,11 @@
 package com.races.dto;
 
+/**
+ * Dto para Sanciones
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class SancionDto {
 
 	private Long idResultado;
@@ -10,10 +16,21 @@ public class SancionDto {
 
 	private Integer tiempo;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public SancionDto() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param idResultado
+	 * @param descripcion
+	 * @param puntos
+	 * @param tiempo
+	 */
 	public SancionDto(Long idResultado, String descripcion, Integer puntos, Integer tiempo) {
 		super();
 		this.idResultado = idResultado;

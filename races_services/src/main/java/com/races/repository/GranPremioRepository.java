@@ -7,6 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.races.entity.GranPremio;
 
+/**
+ * Repositorio para la entidad Gran Premio
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("GranPremioRepository")
 public interface GranPremioRepository extends JpaRepository<GranPremio, Serializable>{
 

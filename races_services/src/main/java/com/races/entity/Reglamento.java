@@ -5,6 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Entidad de la tabla Reglamento
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Reglamento {
 
@@ -17,10 +23,23 @@ public class Reglamento {
 	private Integer nPilotos;
 	private Integer nEquipos;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Reglamento() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param nEntrenamientos
+	 * @param nClasificaciones
+	 * @param nCarreras
+	 * @param nPilotos
+	 * @param nEquipos
+	 */
 	public Reglamento(Long id, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
 			Integer nEquipos) {
 		super();

@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Vuelta
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Vuelta {
 
@@ -23,10 +29,21 @@ public class Vuelta {
 	@JoinColumn(name = "id_resultado")
 	private Resultado resultado;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Vuelta() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param tiempo
+	 * @param nVuelta
+	 * @param resultado
+	 */
 	public Vuelta(Long id, Integer tiempo, Integer nVuelta, Resultado resultado) {
 		super();
 		this.id = id;

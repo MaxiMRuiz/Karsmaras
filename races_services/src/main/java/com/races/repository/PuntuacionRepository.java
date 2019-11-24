@@ -7,6 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import com.races.entity.Puntuacion;
 
+/**
+ * Repositorio para la entidad Puntuacion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Repository("PuntuacionRepository")
 public interface PuntuacionRepository extends JpaRepository<Puntuacion, Serializable>{
 

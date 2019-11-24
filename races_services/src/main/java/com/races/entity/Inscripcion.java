@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Inscripcion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Inscripcion {
 
@@ -27,10 +33,20 @@ public class Inscripcion {
 	@JoinColumn(name = "id_equipo")
 	private Equipo equipo;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Inscripcion() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros sin id
+	 * 
+	 * @param campeonato
+	 * @param piloto
+	 * @param equipo
+	 */
 	public Inscripcion(Campeonato campeonato, Piloto piloto, Equipo equipo) {
 		super();
 		this.campeonato = campeonato;
@@ -38,6 +54,14 @@ public class Inscripcion {
 		this.equipo = equipo;
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param campeonato
+	 * @param piloto
+	 * @param equipo
+	 */
 	public Inscripcion(Long id, Campeonato campeonato, Piloto piloto, Equipo equipo) {
 		super();
 		this.id = id;

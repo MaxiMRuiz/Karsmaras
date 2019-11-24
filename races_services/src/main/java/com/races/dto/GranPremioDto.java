@@ -1,15 +1,30 @@
 package com.races.dto;
 
+/**
+ * Dto para Grandes Premios
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class GranPremioDto {
 
 	private Long idCampeonato;
 
 	private String ubicacion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public GranPremioDto() {
 		super();
 	}
 
+	/**
+	 * Constructor con parametros
+	 * 
+	 * @param idCampeonato
+	 * @param ubicacion
+	 */
 	public GranPremioDto(Long idCampeonato, String ubicacion) {
 		super();
 		this.idCampeonato = idCampeonato;
@@ -31,5 +46,5 @@ public class GranPremioDto {
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
 	}
-	
+
 }

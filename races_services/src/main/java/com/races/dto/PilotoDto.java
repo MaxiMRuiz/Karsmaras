@@ -1,5 +1,11 @@
 package com.races.dto;
 
+/**
+ * Dto para pilotos
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class PilotoDto {
 
 	private String nombre;
@@ -8,10 +14,20 @@ public class PilotoDto {
 
 	private String apodo;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public PilotoDto() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param nombre
+	 * @param apellido
+	 * @param apodo
+	 */
 	public PilotoDto(String nombre, String apellido, String apodo) {
 		super();
 		this.nombre = nombre;
@@ -42,5 +58,5 @@ public class PilotoDto {
 	public void setApodo(String apodo) {
 		this.apodo = apodo;
 	}
-	
+
 }

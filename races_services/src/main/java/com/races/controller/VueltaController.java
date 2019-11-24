@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.races.component.RacesException;
 import com.races.dto.VueltaDto;
 import com.races.entity.Vuelta;
 import com.races.services.VueltaService;
@@ -39,38 +41,49 @@ public class VueltaController {
 	 * @return
 	 */
 	@PostMapping("/vuelta")
-	public ResponseEntity<Vuelta> creaReglamento(@RequestBody VueltaDto vueltaDto) {
+	public ResponseEntity<Vuelta> crearVuelta(@RequestBody VueltaDto vueltaDto) {
 
-		LOGGER.info("Creando nueva vuelta: " + vueltaDto.toString());
-
-		Vuelta vuelta = vueltaService.crearVuelta(vueltaDto);
-
-		return new ResponseEntity<>(vuelta, HttpStatus.OK);
-
+		try {
+			LOGGER.info("Creando nueva Vuelta: R[" + vueltaDto.getIdResultado() + "]");
+			return new ResponseEntity<>(vueltaService.crearVuelta(vueltaDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error("Error creando Vuelta: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 	/**
+	 * Servicio de busqueda de Vueltas
 	 * 
 	 * @return
 	 */
 	@GetMapping("/vuelta")
-	public ResponseEntity<List<Vuelta>> getReglamento() {
+	public ResponseEntity<List<Vuelta>> buscarVueltas(@RequestParam(required = false, name = "id") Long id,
+			@RequestParam(required = false, name = "idResultado") Long idResultado,
+			@RequestParam(required = false, name = "nVuelta") Integer nVuelta,
+			@RequestParam(required = false, name = "tiempo") Integer tiempo) {
 
-		return new ResponseEntity<>(vueltaService.getAllVueltas(), HttpStatus.OK);
+		LOGGER.info("Servicio de busqueda de Vueltas");
+		return new ResponseEntity<>(vueltaService.buscarVueltas(id, idResultado, nVuelta, tiempo), HttpStatus.OK);
 
 	}
 
 	/**
+	 * Servicio para el borrado de una vuelta
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/vuelta/{id}")
-	public ResponseEntity<Vuelta> deleteReglamento(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarVuelta(@PathVariable(name = "id") Long id) {
 
-		vueltaService.removeVuelta(id);
-
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			LOGGER.info("Borrando la Vuelta " + id);
+			return new ResponseEntity<>(vueltaService.borrarVuelta(id), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error(ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

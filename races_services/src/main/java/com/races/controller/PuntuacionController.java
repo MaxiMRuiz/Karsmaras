@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
 import com.races.entity.Puntuacion;
 import com.races.services.PuntuacionService;
@@ -43,15 +44,21 @@ public class PuntuacionController {
 	@PostMapping("/puntuacion")
 	public ResponseEntity<Puntuacion> crearPuntuacion(@RequestBody PuntuacionDto puntuacionDto) {
 
-		LOGGER.info("Creando nueva Puntuacion: " + puntuacionDto.toString());
+		try {
+			LOGGER.info("Creando nueva Puntuacion: R[" + puntuacionDto.getIdReglamento() + "] - TS["
+					+ puntuacionDto.getIdTipoSesion() + "]");
 
-		Puntuacion reglamento = puntuacionService.crearPuntuacion(puntuacionDto);
-
-		return new ResponseEntity<>(reglamento, HttpStatus.OK);
+			return new ResponseEntity<>(puntuacionService.crearPuntuacion(puntuacionDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error("Error creando Puntuacion: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 
 	}
 
 	/**
+	 * Servicio de busqueda de puntuaciones con filtros por Reglamento, posicion,
+	 * puntos y tipo de sesion
 	 * 
 	 * @param idReglamento
 	 * @param posicion
@@ -60,18 +67,21 @@ public class PuntuacionController {
 	 * @return
 	 */
 	@GetMapping("/puntuacion")
-	public ResponseEntity<List<Puntuacion>> buscarPuntuacion(
+	public ResponseEntity<List<Puntuacion>> buscarPuntuacion(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "idReglamento") Long idReglamento,
 			@RequestParam(required = false, name = "posicion") Integer posicion,
 			@RequestParam(required = false, name = "puntos") Integer puntos,
 			@RequestParam(required = false, name = "idTipoSesion") Long idTipoSesion) {
 
-		return new ResponseEntity<>(puntuacionService.getAllPuntuaciones(idReglamento, posicion, puntos, idTipoSesion),
-				HttpStatus.OK);
+		LOGGER.info("Buscando Puntuaciones: R[" + idReglamento + "] - posicion[" + posicion + "] - puntos[" + puntos
+				+ "] - TS[" + idTipoSesion + "]");
+		return new ResponseEntity<>(
+				puntuacionService.buscarPuntuaciones(id, idReglamento, posicion, puntos, idTipoSesion), HttpStatus.OK);
 
 	}
 
 	/**
+	 * Servicio de actualizacion de una puntuacion
 	 * 
 	 * @param id
 	 * @param puntuacionDto
@@ -80,13 +90,13 @@ public class PuntuacionController {
 	@PutMapping("/puntuacion/{id}")
 	public ResponseEntity<Puntuacion> actualizarPuntuacion(@PathVariable(name = "id") Long id,
 			@RequestBody PuntuacionDto puntuacionDto) {
-
-		Puntuacion puntuacion = puntuacionService.updatePuntuacion(id, puntuacionDto);
-		if (puntuacion == null) {
+		try {
+			LOGGER.info("Actualizando Puntuacion " + id);
+			return new ResponseEntity<>(puntuacionService.actualizarPuntuacion(id, puntuacionDto), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error actualizando la Puntuacion " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(puntuacion, HttpStatus.OK);
-
 	}
 
 	/**
@@ -96,11 +106,15 @@ public class PuntuacionController {
 	 * @return
 	 */
 	@DeleteMapping("/puntuacion/{id}")
-	public ResponseEntity<Puntuacion> borrarPuntuacion(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarPuntuacion(@PathVariable(name = "id") Long id) {
 
-		puntuacionService.borrarPuntuacion(id);
-
-		return new ResponseEntity<>(HttpStatus.OK);
+		try {
+			LOGGER.info("Eliminando Puntuacion " + id);
+			return new ResponseEntity<>(puntuacionService.borrarPuntuacion(id), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error borrando la Puntuacion " + id + ": " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 }

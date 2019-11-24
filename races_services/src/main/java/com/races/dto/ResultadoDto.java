@@ -1,5 +1,11 @@
 package com.races.dto;
 
+/**
+ * Dto para Resultados
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class ResultadoDto {
 
 	private Long idPiloto;
@@ -8,20 +14,28 @@ public class ResultadoDto {
 
 	private Integer nVueltas;
 
-	private Integer posicion;
-
 	private Integer tiempo;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public ResultadoDto() {
 		super();
 	}
 
-	public ResultadoDto(Long idPiloto, Long idSesion, Integer nVueltas, Integer posicion, Integer tiempo) {
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param idPiloto
+	 * @param idSesion
+	 * @param nVueltas
+	 * @param tiempo
+	 */
+	public ResultadoDto(Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo) {
 		super();
 		this.idPiloto = idPiloto;
 		this.idSesion = idSesion;
 		this.nVueltas = nVueltas;
-		this.posicion = posicion;
 		this.tiempo = tiempo;
 	}
 
@@ -47,14 +61,6 @@ public class ResultadoDto {
 
 	public void setnVueltas(Integer nVueltas) {
 		this.nVueltas = nVueltas;
-	}
-
-	public Integer getPosicion() {
-		return posicion;
-	}
-
-	public void setPosicion(Integer posicion) {
-		this.posicion = posicion;
 	}
 
 	public Integer getTiempo() {

@@ -1,6 +1,5 @@
 package com.races.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.races.component.RacesException;
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 import com.races.services.ReglamentoService;
@@ -44,65 +44,73 @@ public class ReglamentoController {
 	 * @return
 	 */
 	@PostMapping("/reglamento")
-	public ResponseEntity<Reglamento> creaReglamento(@RequestBody Reglamento reglamentoDto) {
+	public ResponseEntity<Reglamento> crearReglamento(@RequestBody ReglamentoDto reglamentoDto) {
 
-		LOGGER.info("Creando nuevo Reglamento: " + reglamentoDto.toString());
-
-		Reglamento reglamento = reglamentoService.crearReglamento(reglamentoDto);
-
-		return new ResponseEntity<>(reglamento, HttpStatus.OK);
+		try {
+			LOGGER.info("Creando nuevo Reglamento");
+			return new ResponseEntity<>(reglamentoService.crearReglamento(reglamentoDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error("Error creando Reglamento: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 
 	}
 
 	/**
+	 * Servicio de busqueda de reglamentos con filtro por id
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/reglamento")
-	public ResponseEntity<List<Reglamento>> getReglamento(@RequestParam(required = false, name = "id") Long id) {
-
-		List<Reglamento> list = new ArrayList<>();
-		if (id == null) {
-			list = reglamentoService.getAllReglamentos();
-		} else {
-			Reglamento reglamento = reglamentoService.getReglamento(id);
-			list.add(reglamento);
-		}
-
-		return new ResponseEntity<>(list, HttpStatus.OK);
+	public ResponseEntity<List<Reglamento>> buscarReglamentos(@RequestParam(required = false, name = "id") Long id,
+			@RequestParam(required = false, name = "nEntrenamientos") Integer nEntrenamientos,
+			@RequestParam(required = false, name = "nClasificaciones") Integer nClasificaciones,
+			@RequestParam(required = false, name = "nCarreras") Integer nCarreras,
+			@RequestParam(required = false, name = "nPilotos") Integer nPilotos,
+			@RequestParam(required = false, name = "nEquipos") Integer nEquipos) {
+		LOGGER.info("Buscando Reglamentos - id[" + id + "]");
+		return new ResponseEntity<>(reglamentoService.buscarReglamentos(id, nEntrenamientos, nClasificaciones,
+				nCarreras, nPilotos, nEquipos), HttpStatus.OK);
 
 	}
 
 	/**
+	 * Servicio de actualizacion de un reglamento
 	 * 
 	 * @param id
 	 * @param reglamentoBody
 	 * @return
 	 */
 	@PutMapping("/reglamento/{id}")
-	public ResponseEntity<Reglamento> putReglamento(@PathVariable(name = "id") Long id,
+	public ResponseEntity<Reglamento> actualizarReglamento(@PathVariable(name = "id") Long id,
 			@RequestBody ReglamentoDto reglamentoBody) {
 
-		Reglamento reglamento = reglamentoService.updateReglamento(id, reglamentoBody);
-		if (reglamento == null) {
+		try {
+			LOGGER.info("Actualizando Reglamento " + id);
+			return new ResponseEntity<>(reglamentoService.actualizarReglamento(id, reglamentoBody), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error actualizando el Reglamento " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(reglamento, HttpStatus.OK);
-
 	}
 
 	/**
+	 * Servicio para el borrado de un Reglamento
 	 * 
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/reglamento/{id}")
-	public ResponseEntity<Reglamento> deleteReglamento(@PathVariable(name = "id") Long id) {
+	public ResponseEntity<Boolean> borrarReglamento(@PathVariable(name = "id") Long id) {
+		try {
+			LOGGER.info("Eliminando Puntuacion " + id);
+			return new ResponseEntity<>(reglamentoService.borrarReglamento(id), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error borrando la Puntuacion " + id + ": " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 
-		reglamentoService.borrarReglamento(id);
-
-		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

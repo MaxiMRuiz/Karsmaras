@@ -9,11 +9,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.races.component.RacesException;
 import com.races.dto.EquipoDto;
 import com.races.entity.Equipo;
 import com.races.repository.EquipoRepository;
 import com.races.services.EquipoService;
 
+/**
+ * Implementacion de la interfaz EquipoService
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Service("EquipoService")
 public class EquipoServiceImpl implements EquipoService {
 
@@ -21,14 +28,17 @@ public class EquipoServiceImpl implements EquipoService {
 	@Qualifier("EquipoRepository")
 	EquipoRepository equipoRepo;
 
-	public Equipo crearEquipo(EquipoDto equipoDto) {
-		Equipo equipo = new Equipo(equipoDto);
-		return equipoRepo.save(equipo);
+	public Equipo crearEquipo(EquipoDto equipoDto) throws RacesException {
 
+		Equipo equipo = new Equipo(equipoDto);
+		if (equipoRepo.findOne(Example.of(equipo)).isPresent()) {
+			throw new RacesException("El equipo ya existe");
+		}
+		return equipoRepo.save(equipo);
 	}
 
 	@Override
-	public Equipo updateEquipo(Long id, EquipoDto equipoDto) {
+	public Equipo actualizarEquipo(Long id, EquipoDto equipoDto) throws RacesException {
 		Optional<Equipo> optEquipo = equipoRepo.findById(id);
 		if (optEquipo.isPresent()) {
 			Equipo equipo = optEquipo.get();
@@ -36,29 +46,28 @@ public class EquipoServiceImpl implements EquipoService {
 			equipo.setAlias(equipoDto.getAlias());
 			return equipoRepo.save(equipo);
 		}
-		return null;
+		throw new RacesException("El equipo no existe");
 	}
 
 	@Override
-	public boolean borrarEquipo(Long id) {
+	public boolean borrarEquipo(Long id) throws RacesException {
 
-		if (existsEquipo(id)) {
-			equipoRepo.delete(getEquipo(id));
-		}
-		return false;
+		equipoRepo.delete(buscarEquipo(id));
+		return true;
 	}
 
 	@Override
-	public Equipo getEquipo(Long id) {
+	public Equipo buscarEquipo(Long id) throws RacesException {
 		Optional<Equipo> opEquipo = equipoRepo.findById(id);
 		if (opEquipo.isPresent()) {
 			return opEquipo.get();
+		} else {
+			throw new RacesException("Equipo no encontrado");
 		}
-		return null;
 	}
 
 	@Override
-	public List<Equipo> getAllEquipos(Long id, String nombre, String alias) {
+	public List<Equipo> buscarEquipos(Long id, String nombre, String alias) {
 		if (id == null && StringUtils.isBlank(nombre) && StringUtils.isBlank(alias)) {
 			return equipoRepo.findAll();
 		} else {
@@ -68,8 +77,8 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public boolean existsEquipo(Long id) {
-		return (getEquipo(id) != null);
+	public boolean existeEquipo(Long id) {
+		return equipoRepo.findById(id).isPresent();
 	}
 
 }

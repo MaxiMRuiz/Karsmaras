@@ -49,8 +49,8 @@ public class InscripcionController {
 					+ inscripcionDto.getIdEquipo() + " - P" + inscripcionDto.getIdPiloto());
 			return new ResponseEntity<>(inscriptionService.crearInscripcion(inscripcionDto), HttpStatus.OK);
 		} catch (RacesException ex) {
-			LOGGER.error("Error creando inscripcion: " + ex.getMessage());
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			LOGGER.error("Error creando Inscripcion: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class InscripcionController {
 			@RequestParam(required = false, name = "equipo") Long equipo) {
 
 		LOGGER.info("Servicio de busqueda de Inscripciones");
-		return new ResponseEntity<>(inscriptionService.getAllInscripciones(campeonato, piloto, equipo), HttpStatus.OK);
+		return new ResponseEntity<>(inscriptionService.buscarInscripciones(campeonato, piloto, equipo), HttpStatus.OK);
 
 	}
 
@@ -81,12 +81,11 @@ public class InscripcionController {
 	 * @return 200/404
 	 */
 	@DeleteMapping("/inscripcion")
-	public ResponseEntity<Inscripcion> borrarInscripcion(@RequestBody InscripcionDto inscripcionDto) {
+	public ResponseEntity<Boolean> borrarInscripcion(@RequestBody InscripcionDto inscripcionDto) {
 		try {
 			LOGGER.info("Borrando la Inscripcion : C" + inscripcionDto.getIdCampeonato() + " - E"
 					+ inscripcionDto.getIdEquipo() + " - P" + inscripcionDto.getIdPiloto());
-			inscriptionService.borrarInscripcion(inscripcionDto);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(inscriptionService.borrarInscripcion(inscripcionDto), HttpStatus.OK);
 		} catch (RacesException ex) {
 			LOGGER.error(ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

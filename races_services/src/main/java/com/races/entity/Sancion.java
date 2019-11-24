@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Sancion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Sancion {
 
@@ -25,10 +31,22 @@ public class Sancion {
 
 	private Integer tiempo;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Sancion() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param resultado
+	 * @param descripcion
+	 * @param puntos
+	 * @param tiempo
+	 */
 	public Sancion(Long id, Resultado resultado, String descripcion, Integer puntos, Integer tiempo) {
 		super();
 		this.id = id;

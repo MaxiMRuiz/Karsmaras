@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Gran Premio
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class GranPremio {
 
@@ -21,10 +27,19 @@ public class GranPremio {
 
 	private String ubicacion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public GranPremio() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * @param id
+	 * @param campeonato
+	 * @param ubicacion
+	 */
 	public GranPremio(Long id, Campeonato campeonato, String ubicacion) {
 		super();
 		this.id = id;

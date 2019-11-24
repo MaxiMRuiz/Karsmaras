@@ -2,6 +2,12 @@ package com.races.dto;
 
 import java.sql.Date;
 
+/**
+ * Dto para Sesiones
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class SesionDto {
 
 	private Date fecha;
@@ -10,10 +16,20 @@ public class SesionDto {
 
 	private Long idTipoSesion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public SesionDto() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param fecha
+	 * @param idGranPremio
+	 * @param idTipoSesion
+	 */
 	public SesionDto(Date fecha, Long idGranPremio, Long idTipoSesion) {
 		super();
 		this.fecha = fecha;
@@ -44,5 +60,5 @@ public class SesionDto {
 	public void setIdTipoSesion(Long idTipoSesion) {
 		this.idTipoSesion = idTipoSesion;
 	}
-	
+
 }

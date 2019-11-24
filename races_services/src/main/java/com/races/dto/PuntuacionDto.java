@@ -1,19 +1,36 @@
 package com.races.dto;
 
+/**
+ * Dto para Puntuaciones
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 public class PuntuacionDto {
-	
+
 	private Long idReglamento;
 
 	private Integer posicion;
-	
+
 	private Integer puntos;
-	
+
 	private Long idTipoSesion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public PuntuacionDto() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param idReglamento
+	 * @param posicion
+	 * @param puntos
+	 * @param idTipoSesion
+	 */
 	public PuntuacionDto(Long idReglamento, Integer posicion, Integer puntos, Long idTipoSesion) {
 		super();
 		this.idReglamento = idReglamento;
@@ -53,5 +70,5 @@ public class PuntuacionDto {
 	public void setIdTipoSesion(Long idTipoSesion) {
 		this.idTipoSesion = idTipoSesion;
 	}
-	
+
 }

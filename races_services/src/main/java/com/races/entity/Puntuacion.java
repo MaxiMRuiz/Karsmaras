@@ -8,6 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entidad de la tabla Puntuacion
+ * 
+ * @author Maximino Mañanes Ruiz
+ *
+ */
 @Entity
 public class Puntuacion {
 
@@ -27,10 +33,22 @@ public class Puntuacion {
 	@JoinColumn(name = "id_tipo_sesion")
 	private TipoSesion tipoSesion;
 
+	/**
+	 * Constructor por defecto
+	 */
 	public Puntuacion() {
 		super();
 	}
 
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param id
+	 * @param reglamento
+	 * @param posicion
+	 * @param puntos
+	 * @param tipoSesion
+	 */
 	public Puntuacion(Long id, Reglamento reglamento, Integer posicion, Integer puntos, TipoSesion tipoSesion) {
 		super();
 		this.id = id;
@@ -40,6 +58,14 @@ public class Puntuacion {
 		this.tipoSesion = tipoSesion;
 	}
 
+	/**
+	 * Constructor por parametros sin id
+	 * 
+	 * @param reglamento
+	 * @param posicion
+	 * @param puntos
+	 * @param tipoSesion
+	 */
 	public Puntuacion(Reglamento reglamento, Integer posicion, Integer puntos, TipoSesion tipoSesion) {
 		super();
 		this.reglamento = reglamento;

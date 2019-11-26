@@ -30,13 +30,13 @@ public class Utils {
 	 * @return HttpResponse - String
 	 * @throws Exception
 	 */
-	public HttpResponse<String> executeHttpMethod(final String baseURI, final Map<String, Object> queryString,
+	public HttpResponse<String> executeHttpMethod(final String baseURI, final Map<String, Object> parametros,
 			final Map<String, Object> body, final Map<String, String> headers, final HttpMethod method)
 			throws UnirestException {
 
 		Map<String, String> newHeaders = null;
 		Map<String, Object> newBody = null;
-		Map<String, Object> newQueryString = null;
+		Map<String, Object> newParametros = null;
 
 		try {
 			if (headers == null) {
@@ -49,12 +49,12 @@ public class Utils {
 			} else {
 				newBody = new HashMap<>(body);
 			}
-			if (queryString == null) {
-				newQueryString = new HashMap<>();
+			if (parametros == null) {
+				newParametros = new HashMap<>();
 			} else {
-				newQueryString = new HashMap<>(queryString);
+				newParametros = new HashMap<>(parametros);
 			}
-			return processHttpResponse(baseURI, newQueryString, newBody, newHeaders, method);
+			return processHttpResponse(baseURI, newParametros, newBody, newHeaders, method);
 		} catch (UnirestException ue) {
 			LOGGER.error(ue);
 			throw new UnirestException("Server error: " + ue.getMessage());

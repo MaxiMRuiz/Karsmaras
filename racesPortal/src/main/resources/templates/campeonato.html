@@ -1,0 +1,74 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera border border-warning">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10 align-self-center">
+				<div class="panel-body centerElement">
+					<form id="formularioCampeonatos" th:action="@{/races/campeonatos}"
+						class="formAlign bg-white text-dark" action="#" method="post">
+						<div class="centerElement">
+							<div th:if="${campeonato.id == null}" class="centerElement">
+								<h2 align="center" class="mb-1 mt-1">Nuevo Campeonato</h2>
+							</div>
+							<div th:if="${campeonato.id != null}" class="centerElement">
+								<h2 align="center" class="mb-1 mt-1">Editar Campeonato</h2>
+							</div>
+							<input type="hidden" th:field="*{campeonato.id}" th:value="${campeonato.id}"></input>
+							<div class="form-group row">
+								<label for="Nombre" class="col-sm-5 col-form-label"><strong>Nombre</strong></label>
+								<div class="col-sm-7">
+									<input type="text" class="inputForm" th:field="*{campeonato.nombre}"
+										th:value="${campeonato.nombre}" required="required"
+										th:readonly="${campeonato.id != null}"></input>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="descripcion"
+									class="col-sm-5 col-form-label"><strong>Descripcion</strong></label>
+								<div class="col-sm-7">
+									<input type="text" th:field="*{campeonato.descripcion}"
+										th:value="${campeonato.descripcion}" class="inputForm"></input>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="temporada"
+									class="col-sm-5 col-form-label"><strong>Temporada</strong></label>
+								<div class="col-sm-7">
+									<input type="text" class="inputForm" th:field="*{campeonato.temporada}"
+										th:value="${campeonato.temporada}" required="required"
+										th:readonly="${campeonato.id != null}"></input>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="reglamento"
+									class="col-sm-5 col-form-label"><strong>Reglamento</strong></label>
+								<div class="col-sm-7">
+									<select th:field="*{campeonato.reglamento}" class="inputForm" name="reglamento">
+										<option th:each="reglamento : ${reglamentos}" th:value="${reglamento.id}"
+											th:text="${reglamento.id}"
+											th:selected="${reglamento.id == campeonato.reglamento}"></option>
+									</select>
+								</div>
+							</div>
+							<div><a href="#" th:href="@{/races/campeonatos}">
+									<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
+										name="cancel">Volver
+									</button>
+								</a>
+								<button type="submit" class="btn btn-primary pull-right">Aceptar</button></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

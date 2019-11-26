@@ -1,26 +1,43 @@
 package com.races.portal.controller;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.races.portal.dto.Campeonato;
+import com.races.portal.services.CampeonatoService;
+import com.races.portal.services.ReglamentoService;
 
 @Controller
 @RequestMapping("/races/campeonatos")
 public class CampeonatosController {
 
-
-	private static final Log LOGGER = LogFactory.getLog(PortalController.class);
+	private static final Log LOGGER = LogFactory.getLog(CampeonatosController.class);
 
 	@Autowired
 	Environment env;
+
+	@Autowired
+	CampeonatoService campeonatos;
+
+	@Autowired
+	ReglamentoService reglamentos;
 
 	/**
 	 * Handler bad request
@@ -32,10 +49,49 @@ public class CampeonatosController {
 	public void handle(Exception exception) {
 		LOGGER.warn("Returning HTTP 400 Bad Request", exception);
 	}
-	
+
 	@GetMapping
-	public ModelAndView mainPage() {
-		return new ModelAndView("home");
+	public ModelAndView listaCampeonatos(Model model) {
+
+		List<Campeonato> listCampeonatos = campeonatos.buscarCampeonatos(null, null, null, null);
+		model.addAttribute("listCampeonatos", listCampeonatos);
+		model.addAttribute("urlServices","/races/campeonatos/");
+		return new ModelAndView("campeonatos");
 	}
-	
+
+	@GetMapping(value = "/{id}")
+	public ModelAndView formularioCampeonatos(Model model, @PathVariable String id) {
+
+		Campeonato campeonato;
+		if ("new".equals(id)) {
+			campeonato = new Campeonato();
+		} else {
+			campeonato = campeonatos.buscarCampeonato(id);
+		}
+		model.addAttribute("reglamentos", reglamentos.buscarReglamentos());
+		model.addAttribute("campeonato", campeonato);
+		return new ModelAndView("campeonato");
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Boolean> borrarCampeonato(Model model, @PathVariable String id) {
+
+		if (null == id) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<>(campeonatos.borrarCampeonato(id),HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@PostMapping()
+	public ModelAndView postFormularioCampeonatos(Model model, @ModelAttribute Campeonato campeonato) {
+
+		if (campeonato.getId() != null) {
+			campeonatos.editarCampeonato(campeonato);
+		} else {
+			campeonatos.crearCampeonato(campeonato);
+		}
+		return new ModelAndView("redirect:/races/campeonatos");
+	}
+
 }

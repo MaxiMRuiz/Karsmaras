@@ -1,4 +1,5 @@
-<div th:fragment="menu" class="column col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 menu border border-warning" id="sidebar">
+<div th:fragment="menu"
+    class="column col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 menu border border-warning" id="sidebar">
     <ul class="nav flex-column flex-nowrap overflow-hidden">
         <li class="nav-item">
             <a class="nav-link collapsed text-truncate menuoption" href="#submenu1" data-toggle="collapse"
@@ -6,23 +7,27 @@
                     class="d-none d-sm-inline">Campeonatos</span></a>
             <div class="collapse" id="submenu1" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
-                    <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/campeonatos"><img class="icons"
-                                src="/icons/campeonato.png"></img> <span>Listado</span></a></li>
+                    <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/campeonatos"><img
+                                class="icons" src="/icons/campeonato.png"></img> <span
+                                class="d-none d-sm-inline">Listado</span></a></li>
                     <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/gp"><img class="icons"
-                                src="/icons/gp.png"></img> <span>Grandes Premios</span></a></li>
+                                src="/icons/gp.png"></img> <span class="d-none d-sm-inline">Grandes Premios</span></a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link collapsed py-1 menuoption" href="#submenu1sub1" data-toggle="collapse"
-                            data-target="#submenu1sub1"><img class="icons"
-                                src="/icons/resultado.png"></img> <span>Clasificaciones</span></a>
+                            data-target="#submenu1sub1"><img class="icons" src="/icons/resultado.png"></img>
+                            <span class="d-none d-sm-inline">Clasificaciones</span></a>
                         <div class="collapse" id="submenu1sub1" aria-expanded="false">
                             <ul class="flex-column nav pl-4">
                                 <li class="nav-item">
                                     <a class="nav-link p-1 menuoption" href="/races/clasificacion/pilotos">
-                                        <img class="icons" src="/icons/piloto.png"></img> <span>Pilotos</span></a>
+                                        <img class="icons" src="/icons/piloto.png"></img> <span
+                                            class="d-none d-sm-inline">Pilotos</span></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link p-1 menuoption" href="/races/clasificacion/equipos">
-                                        <img class="icons" src="/icons/equipo.png"></img> <span>Equipos</span></a>
+                                        <img class="icons" src="/icons/equipo.png"></img> <span
+                                            class="d-none d-sm-inline">Equipos</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -30,8 +35,8 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/reglamentos"><img class="icons"
-                    src="/icons/reglamento.png"></img> <span>Reglamento</span></a></li>
+        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/reglamentos"><img class="icons"
+                    src="/icons/reglamento.png"></img> <span class="d-none d-sm-inline">Reglamento</span></a></li>
         <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/pilotos"><img class="icons"
                     src="/icons/piloto.png"></img> <span class="d-none d-sm-inline">Pilotos</span></a></li>
         <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/equipos"><img class="icons"

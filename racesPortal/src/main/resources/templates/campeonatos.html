@@ -1,0 +1,90 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera border border-warning">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">LISTA DE CAMPEONATOS</h2>
+					<table class="table table-bordered centerElement racesTable">
+						<thead>
+							<tr class="bg-danger text-white">
+								<th width="20%">Nombre</th>
+								<th width="40%">Descripcion</th>
+								<th width="10%">Temporada</th>
+								<th width="10%">Reglamento</th>
+								<th width="20%"></th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="campeonato : ${listCampeonatos}">
+							<td th:text="${campeonato.nombre}"></td>
+							<td th:text="${campeonato.descripcion}"></td>
+							<td th:text="${campeonato.temporada}"></td>
+							<td>
+								<a href="#" th:href="@{/races/reglamentos/__${campeonato.reglamento}__}">
+									<strong th:text="${campeonato.reglamento}"></strong>
+								</a>
+							</td>
+							<td>
+								<div class="row ml-1">
+									<div><a class="button" href="#"
+											th:href="@{/races/campeonatos/__${campeonato.id}__}">
+											<img class="icons" src="/icons/editar.png"></img> <span
+												class="d-none d-sm-inline">Editar</span>
+										</a></div>
+									<div>
+										<a class="button" href="#"
+											th:onclick="'javascript:borrarCampeonato('+ ${campeonato.id} +');'">
+											<img class="icons" src="/icons/borrar.png"></img> <span
+												class="d-none d-sm-inline">Borrar</span>
+										</a></div>
+								</div>
+							</td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5" class="text-center"> <a class="button" href="/races/campeonatos/new">
+										<button type="button" class="btn btn-success"
+											style="width: -webkit-fill-available;">
+											<img class="icons" src="/icons/campeonato.png"></img> <span
+												class="d-none d-sm-inline"></span>Crear Nuevo Campeonato</span>
+										</button>
+									</a></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+	var href = document.getElementById("urlServices").value;
+	function borrarCampeonato(id) {
+		if (id == null) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+</script>
+
+</html>

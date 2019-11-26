@@ -8,6 +8,25 @@ html {
     height: 100%;
 }
 
+.centerElement {
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    min-height: 90%;
+    width: 90%;
+}
+
+.formAlign {
+    margin-left: 20%;
+    width: initial;
+    margin-right: 20%;
+    margin-top: 0;
+}
+
+.inputForm {
+    width: 100%;
+}
+
 .columnaentera{
     height: 100%;
 }
@@ -133,6 +152,14 @@ input[type="file"] {
     min-width: 100px;
 }
 
+.racesTable {
+    background-color: beige;
+}
+
+.racesTitle {
+    color: snow;
+}
+
 @media screen and (min-width: 500px) {
     .file-input {
         width: calc(100% - 115px);
@@ -142,6 +169,18 @@ input[type="file"] {
         display: inline-block;
         margin-top: 0;
         margin-left: 10px;
+    }
+}
+
+@media (max-width: 1250px){
+    .d-sm-inline {
+        display: none!important;
+    }
+}
+
+@media (min-width: 1250px){
+    .d-sm-inline {
+        display: inline!important;
     }
 }
 

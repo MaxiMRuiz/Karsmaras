@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -54,9 +55,11 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 			final Object handler, final Exception exception) {
 		try {
 			long startTime = (long) request.getAttribute("startTime");
-			if (request.getRequestURI().startsWith("/races")) {
-				LOGGER.info("RequestInterceptor - URL to : '" + request.getRequestURL().toString() + "' -- in: "
-						+ (System.currentTimeMillis() - startTime) + "ms.");
+			if (request.getRequestURI().startsWith("/races")
+					&& !(request.getMethod().equals(HttpMethod.OPTIONS.name()))) {
+				LOGGER.info("RequestInterceptor [" + request.getMethod() + "] - URL to : '"
+						+ request.getRequestURL().toString() + "' -- in: " + (System.currentTimeMillis() - startTime)
+						+ "ms.");
 			}
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

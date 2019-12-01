@@ -15,5 +15,12 @@ public class Constants {
 	public static final String PARAM_N_PILOTOS = "nPilotos";
 	public static final String CONTENT_TYPE = "Content-Type";
 	public static final String APP_JSON = "application/json";
+	public static final String PARAM_APELLIDO = "apellido";
+	public static final String PARAM_APODO = "apodo";
+	public static final String PARAM_ALIAS = "alias";
+	public static final String PARAM_ID_REGLAMENTO = "idReglamento";
+	public static final String PARAM_POSICION = "posicion";
+	public static final String PARAM_PUNTOS = "puntos";
+	public static final String PARAM_TIPO_SESION = "tipoSesion";
 
 }

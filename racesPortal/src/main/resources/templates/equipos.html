@@ -1,0 +1,148 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">LISTA DE EQUIPOS</h2>
+					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead>
+							<tr class="bg-danger text-white">
+								<th width="40%">Nombre <input type="text" id="nombre" onkeyup="searchFilter()"
+									placeholder="Filtro por Nombre"></input></th>
+								<th width="30%">Alias <input type="text" id="alias" onkeyup="searchFilter()"
+									placeholder="Filtro por Alias"></input></th>
+								<th width="30%"> 
+									<div class="col-xs-12 col-md-12 text-left">
+										<strong><em>Número de filas</em></strong> <select id="nElements"
+											name="nElements" onchange="searchFilter()">
+											<option value="5">5</option>
+											<option value="10" selected="selected">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+										</select>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="equipo : ${listaEquipos}">
+							<td th:text="${equipo.nombre}"></td>
+							<td th:text="${equipo.alias}"></td>
+							<td>
+								<div class="row ml-1">
+									<div class="col-4 col-xs-4"><a class="button" href="#"
+											th:href="@{/races/equipos/__${equipo.id}__}">
+											<img class="icons" src="/icons/editar.png"></img> <span
+												class="d-none d-sm-inline">Editar</span>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4">
+										<a class="button" href="#"
+											th:onclick="'borrarequipo('+ ${equipo.id} +');'">
+											<img class="icons" src="/icons/borrar.png"></img> <span
+												class="d-none d-sm-inline">Borrar</span>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4"><a class="button" href="#"
+											th:href="@{/races/equipos/clone__${equipo.id}__}">
+											<img class="icons" src="/icons/copiar.png"></img> <span
+												class="d-none d-sm-inline">Clonar</span>
+										</a>
+									</div>
+								</div>
+							</td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5" class="text-center"> <a class="button" href="/races/equipos/new">
+										<button type="button" class="btn btn-success"
+											style="width: -webkit-fill-available;">
+											<img class="icons" src="/icons/equipo.png"></img> <span
+												class="d-none d-sm-inline"></span>Crear Nuevo Equipo</span>
+										</button>
+									</a></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+	var href = document.getElementById("urlServices").value;
+	function borrarequipo(id) {
+		if (id == null) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: true
+	});
+	function searchFilter() {
+		this.filter();
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: true
+		})
+	}
+
+	function getNumberOfElements() {
+		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+	}
+
+	function filter() {
+		var select, table, tr, td, i;
+		table = document.getElementById("table");
+		tr = table.getElementsByTagName("tr");
+		i = 1;
+
+		while (tr.length > i) {
+			td = tr[i].getElementsByTagName("td")[0];
+			checkColumn(tr[i], td,
+				document.getElementById("nombre").value, true);
+
+			td = tr[i].getElementsByTagName("td")[1];
+			checkColumn(tr[i], td, document
+				.getElementById("alias").value,
+				tr[i].style.display == "table-row");
+			i++;
+		}
+	}
+
+	function checkColumn(tr, td, filter, display) {
+		if (td && display) {
+			if (td.innerHTML.indexOf(filter) > -1) {
+				tr.style.display = "table-row";
+			} else {
+				tr.style.display = "none";
+			}
+		}
+	}
+
+</script>
+
+</html>

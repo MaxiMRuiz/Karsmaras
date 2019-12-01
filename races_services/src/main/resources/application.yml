@@ -8,4 +8,10 @@ spring:
     username: root
     password: 12345
     driver-class-name: com.mysql.jdbc.Driver
+  mvc:
+    favicon:
+      enabled: true
 server:  port: 8081
+  
+
+ 

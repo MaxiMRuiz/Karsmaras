@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class GpController {
 
 
-	private static final Log LOGGER = LogFactory.getLog(PortalController.class);
+	private static final Log LOGGER = LogFactory.getLog(GpController.class);
 
 	@Autowired
 	Environment env;

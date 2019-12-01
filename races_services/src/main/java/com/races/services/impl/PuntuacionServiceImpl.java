@@ -57,9 +57,9 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 			return puntuacionRepo.findAll();
 		} else {
 			try {
-				Example<Puntuacion> example = Example
-						.of(new Puntuacion(id, reglamentoService.buscarReglamento(idReglamento), posicion, puntos,
-								tipoSesionService.buscarTipoSesion(idTipoSesion)));
+				Example<Puntuacion> example = Example.of(new Puntuacion(id,
+						idReglamento == null ? null : reglamentoService.buscarReglamento(idReglamento), posicion,
+						puntos, idTipoSesion == null ? null : tipoSesionService.buscarTipoSesion(idTipoSesion)));
 
 				return puntuacionRepo.findAll(example);
 			} catch (RacesException e) {
@@ -89,8 +89,8 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 
 	@Override
 	public boolean borrarPuntuacion(Long id) throws RacesException {
-			puntuacionRepo.delete(buscarPuntuacion(id));
-			return true;
+		puntuacionRepo.delete(buscarPuntuacion(id));
+		return true;
 	}
 
 	@Override

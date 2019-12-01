@@ -8,7 +8,7 @@ package com.races.portal.dto;
  */
 public class Campeonato {
 
-	private String id;
+	private Long id;
 
 	private String nombre;
 
@@ -34,7 +34,7 @@ public class Campeonato {
 	 * @param temporada
 	 * @param reglamento
 	 */
-	public Campeonato(String id, String nombre, String descripcion, String temporada, String reglamento) {
+	public Campeonato(Long id, String nombre, String descripcion, String temporada, String reglamento) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -46,14 +46,14 @@ public class Campeonato {
 	/**
 	 * @return the id
 	 */
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

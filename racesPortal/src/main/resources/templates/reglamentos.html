@@ -1,0 +1,180 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">LISTA DE REGLAMENTOS</h2>
+					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead>
+							<tr class="bg-danger text-white">
+								<th width="10%">Id <input type="text" id="id" onkeyup="searchFilter()"
+										placeholder="Id" class="col-6 col-xs-6"></input></th>
+								<th width="20%">Nº Sesiones</th>
+								<th width="20%">Nº Participantes</th>
+								<th width="20%">Puntuaciones</th>
+								<th width="30%">
+									<div class="col-xs-12 col-md-12 text-left">
+										<strong><em>Número de filas</em></strong>
+										<select id="nElements" name="nElements" onchange="searchFilter()">
+											<option value="5">5</option>
+											<option value="10" selected="selected">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+										</select>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="reglamento : ${listaReglamentos}">
+							<td th:text="${reglamento.id}"></td>
+							<td>
+								<strong>Carreras: </strong>[[${reglamento.nCarreras}]]<br />
+								<strong>Clasificaciones: </strong>[[${reglamento.nClasificaciones}]]<br />
+								<strong>Entrenamientos: </strong>[[${reglamento.nEntrenamientos}]]
+							</td>
+							<td>
+								<strong>Pilotos: </strong>[[${reglamento.nPilotos}]]<br />
+								<strong>Equipos: </strong>[[${reglamento.nEquipos}]]<br />
+							</td>
+							<td>
+								<a href="#" th:href="@{/races/puntuaciones/__${reglamento.id}__}">
+									<img class="icons" src="/icons/puntos.png"></img> <span
+										class="d-none d-sm-inline">Ver Puntuaciones</span>
+								</a>
+							</td>
+							<td>
+								<div class="row ml-1">
+									<div class="col-4 col-xs-4"><a class="button" href="#"
+											th:href="@{/races/reglamentos/__${reglamento.id}__}">
+											<img class="icons" src="/icons/editar.png"></img> <span
+												class="d-none d-sm-inline">Editar</span>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4">
+										<a class="button" href="#"
+											th:onclick="'borrarreglamento('+ ${reglamento.id} +');'">
+											<img class="icons" src="/icons/borrar.png"></img> <span
+												class="d-none d-sm-inline">Borrar</span>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4"><a class="button" href="#"
+											th:href="@{/races/reglamentos/clone__${reglamento.id}__}">
+											<img class="icons" src="/icons/copiar.png"></img> <span
+												class="d-none d-sm-inline">Clonar</span>
+										</a>
+									</div>
+								</div>
+							</td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="8" class="text-center"> <a class="button" href="/races/reglamentos/new">
+										<button type="button" class="btn btn-success"
+											style="width: -webkit-fill-available;">
+											<img class="icons" src="/icons/reglamento.png"></img> <span
+												class="d-none d-sm-inline"></span>Crear Nuevo Reglamento</span>
+										</button>
+									</a></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+	var href = document.getElementById("urlServices").value;
+	function borrarreglamento(id) {
+		if (id == null) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: true
+	});
+	function searchFilter() {
+		this.filter();
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: true
+		})
+	}
+
+	function getNumberOfElements() {
+		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+	}
+
+	function filter() {
+		var select, table, tr, td, i;
+		table = document.getElementById("table");
+		tr = table.getElementsByTagName("tr");
+		i = 1;
+
+		while (tr.length > i) {
+			td = tr[i].getElementsByTagName("td")[0];
+			checkColumn(tr[i], td,
+				document.getElementById("id").value, true);
+
+			td = tr[i].getElementsByTagName("td")[1];
+			checkColumn(tr[i], td, document
+				.getElementById("carreras").value,
+				tr[i].style.display == "table-row");
+
+			td = tr[i].getElementsByTagName("td")[2];
+			checkColumn(tr[i], td,
+				document.getElementById("clasis").value,
+				tr[i].style.display == "table-row");
+			td = tr[i].getElementsByTagName("td")[3];
+			checkColumn(tr[i], td,
+				document.getElementById("entrenos").value,
+				tr[i].style.display == "table-row");
+			td = tr[i].getElementsByTagName("td")[4];
+			checkColumn(tr[i], td,
+				document.getElementById("pilotos").value,
+				tr[i].style.display == "table-row");
+			td = tr[i].getElementsByTagName("td")[5];
+			checkColumn(tr[i], td,
+				document.getElementById("equipos").value,
+				tr[i].style.display == "table-row");
+			i++;
+		}
+	}
+
+	function checkColumn(tr, td, filter, display) {
+		if (td && display) {
+			if (td.innerHTML.indexOf(filter) > -1) {
+				tr.style.display = "table-row";
+			} else {
+				tr.style.display = "none";
+			}
+		}
+	}
+
+</script>
+
+</html>

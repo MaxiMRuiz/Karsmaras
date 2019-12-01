@@ -4,7 +4,7 @@
 <head th:replace="fragments/header::header-css">
 </head>
 
-<body class="body columnaentera border border-warning">
+<body class="body columnaentera">
 	<div class="container-fluid columnaentera">
 		<div class="row columnaentera">
 			<div th:replace="fragments/menu::menu">
@@ -28,22 +28,30 @@
 							<td th:text="${campeonato.temporada}"></td>
 							<td>
 								<a href="#" th:href="@{/races/reglamentos/__${campeonato.reglamento}__}">
-									<strong th:text="${campeonato.reglamento}"></strong>
+									<strong th:text="${'#' + campeonato.reglamento}"></strong>
 								</a>
 							</td>
 							<td>
 								<div class="row ml-1">
-									<div><a class="button" href="#"
+									<div class="col-4 col-xs-4"><a class="button" href="#"
 											th:href="@{/races/campeonatos/__${campeonato.id}__}">
 											<img class="icons" src="/icons/editar.png"></img> <span
 												class="d-none d-sm-inline">Editar</span>
-										</a></div>
-									<div>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4">
 										<a class="button" href="#"
-											th:onclick="'javascript:borrarCampeonato('+ ${campeonato.id} +');'">
+											th:onclick="'borrarCampeonato('+ ${campeonato.id} +');'">
 											<img class="icons" src="/icons/borrar.png"></img> <span
 												class="d-none d-sm-inline">Borrar</span>
-										</a></div>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4"><a class="button" href="#"
+											th:href="@{/races/campeonatos/clone__${campeonato.id}__}">
+											<img class="icons" src="/icons/copiar.png"></img> <span
+												class="d-none d-sm-inline">Clonar</span>
+										</a>
+									</div>
 								</div>
 							</td>
 						</tbody>

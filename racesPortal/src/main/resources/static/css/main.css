@@ -16,6 +16,13 @@ html {
     width: 90%;
 }
 
+.centerTable {
+    margin-left: 5%;
+    margin-right: 5%;
+    min-height: 90%;
+    width: 90%;
+}
+
 .formAlign {
     margin-left: 20%;
     width: initial;

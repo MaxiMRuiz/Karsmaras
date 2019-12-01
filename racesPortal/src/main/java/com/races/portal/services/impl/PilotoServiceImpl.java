@@ -19,18 +19,19 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import com.races.portal.component.Converter;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
-import com.races.portal.dto.Campeonato;
-import com.races.portal.services.CampeonatoService;
+import com.races.portal.dto.Piloto;
+import com.races.portal.services.PilotoService;
 
 /**
- * Implementacion de la interfaz CampeonatoService
+ * Implementacion de la interfaz PilotoService
  * 
  * @author Maximino Mañanes Ruiz
+ *
  */
 @Service
-public class CampeonatoServiceImpl implements CampeonatoService {
+public class PilotoServiceImpl implements PilotoService {
 
-	private static final Log LOGGER = LogFactory.getLog(CampeonatoServiceImpl.class);
+	private static final Log LOGGER = LogFactory.getLog(PilotoServiceImpl.class);
 
 	@Autowired
 	Utils utils;
@@ -41,10 +42,11 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 	@Autowired
 	Environment env;
 
-	public List<Campeonato> buscarCampeonatos(Long id, String nombre, String descripcion, String temporada) {
-		List<Campeonato> listCampeonatos = new ArrayList<>();
+	@Override
+	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo) {
+		List<Piloto> listaPilotos = new ArrayList<>();
 
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.buscar");
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.buscar");
 
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
@@ -53,7 +55,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listCampeonatos.add(converter.json2Campeonato(jsonArray.getJSONObject(i)));
+					listaPilotos.add(converter.json2Piloto(jsonArray.getJSONObject(i)));
 				}
 			}
 
@@ -61,12 +63,12 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 			LOGGER.error(e);
 		}
 
-		return listCampeonatos;
+		return listaPilotos;
 	}
 
-	public Campeonato buscarCampeonato(String id) {
-
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.buscar");
+	@Override
+	public Piloto buscarPilotos(String id) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.buscar");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
@@ -78,7 +80,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				if (jsonArray.length() > 0) {
-					return converter.json2Campeonato(jsonArray.getJSONObject(0));
+					return converter.json2Piloto(jsonArray.getJSONObject(0));
 				}
 			}
 
@@ -86,26 +88,15 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 			LOGGER.error(e);
 		}
 
-		return new Campeonato();
+		return new Piloto();
 	}
 
 	@Override
-	public Boolean editarCampeonato(Campeonato campeonato) {
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.actualizar")
-				+ campeonato.getId();
-
-		Map<String, Object> body = new HashMap<>();
-		body.put(Constants.PARAM_DESCRIPCION, campeonato.getDescripcion());
-		body.put(Constants.PARAM_NOMBRE, campeonato.getNombre());
-		body.put(Constants.PARAM_TEMPORADA, campeonato.getTemporada());
-		body.put(Constants.PARAM_REGLAMENTO, campeonato.getReglamento());
-		
-
-		Map<String, String> headers = new HashMap<>();
-		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
+	public Boolean borrarPiloto(String id) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.borrar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -120,14 +111,13 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 	}
 
 	@Override
-	public Boolean crearCampeonato(Campeonato campeonato) {
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.crear");
+	public Boolean crearPiloto(Piloto piloto) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.crear");
 
 		Map<String, Object> body = new HashMap<>();
-		body.put(Constants.PARAM_NOMBRE, campeonato.getNombre());
-		body.put(Constants.PARAM_DESCRIPCION, campeonato.getDescripcion());
-		body.put(Constants.PARAM_TEMPORADA, campeonato.getTemporada());
-		body.put(Constants.PARAM_REGLAMENTO, campeonato.getReglamento());
+		body.put(Constants.PARAM_NOMBRE, piloto.getNombre());
+		body.put(Constants.PARAM_APELLIDO, piloto.getApellido());
+		body.put(Constants.PARAM_APODO, piloto.getApodo());
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
@@ -145,26 +135,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		}
 
 		return false;
-	}
 
-	@Override
-	public Boolean borrarCampeonato(String id) {
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.borrar")
-				+ id;
-
-		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
-			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
-			} else {
-				return true;
-			}
-
-		} catch (UnirestException e) {
-			LOGGER.error(e);
-		}
-
-		return false;
 	}
 
 }

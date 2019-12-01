@@ -65,7 +65,11 @@ public class CampeonatosController {
 		Campeonato campeonato;
 		if ("new".equals(id)) {
 			campeonato = new Campeonato();
-		} else {
+		} else if (id.startsWith("clone")){
+			String subId = id.substring(5);
+			campeonato = campeonatos.buscarCampeonato(subId);
+			campeonato.setId(null);
+		}else {
 			campeonato = campeonatos.buscarCampeonato(id);
 		}
 		model.addAttribute("reglamentos", reglamentos.buscarReglamentos());

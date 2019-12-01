@@ -93,6 +93,10 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 			registro.setDescripcion(campeonato.getDescripcion());
 			registro.setNombre(campeonato.getNombre());
 			registro.setTemporada(campeonato.getTemporada());
+			if(campeonato.getReglamento()!= null) {
+				Reglamento reglamento = reglaService.buscarReglamento(campeonato.getReglamento());
+				registro.setReglamento(reglamento);
+			}
 			return campeoRepo.save(registro);
 		} else {
 			throw new RacesException(Constants.CAMPEONATO_NO_EXISTE);

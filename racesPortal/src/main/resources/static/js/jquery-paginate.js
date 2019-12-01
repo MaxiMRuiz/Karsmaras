@@ -82,14 +82,15 @@
 				this.nav.append($('<a>', $.extend(options, {
 					href : '#',
 					text : text,
-					class : 'btn btn-outline-dark',
+					class : 'btn btn-info',
 					role : 'button'
 				})));
 
 			},
 			_createNavigationText : function(current, options) {
 				this.nav.append($('<strong>', $.extend(options, {
-					text : 'Page ' + current + " of " + this._totalPages()
+					text : 'Página ' + current + "/" + this._totalPages(),
+					class : 'text-white'
 				})));
 			},
 

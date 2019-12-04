@@ -1,14 +1,22 @@
 package com.races.portal.component;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Campeonato;
 import com.races.portal.dto.Equipo;
+import com.races.portal.dto.GranPremio;
+import com.races.portal.dto.Inscripcion;
 import com.races.portal.dto.Piloto;
 import com.races.portal.dto.Puntuacion;
 import com.races.portal.dto.Reglamento;
+import com.races.portal.dto.Resultado;
+import com.races.portal.dto.Sesion;
 import com.races.portal.dto.TipoSesion;
 
 @Component
@@ -42,6 +50,8 @@ public class Converter {
 	public Reglamento json2Reglamento(JSONObject json) {
 		Reglamento reglamento = new Reglamento();
 		reglamento.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		reglamento.setDescripcion(
+				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
 		reglamento.setnCarreras(json.isNull(Constants.PARAM_N_CARRERAS) ? 0 : json.getLong(Constants.PARAM_N_CARRERAS));
 		reglamento.setnClasificaciones(
 				json.isNull(Constants.PARAM_N_CLASIFICACIONES) ? 0 : json.getLong(Constants.PARAM_N_CLASIFICACIONES));
@@ -93,16 +103,96 @@ public class Converter {
 		puntuacion.setPosicion(json.isNull(Constants.PARAM_POSICION) ? 0 : json.getInt(Constants.PARAM_POSICION));
 		puntuacion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
 		puntuacion.setTipoSesion(json.isNull(Constants.PARAM_TIPO_SESION) ? new TipoSesion()
-				: json2Sesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
+				: json2TipoSesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
 		return puntuacion;
 	}
 
-	public TipoSesion json2Sesion(JSONObject json) {
+	/**
+	 * Conversor de JSONObject a TipoSesion
+	 * 
+	 * @param jsonObject
+	 * @return
+	 */
+	public TipoSesion json2TipoSesion(JSONObject json) {
 		TipoSesion tSesion = new TipoSesion();
 		tSesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
 		tSesion.setDescripcion(
 				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
 		return tSesion;
+	}
+
+	/**
+	 * Conversor de JSONObject a Gp
+	 * 
+	 * @param jsonObject
+	 * @return
+	 */
+	public GranPremio json2Gp(JSONObject json) {
+		GranPremio gp = new GranPremio();
+		JSONObject jsonGp;
+		String fecha = null;
+		if (json.isNull(Constants.PARAM_GP)) {
+			return gp;
+		} else {
+			jsonGp = json.getJSONObject(Constants.PARAM_GP);
+		}
+		gp.setId(jsonGp.isNull(Constants.PARAM_ID) ? 0 : jsonGp.getLong(Constants.PARAM_ID));
+		gp.setUbicacion(jsonGp.isNull(Constants.PARAM_UBICACION) ? "N/A" : jsonGp.getString(Constants.PARAM_UBICACION));
+		JSONArray array = json.isNull(Constants.PARAM_SESIONES) ? new JSONArray()
+				: json.getJSONArray(Constants.PARAM_SESIONES);
+		List<Sesion> listaSesiones = new ArrayList<>();
+		for (int i = 0; i < array.length(); i++) {
+			listaSesiones.add(json2Sesion(array.getJSONObject(i)));
+			fecha = listaSesiones.get(i).getFecha();
+		}
+		gp.setFecha(fecha);
+		gp.setSesiones(listaSesiones);
+		return gp;
+	}
+
+	/**
+	 * Conversor de JSONObject a Sesion
+	 * 
+	 * @param json
+	 * @return
+	 */
+	public Sesion json2Sesion(JSONObject json) {
+		Sesion sesion = new Sesion();
+		sesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		sesion.setFecha(json.isNull(Constants.PARAM_FECHA) ? "N/A" : json.getString(Constants.PARAM_FECHA));
+		sesion.setTipoSesion(json.isNull(Constants.PARAM_FECHA) ? new TipoSesion()
+				: json2TipoSesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
+		return sesion;
+	}
+
+	/**
+	 * Conversor de JSONObject a Inscripcion
+	 * 
+	 * @param jsonObject
+	 * @return
+	 */
+	public Inscripcion json2Inscripcion(JSONObject json) {
+		Inscripcion inscripcion = new Inscripcion();
+		inscripcion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		inscripcion.setCampeonato(json.isNull(Constants.PARAM_CAMPEONATO) ? new Campeonato()
+				: json2Campeonato(json.getJSONObject(Constants.PARAM_CAMPEONATO)));
+		inscripcion.setPiloto(json.isNull(Constants.PARAM_PILOTO) ? new Piloto()
+				: json2Piloto(json.getJSONObject(Constants.PARAM_PILOTO)));
+		inscripcion.setEquipo(json.isNull(Constants.PARAM_EQUIPO) ? new Equipo()
+				: json2Equipo(json.getJSONObject(Constants.PARAM_EQUIPO)));
+		return inscripcion;
+	}
+
+	public Resultado json2Resultado(JSONObject json) {
+		Resultado resultado = new Resultado();
+		resultado.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		resultado.setPiloto(json.isNull(Constants.PARAM_PILOTO) ? new Piloto()
+				: json2Piloto(json.getJSONObject(Constants.PARAM_PILOTO)));
+		resultado.setSesion(json.isNull(Constants.PARAM_SESION) ? new Sesion()
+				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
+		resultado.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
+		resultado.setVueltas(json.isNull(Constants.PARAM_N_VUELTAS) ? 0 : json.getInt(Constants.PARAM_N_VUELTAS));
+		return resultado;
 	}
 
 }

@@ -35,7 +35,7 @@ public interface ReglamentoService {
 	 * @param nEquipos
 	 * @return Lista de reglamentos. Si no existe ninguno, la lista será vacía.
 	 */
-	List<Reglamento> buscarReglamentos(Long id, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras,
+	List<Reglamento> buscarReglamentos(Long id, String descripcion, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras,
 			Integer nPilotos, Integer nEquipos);
 
 	/**

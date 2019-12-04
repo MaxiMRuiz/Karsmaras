@@ -10,10 +10,10 @@ public interface PuntuacionService {
 
 	Puntuacion buscarPuntuacion(String id, String subId);
 
-	Boolean editarPuntuacion(Puntuacion puntuacion);
+	Boolean editarPuntuacion(Long reglamento, Puntuacion puntuacion);
 
-	Boolean crearPuntuacion(Puntuacion puntuacion);
+	Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion);
 
-	Boolean borrarPuntuacion(String id, String obj);
+	Boolean borrarPuntuacion(String id);
 
 }

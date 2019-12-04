@@ -64,14 +64,15 @@ public class ReglamentoController {
 	 */
 	@GetMapping("/reglamento")
 	public ResponseEntity<List<Reglamento>> buscarReglamentos(@RequestParam(required = false, name = "id") Long id,
+			@RequestParam(required = false, name = "descripcion") String descripcion,
 			@RequestParam(required = false, name = "nEntrenamientos") Integer nEntrenamientos,
 			@RequestParam(required = false, name = "nClasificaciones") Integer nClasificaciones,
 			@RequestParam(required = false, name = "nCarreras") Integer nCarreras,
 			@RequestParam(required = false, name = "nPilotos") Integer nPilotos,
 			@RequestParam(required = false, name = "nEquipos") Integer nEquipos) {
 		LOGGER.info("Buscando Reglamentos - id[" + id + "]");
-		return new ResponseEntity<>(reglamentoService.buscarReglamentos(id, nEntrenamientos, nClasificaciones,
-				nCarreras, nPilotos, nEquipos), HttpStatus.OK);
+		return new ResponseEntity<>(reglamentoService.buscarReglamentos(id, descripcion, nEntrenamientos,
+				nClasificaciones, nCarreras, nPilotos, nEquipos), HttpStatus.OK);
 
 	}
 

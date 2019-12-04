@@ -113,4 +113,9 @@ public class Campeonato {
 		this.reglamento = reglamento;
 	}
 
+	@Override
+	public String toString() {
+		return nombre + " " + temporada + " (" + descripcion + ")";
+	}
+
 }

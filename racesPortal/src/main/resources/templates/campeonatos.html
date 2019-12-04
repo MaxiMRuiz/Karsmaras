@@ -13,57 +13,83 @@
 				<div class="table-responsive centerElement">
 					<h2 class="text-center racesTitle">LISTA DE CAMPEONATOS</h2>
 					<table class="table table-bordered centerElement racesTable">
-						<thead>
+						<thead align="center">
 							<tr class="bg-danger text-white">
-								<th width="20%">Nombre</th>
-								<th width="40%">Descripcion</th>
-								<th width="10%">Temporada</th>
+								<th width="55%">Campeonato</th>
 								<th width="10%">Reglamento</th>
-								<th width="20%"></th>
+								<th width="10%">Inscripciones</th>
+								<th width="10%">Clasificaciones</th>
+								<th width="15%">Opciones</th>
 							</tr>
 						</thead>
 						<tbody class="bg-white text-black" th:each="campeonato : ${listCampeonatos}">
-							<td th:text="${campeonato.nombre}"></td>
-							<td th:text="${campeonato.descripcion}"></td>
-							<td th:text="${campeonato.temporada}"></td>
 							<td>
-								<a href="#" th:href="@{/races/reglamentos/__${campeonato.reglamento}__}">
-									<strong th:text="${'#' + campeonato.reglamento}"></strong>
+								<a href="#" th:href="@{/races/gp/__${campeonato.id}__}">
+									<img class="icons" src="/icons/gp.png"></img> <span
+										th:text="${campeonato.toString()}" class="d-none d-sm-inline">Ver</span>
 								</a>
 							</td>
-							<td>
+							<td align="center">
+								<a href="#" th:href="@{/races/reglamentos/__${campeonato.reglamento}__}">
+									<img class="icons" src="/icons/reglamento.png" alt="Reglamento"
+										title="Ver Reglamento">
+								</a>
+							</td>
+							<td align="center">
+								<a href="#" th:href="@{/races/inscripciones/c__${campeonato.id}__}">
+									<img class="icons" src="/icons/inscripcion.png" alt="Inscripciones"
+										title="Ver Inscripciones"></img>
+								</a>
+							</td>
+							<td align="center">
+								<!-- <a href="#" th:href="@{/races/inscripciones/c__${campeonato.id}__}"> -->
+								<img class="icons" src="/icons/resultado.png" alt="Clasificaciones"
+									title="Ver Clasificaciones"></img>
+								<!-- </a> -->
+							</td>
+							<td align="center">
 								<div class="row ml-1">
 									<div class="col-4 col-xs-4"><a class="button" href="#"
 											th:href="@{/races/campeonatos/__${campeonato.id}__}">
-											<img class="icons" src="/icons/editar.png"></img> <span
-												class="d-none d-sm-inline">Editar</span>
+											<img class="icons" src="/icons/editar.png" alt="Editar"
+												title="Editar Campeonato"></img>
+										</a>
+									</div>
+									<div class="col-4 col-xs-4"><a class="button" href="#"
+											th:href="@{/races/campeonatos/clone__${campeonato.id}__}">
+											<img class="icons" src="/icons/copiar.png" alt="Clonar"
+												title="Clonar Campeonato"></img>
 										</a>
 									</div>
 									<div class="col-4 col-xs-4">
 										<a class="button" href="#"
 											th:onclick="'borrarCampeonato('+ ${campeonato.id} +');'">
-											<img class="icons" src="/icons/borrar.png"></img> <span
-												class="d-none d-sm-inline">Borrar</span>
+											<img class="icons" src="/icons/borrar.png" alt="Borrar"
+												title="Borrar Campeonato"></img>
 										</a>
 									</div>
-									<div class="col-4 col-xs-4"><a class="button" href="#"
-											th:href="@{/races/campeonatos/clone__${campeonato.id}__}">
-											<img class="icons" src="/icons/copiar.png"></img> <span
-												class="d-none d-sm-inline">Clonar</span>
-										</a>
-									</div>
+
 								</div>
 							</td>
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="5" class="text-center"> <a class="button" href="/races/campeonatos/new">
+								<td colspan="7" class="text-center"> <a class="button" href="/races/campeonatos/new">
 										<button type="button" class="btn btn-success"
 											style="width: -webkit-fill-available;">
 											<img class="icons" src="/icons/campeonato.png"></img> <span
 												class="d-none d-sm-inline"></span>Crear Nuevo Campeonato</span>
 										</button>
 									</a></td>
+							</tr>
+							<tr>
+								<td colspan="7" class="text-center">
+									<a class="button" th:href="@{/races}">
+										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
+											name="cancel">Volver
+										</button>
+									</a>
+								</td>
 							</tr>
 						</tfoot>
 					</table>

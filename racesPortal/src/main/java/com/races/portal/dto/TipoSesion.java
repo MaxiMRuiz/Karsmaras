@@ -51,4 +51,9 @@ public class TipoSesion {
 		this.descripcion = descripcion;
 	}
 
+	@Override
+	public String toString() {
+		return descripcion + " (" + id + ")";
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.races.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
@@ -46,30 +48,31 @@ public class InscripcionServiceImpl implements InscripcionService {
 
 	public Inscripcion crearInscripcion(InscripcionDto inscripcion) throws RacesException {
 
-		if (pilotoService.existePiloto(inscripcion.getIdPiloto())
-				&& equipoService.existeEquipo(inscripcion.getIdEquipo())
-				&& campeonatoService.existeCampeonato(inscripcion.getIdCampeonato())) {
-
-			Inscripcion newInscripcion = new Inscripcion(
-					campeonatoService.buscarCampeonato(inscripcion.getIdCampeonato()),
-					pilotoService.buscarPiloto(inscripcion.getIdPiloto()),
-					equipoService.buscarEquipo(inscripcion.getIdEquipo()));
+		Campeonato campeonato = campeonatoService.buscarCampeonato(inscripcion.getIdCampeonato());
+		Piloto piloto = pilotoService.buscarPiloto(inscripcion.getIdPiloto());
+		Equipo equipo = equipoService.buscarEquipo(inscripcion.getIdEquipo());
+		if (buscarInscripciones(campeonato.getId(), null, null).size() < campeonato.getReglamento().getnPilotos()) {
+			Inscripcion newInscripcion = new Inscripcion(campeonato, piloto, null);
 
 			if (inscriptionRepo.findOne(Example.of(newInscripcion)).isPresent()) {
 				throw new RacesException("Inscripcion duplicada");
 			}
+			newInscripcion.setEquipo(equipo);
+			if (buscarInscripciones(campeonato.getId(), null, equipo.getId()).isEmpty() && inscriptionRepo
+					.countDisctinctEquipoByCampeonato(campeonato).equals(campeonato.getReglamento().getnEquipos())) {
+				throw new RacesException("Máximo de equipos por reglamento alcanzado");
+			}
 			return inscriptionRepo.save(newInscripcion);
 		} else {
-			throw new RacesException("Datos de la Inscripcion no válidos");
+			throw new RacesException("Máximo de inscripciones por reglamento alcanzado");
 		}
 	}
 
-	public boolean borrarInscripcion(InscripcionDto dto) throws RacesException {
-		Campeonato campeonato = campeonatoService.buscarCampeonato(dto.getIdCampeonato());
-		Piloto piloto = pilotoService.buscarPiloto(dto.getIdPiloto());
-		Equipo equipo = equipoService.buscarEquipo(dto.getIdEquipo());
-		Optional<Inscripcion> op = inscriptionRepo.findByCampeonatoAndPilotoAndEquipo(campeonato, piloto, equipo);
+	public boolean borrarInscripcion(Long id) throws RacesException {
+		Optional<Inscripcion> op = inscriptionRepo.findById(id);
 		if (op.isPresent()) {
+			LOGGER.info("Borrando la Inscripcion : C" + op.get().getCampeonato().getId() + " - E"
+					+ op.get().getEquipo().getId() + " - P" + op.get().getPiloto().getId());
 			inscriptionRepo.delete(op.get());
 			return true;
 		} else {
@@ -79,19 +82,18 @@ public class InscripcionServiceImpl implements InscripcionService {
 
 	@Override
 	public List<Inscripcion> buscarInscripciones(Long idCampeonato, Long idPiloto, Long idEquipo) {
-		if (idCampeonato == null && idPiloto == null && idEquipo == null) {
-			return inscriptionRepo.findAll();
-		} else {
-			try {
-				Inscripcion probe = new Inscripcion(campeonatoService.buscarCampeonato(idCampeonato),
-						pilotoService.buscarPiloto(idPiloto), equipoService.buscarEquipo(idEquipo));
-				return inscriptionRepo.findAll(Example.of(probe));
-			} catch (RacesException e) {
-				LOGGER.error(e);
-				return inscriptionRepo.findAll();
-			}
 
+		try {
+			Inscripcion probe = new Inscripcion(
+					idCampeonato == null ? null : campeonatoService.buscarCampeonato(idCampeonato),
+					idPiloto == null ? null : pilotoService.buscarPiloto(idPiloto),
+					idEquipo == null ? null : equipoService.buscarEquipo(idEquipo));
+			return inscriptionRepo.findAll(Example.of(probe), new Sort(Sort.Direction.ASC, "equipo.id"));
+		} catch (RacesException e) {
+			LOGGER.error(e);
+			return inscriptionRepo.findAll();
 		}
+
 	}
 
 	@Override
@@ -118,6 +120,16 @@ public class InscripcionServiceImpl implements InscripcionService {
 			LOGGER.error(e);
 			return false;
 		}
+	}
+
+	@Override
+	public List<Piloto> buscarPilotos(Campeonato campeonato) {
+		List<Inscripcion> listaInscripciones = inscriptionRepo.findDistinctPilotoByCampeonato(campeonato);
+		List<Piloto> listaPilotos = new ArrayList<>();
+		for (Inscripcion inscripcion : listaInscripciones) {
+			listaPilotos.add(inscripcion.getPiloto());
+		}
+		return listaPilotos;
 	}
 
 }

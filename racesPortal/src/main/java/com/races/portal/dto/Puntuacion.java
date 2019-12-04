@@ -87,4 +87,9 @@ public class Puntuacion {
 		this.tipoSesion = tipoSesion;
 	}
 
+	@Override
+	public String toString() {
+		return tipoSesion + ": " + posicion + "º -> " + puntos + "p.";
+	}
+
 }

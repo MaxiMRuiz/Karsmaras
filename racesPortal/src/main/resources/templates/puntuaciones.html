@@ -13,12 +13,9 @@
 				<div class="table-responsive centerElement">
 					<h2 class="text-center racesTitle">SISTEMA DE PUNTUACION DEL REGLAMENTO [[${id}]]</h2>
 					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead>
+						<thead align="center">
 							<tr class="bg-danger text-white">
-								<th width="30%">Sesion <input type="text" id="sesion" onkeyup="searchFilter()"
-										placeholder="Sesion" class="col-6 col-xs-6"></input></th>
-								<th width="20%">Posicion</th>
-								<th width="20%">Puntos</th>
+								<th width="70%">Puntuacion</th>
 								<th width="30%">
 									<div class="col-xs-12 col-md-12 text-left">
 										<strong><em>Número de filas</em></strong>
@@ -33,28 +30,13 @@
 							</tr>
 						</thead>
 						<tbody class="bg-white text-black" th:each="puntuacion : ${listaPuntuaciones}">
-							<td th:text="${puntuacion.tipoSesion.descripcion}"></td>
-							<td th:text="${puntuacion.posicion}"></td>
-							<td th:text="${puntuacion.puntos}"></td>
-							<td>
+							<td th:text="${puntuacion.toString()}"></td>
+							<td align="center">
 								<div class="row ml-1">
-									<div class="col-4 col-xs-4"><a class="button" href="#"
+									<div class="col-12 col-xs-12"><a class="button" href="#"
 											th:href="@{/races/puntuaciones/__${id}__/__${puntuacion.id}__}">
-											<img class="icons" src="/icons/editar.png"></img> <span
-												class="d-none d-sm-inline">Modificar</span>
-										</a>
-									</div>
-									<div class="col-4 col-xs-4">
-										<a class="button" href="#"
-											th:onclick="'borrarPuntuacion('+ ${puntuacion.id} +');'">
-											<img class="icons" src="/icons/borrar.png"></img> <span
-												class="d-none d-sm-inline">Eliminar</span>
-										</a>
-									</div>
-									<div class="col-4 col-xs-4"><a class="button" href="#"
-											th:href="@{/races/puntuaciones/__${id}__/clone__${puntuacion.id}__}">
-											<img class="icons" src="/icons/copiar.png"></img> <span
-												class="d-none d-sm-inline">Clonar</span>
+											<img class="icons" src="/icons/editar.png" alt="Modificar"
+												title="Modificar Puntuacion"></img>
 										</a>
 									</div>
 								</div>
@@ -62,13 +44,13 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="8" class="text-center"> <a class="button" th:href="@{/races/puntuaciones/__${id}__/new}">
-										<button type="button" class="btn btn-success"
-											style="width: -webkit-fill-available;">
-											<img class="icons" src="/icons/puntos.png"></img> <span
-												class="d-none d-sm-inline"></span>Añadir Puntuacion</span>
+								<td colspan="8" class="text-center"> 
+									<a class="button" th:href="@{/races/reglamentos}">
+										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
+											name="cancel">Volver
 										</button>
-									</a></td>
+									</a>
+								</td>
 							</tr>
 						</tfoot>
 					</table>
@@ -77,6 +59,7 @@
 		</div>
 	</div>
 	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+	<input type="hidden" id="reglamento" th:value="${id}"></input>
 </body>
 <script>
 	var href = document.getElementById("urlServices").value;
@@ -84,9 +67,10 @@
 		if (id == null) {
 			return;
 		}
+		var reglamento = document.getElementById('reglamento').value;
 		$.ajax({
 			type: 'DELETE',
-			url: href + id,
+			url: href + reglamento + '/' + id,
 			contentType: 'application/json;charset=UTF-8',
 			success: function (data) {
 				location.reload();
@@ -100,14 +84,14 @@
 
 	$('#table').paginate({
 		limit: getNumberOfElements(),
-		filter: true
+		filter: false
 	});
 	function searchFilter() {
 		this.filter();
 		$('.page-navigation').remove();
 		$('#table').paginate({
 			limit: getNumberOfElements(),
-			filter: true
+			filter: false
 		})
 	}
 
@@ -120,45 +104,6 @@
 		table = document.getElementById("table");
 		tr = table.getElementsByTagName("tr");
 		i = 1;
-
-		while (tr.length > i) {
-			td = tr[i].getElementsByTagName("td")[0];
-			checkColumn(tr[i], td,
-				document.getElementById("id").value, true);
-
-			td = tr[i].getElementsByTagName("td")[1];
-			checkColumn(tr[i], td, document
-				.getElementById("carreras").value,
-				tr[i].style.display == "table-row");
-
-			td = tr[i].getElementsByTagName("td")[2];
-			checkColumn(tr[i], td,
-				document.getElementById("clasis").value,
-				tr[i].style.display == "table-row");
-			td = tr[i].getElementsByTagName("td")[3];
-			checkColumn(tr[i], td,
-				document.getElementById("entrenos").value,
-				tr[i].style.display == "table-row");
-			td = tr[i].getElementsByTagName("td")[4];
-			checkColumn(tr[i], td,
-				document.getElementById("pilotos").value,
-				tr[i].style.display == "table-row");
-			td = tr[i].getElementsByTagName("td")[5];
-			checkColumn(tr[i], td,
-				document.getElementById("equipos").value,
-				tr[i].style.display == "table-row");
-			i++;
-		}
-	}
-
-	function checkColumn(tr, td, filter, display) {
-		if (td && display) {
-			if (td.innerHTML.indexOf(filter) > -1) {
-				tr.style.display = "table-row";
-			} else {
-				tr.style.display = "none";
-			}
-		}
 	}
 
 </script>

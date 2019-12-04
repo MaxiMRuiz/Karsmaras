@@ -112,6 +112,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.crear");
 
 		Map<String, Object> body = new HashMap<>();
+		body.put(Constants.PARAM_DESCRIPCION, reglamento.getDescripcion());
 		body.put(Constants.PARAM_N_CARRERAS, reglamento.getnCarreras());
 		body.put(Constants.PARAM_N_CLASIFICACIONES, reglamento.getnClasificaciones());
 		body.put(Constants.PARAM_N_ENTRENAMIENTOS, reglamento.getnEntrenamientos());
@@ -142,6 +143,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 				+ reglamento.getId();
 
 		Map<String, Object> body = new HashMap<>();
+		body.put(Constants.PARAM_DESCRIPCION, reglamento.getDescripcion());
 		body.put(Constants.PARAM_N_CARRERAS, reglamento.getnCarreras());
 		body.put(Constants.PARAM_N_CLASIFICACIONES, reglamento.getnClasificaciones());
 		body.put(Constants.PARAM_N_ENTRENAMIENTOS, reglamento.getnEntrenamientos());

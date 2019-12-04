@@ -94,5 +94,10 @@ public class Piloto {
 	public void setApodo(String apodo) {
 		this.apodo = apodo;
 	}
+	
+	@Override
+	public String toString() {
+		return nombre + " " + apellido + " (" + apodo + ")";
+	}
 
 }

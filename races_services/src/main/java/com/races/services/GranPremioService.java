@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.races.component.RacesException;
 import com.races.dto.GranPremioDto;
+import com.races.dto.GranPremioSesionesDto;
 import com.races.entity.GranPremio;
 
 /**
@@ -32,7 +33,7 @@ public interface GranPremioService {
 	 * @param idCampeonato
 	 * @return
 	 */
-	List<GranPremio> buscarGrandesPremios(Long id, String ubicacion, Long idCampeonato);
+	List<GranPremioSesionesDto> buscarGrandesPremios(Long id, String ubicacion, Long idCampeonato);
 
 	/**
 	 * Servicio de busqueda de un gran premio por id

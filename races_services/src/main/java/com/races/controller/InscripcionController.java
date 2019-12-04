@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -80,12 +81,10 @@ public class InscripcionController {
 	 * @param inscripcionDto
 	 * @return 200/404
 	 */
-	@DeleteMapping("/inscripcion")
-	public ResponseEntity<Boolean> borrarInscripcion(@RequestBody InscripcionDto inscripcionDto) {
+	@DeleteMapping("/inscripcion/{id}")
+	public ResponseEntity<Boolean> borrarInscripcion(@PathVariable Long id) {
 		try {
-			LOGGER.info("Borrando la Inscripcion : C" + inscripcionDto.getIdCampeonato() + " - E"
-					+ inscripcionDto.getIdEquipo() + " - P" + inscripcionDto.getIdPiloto());
-			return new ResponseEntity<>(inscriptionService.borrarInscripcion(inscripcionDto), HttpStatus.OK);
+			return new ResponseEntity<>(inscriptionService.borrarInscripcion(id), HttpStatus.OK);
 		} catch (RacesException ex) {
 			LOGGER.error(ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

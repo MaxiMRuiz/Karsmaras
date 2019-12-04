@@ -8,6 +8,7 @@ package com.races.dto;
  */
 public class ReglamentoDto {
 
+	private String descripcion;
 	private Integer nEntrenamientos;
 	private Integer nClasificaciones;
 	private Integer nCarreras;
@@ -30,9 +31,10 @@ public class ReglamentoDto {
 	 * @param nPilotos
 	 * @param nEquipos
 	 */
-	public ReglamentoDto(Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
-			Integer nEquipos) {
+	public ReglamentoDto(String descripcion, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras,
+			Integer nPilotos, Integer nEquipos) {
 		super();
+		this.descripcion = descripcion;
 		this.nEntrenamientos = nEntrenamientos;
 		this.nClasificaciones = nClasificaciones;
 		this.nCarreras = nCarreras;
@@ -78,6 +80,14 @@ public class ReglamentoDto {
 
 	public void setnEquipos(Integer nEquipos) {
 		this.nEquipos = nEquipos;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

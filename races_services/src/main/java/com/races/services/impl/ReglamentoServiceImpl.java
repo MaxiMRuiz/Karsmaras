@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import com.races.constants.Constants;
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 import com.races.repository.ReglamentoRepository;
+import com.races.services.PuntuacionService;
 import com.races.services.ReglamentoService;
 
 /**
@@ -26,11 +26,14 @@ import com.races.services.ReglamentoService;
 public class ReglamentoServiceImpl implements ReglamentoService {
 
 	@Autowired
-	@Qualifier("ReglamentoRepository")
 	ReglamentoRepository reglaRepo;
+	
+	@Autowired
+	PuntuacionService puntuaciones;
 
 	public Reglamento crearReglamento(@NonNull ReglamentoDto reglamentoDto) throws RacesException {
 		Reglamento reglamento = new Reglamento();
+		reglamento.setDescripcion(reglamentoDto.getDescripcion());
 		reglamento.setnCarreras(reglamentoDto.getnCarreras());
 		reglamento.setnClasificaciones(reglamentoDto.getnClasificaciones());
 		reglamento.setnEntrenamientos(reglamentoDto.getnEntrenamientos());
@@ -39,13 +42,15 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 		if (reglaRepo.findOne(Example.of(reglamento)).isPresent()) {
 			throw new RacesException("La combinacion del reglamento ya existe.");
 		}
-		return reglaRepo.save(reglamento);
+		reglamento = reglaRepo.save(reglamento);
+		puntuaciones.crearPuntuacionesReglamento(reglamento);
+		return reglamento;
 	}
 
-	public List<Reglamento> buscarReglamentos(Long id, Integer nEntrenamientos, Integer nClasificaciones,
+	public List<Reglamento> buscarReglamentos(Long id, String descripcion, Integer nEntrenamientos, Integer nClasificaciones,
 			Integer nCarreras, Integer nPilotos, Integer nEquipos) {
 		return reglaRepo.findAll(
-				Example.of(new Reglamento(id, nEntrenamientos, nClasificaciones, nCarreras, nPilotos, nEquipos)));
+				Example.of(new Reglamento(id, descripcion, nEntrenamientos, nClasificaciones, nCarreras, nPilotos, nEquipos)));
 	}
 
 	public Reglamento buscarReglamento(@NonNull Long id) throws RacesException {
@@ -59,6 +64,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 
 	public Reglamento actualizarReglamento(@NonNull Long id, @NonNull ReglamentoDto reglamento) throws RacesException {
 		Reglamento registro = buscarReglamento(id);
+		registro.setDescripcion(reglamento.getDescripcion());
 		registro.setnCarreras(reglamento.getnCarreras());
 		registro.setnClasificaciones(reglamento.getnClasificaciones());
 		registro.setnEntrenamientos(reglamento.getnEntrenamientos());

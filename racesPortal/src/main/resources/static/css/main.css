@@ -30,6 +30,10 @@ html {
     margin-top: 0;
 }
 
+.timeInput {    
+    width: 3em;
+}
+
 .inputForm {
     width: 100%;
 }
@@ -46,6 +50,12 @@ html {
     color: maroon;
     font-size: larger;
     font-weight: bold;
+}
+
+.header {
+    color: #36A0FF;
+    font-size: 27px;
+    padding: 10px;
 }
 
 .body {
@@ -87,8 +97,8 @@ html {
 }
 
 .icons {
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
 }
 
 .nav-link[data-toggle].collapsed:after {

@@ -1,5 +1,6 @@
 package com.races.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +12,12 @@ import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
+import com.races.entity.Campeonato;
+import com.races.entity.Piloto;
 import com.races.entity.Resultado;
+import com.races.entity.Sesion;
 import com.races.repository.ResultadoRepository;
+import com.races.services.InscripcionService;
 import com.races.services.PilotoService;
 import com.races.services.ResultadoService;
 import com.races.services.SesionService;
@@ -35,6 +40,9 @@ public class ResultadoServiceImpl implements ResultadoService {
 	@Autowired
 	SesionService sesionService;
 
+	@Autowired
+	InscripcionService inscripciones;
+
 	private static final Log LOGGER = LogFactory.getLog(ResultadoServiceImpl.class);
 
 	@Override
@@ -55,8 +63,9 @@ public class ResultadoServiceImpl implements ResultadoService {
 			return resultadoRepo.findAll();
 		} else {
 			try {
-				Resultado probe = new Resultado(id, pilotoService.buscarPiloto(idPiloto),
-						sesionService.buscarSesion(idSesion), nVueltas, tiempo);
+				Resultado probe = new Resultado(id == null ? null : id,
+						idPiloto == null ? null : pilotoService.buscarPiloto(idPiloto),
+						idSesion == null ? null : sesionService.buscarSesion(idSesion), nVueltas, tiempo);
 				return resultadoRepo.findAll(Example.of(probe));
 			} catch (RacesException e) {
 				LOGGER.error(e);
@@ -83,8 +92,29 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	@Override
 	public boolean borrarResultado(Long id) throws RacesException {
-			resultadoRepo.delete(buscarResultado(id));
-			return true;
+		resultadoRepo.delete(buscarResultado(id));
+		return true;
+	}
+
+	@Override
+	public void crearResultados(List<Sesion> listSesion, Campeonato campeonato) {
+		List<Piloto> pilotos = inscripciones.buscarPilotos(campeonato);
+		List<Resultado> resultados = new ArrayList<>();
+		for (Sesion sesion : listSesion) {
+			for (Piloto piloto : pilotos) {
+				resultados.add(new Resultado(null, piloto, sesion, 0, 0));
+			}
+		}
+		resultadoRepo.saveAll(resultados);
+	}
+
+	@Override
+	public Boolean actualizarResultado(Long id, ResultadoDto resultadoDto) throws RacesException {
+		Resultado resultado = buscarResultado(id);
+		resultado.setnVueltas(resultadoDto.getnVueltas());
+		resultado.setTiempo(resultadoDto.getTiempo());
+		resultadoRepo.save(resultado);
+		return true;
 	}
 
 }

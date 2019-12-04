@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
+import com.races.entity.Campeonato;
 import com.races.entity.Resultado;
+import com.races.entity.Sesion;
 
 /**
  * Interfaz de servicios para Resultado
@@ -61,5 +63,22 @@ public interface ResultadoService {
 	 * @return
 	 */
 	boolean existeResultado(Long id);
+
+	/**
+	 * Crea los resultados precargados de cada gran premio creado
+	 * 
+	 * @param listSesion
+	 * @param campeonato
+	 */
+	void crearResultados(List<Sesion> listSesion, Campeonato campeonato);
+
+	/**
+	 * Servicio de actualizacion de un resultado
+	 * 
+	 * @param id
+	 * @param resultadoDto
+	 * @return
+	 */
+	Boolean actualizarResultado(Long id, ResultadoDto resultadoDto) throws RacesException;
 
 }

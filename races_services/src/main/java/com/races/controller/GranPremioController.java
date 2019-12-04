@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.races.component.RacesException;
 import com.races.dto.GranPremioDto;
+import com.races.dto.GranPremioSesionesDto;
 import com.races.entity.GranPremio;
 import com.races.services.GranPremioService;
 
@@ -62,7 +63,7 @@ public class GranPremioController {
 	 * @return Lista de GP aplicando los filtros
 	 */
 	@GetMapping("/gp")
-	public ResponseEntity<List<GranPremio>> buscarGrandesPremios(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<GranPremioSesionesDto>> buscarGrandesPremios(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "ubicacion") String ubicacion,
 			@RequestParam(required = false, name = "idCampeonato") Long idCampeonato) {
 

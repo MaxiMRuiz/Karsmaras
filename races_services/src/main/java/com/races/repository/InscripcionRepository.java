@@ -1,6 +1,7 @@
 package com.races.repository;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,4 +31,18 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Serial
 	 */
 	Optional<Inscripcion> findByCampeonatoAndPilotoAndEquipo(Campeonato campeonato, Piloto piloto, Equipo equipo);
 
+	/**
+	 * Busca el numero de equipos inscritos en un campeonato
+	 * @param campeonato
+	 * @return
+	 */
+	Integer countDisctinctEquipoByCampeonato(Campeonato campeonato);
+
+	/**
+	 * Busqueda de pilotos de un campeonato
+	 * @param campeonato
+	 * @return
+	 */
+	List<Inscripcion> findDistinctPilotoByCampeonato(Campeonato campeonato);
+	
 }

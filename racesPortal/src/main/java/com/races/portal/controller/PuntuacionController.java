@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Puntuacion;
 import com.races.portal.services.PuntuacionService;
+import com.races.portal.services.TipoSesionService;
 
 @Controller
 @RequestMapping("/races/puntuaciones")
@@ -35,6 +36,9 @@ public class PuntuacionController {
 
 	@Autowired
 	PuntuacionService puntuaciones;
+
+	@Autowired
+	TipoSesionService tipoSesiones;
 
 	/**
 	 * Handler bad request
@@ -69,6 +73,8 @@ public class PuntuacionController {
 		} else {
 			puntuacion = puntuaciones.buscarPuntuacion(id, obj);
 		}
+		model.addAttribute("tipoSesiones", tipoSesiones.buscarTiposSesiones());
+		model.addAttribute(Constants.PARAM_ID, id);
 		model.addAttribute("puntuacion", puntuacion);
 		return new ModelAndView("puntuacion");
 	}
@@ -79,18 +85,18 @@ public class PuntuacionController {
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(puntuaciones.borrarPuntuacion(id, obj), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(puntuaciones.borrarPuntuacion(obj), HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@PostMapping(value = "/{id}")
-	public ModelAndView postFormularioPuntuacion(Model model, @ModelAttribute Puntuacion puntuacion) {
+	@PostMapping(value = "/{reglamento}")
+	public ModelAndView postFormularioPuntuacion(Model model, @PathVariable Long reglamento, @ModelAttribute Puntuacion puntuacion) {
 		if (puntuacion.getId() != null) {
-			puntuaciones.editarPuntuacion(puntuacion);
+			puntuaciones.editarPuntuacion(reglamento, puntuacion);
 		} else {
-			puntuaciones.crearPuntuacion(puntuacion);
+			puntuaciones.crearPuntuacion(reglamento, puntuacion);
 		}
-		return new ModelAndView("redirect:/races/puntuaciones");
+		return new ModelAndView("redirect:/races/puntuaciones/" + reglamento);
 	}
 
 }

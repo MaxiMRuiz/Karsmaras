@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.races.component.RacesException;
 import com.races.dto.SesionDto;
+import com.races.entity.GranPremio;
 import com.races.entity.Sesion;
 
 /**
@@ -57,5 +58,12 @@ public interface SesionService {
 	 * @throws RacesException
 	 */
 	boolean borrarSesion(Long id) throws RacesException;
+
+	/**
+	 * Crea automaticamente las sesiones de un Gran Premio
+	 * @param newGp
+	 * @param date 
+	 */
+	void crearSesionesGranPremio(GranPremio newGp, Date date);
 
 }

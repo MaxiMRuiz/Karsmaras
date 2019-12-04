@@ -1,5 +1,6 @@
 package com.races.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
 import com.races.dto.GranPremioDto;
+import com.races.dto.GranPremioSesionesDto;
 import com.races.entity.GranPremio;
 import com.races.repository.GranPremioRepository;
 import com.races.services.CampeonatoService;
 import com.races.services.GranPremioService;
+import com.races.services.SesionService;
 
 /**
  * Implementacion de la interfaz GranPremioService
@@ -32,6 +35,9 @@ public class GranPremioServiceImpl implements GranPremioService {
 	GranPremioRepository gpRepo;
 
 	@Autowired
+	SesionService sesiones;
+
+	@Autowired
 	CampeonatoService campeonatoService;
 
 	@Override
@@ -45,26 +51,32 @@ public class GranPremioServiceImpl implements GranPremioService {
 			if (gpRepo.findOne(Example.of(newGp)).isPresent()) {
 				throw new RacesException("GP ya existe");
 			}
-			return gpRepo.save(newGp);
+
+			newGp = gpRepo.save(newGp);
+			sesiones.crearSesionesGranPremio(newGp, gpDto.getFecha());
+			return newGp;
 		} else {
 			throw new RacesException("El campeonato asociado no existe");
 		}
 	}
 
 	@Override
-	public List<GranPremio> buscarGrandesPremios(Long id, String ubicacion, Long idCampeonato) {
-		if (id == null && StringUtils.isBlank(ubicacion) && idCampeonato == null) {
-			return gpRepo.findAll();
-		} else {
-			try {
-				return gpRepo.findAll(
-						Example.of(new GranPremio(id, campeonatoService.buscarCampeonato(idCampeonato), ubicacion)));
-			} catch (RacesException e) {
-				LOGGER.error(e);
-				return gpRepo.findAll();
+	public List<GranPremioSesionesDto> buscarGrandesPremios(Long id, String ubicacion, Long idCampeonato) {
+
+		List<GranPremioSesionesDto> lista = new ArrayList<>();
+		List<GranPremio> listaGp;
+		try {
+			listaGp = gpRepo.findAll(Example.of(new GranPremio(id == null ? null : id,
+					idCampeonato == null ? null : campeonatoService.buscarCampeonato(idCampeonato),
+					StringUtils.isBlank(ubicacion) ? null : ubicacion)));
+			for (GranPremio gp : listaGp) {
+				lista.add(new GranPremioSesionesDto(gp, sesiones.buscarSesiones(null, gp.getId(), null, null)));
 			}
 
+		} catch (RacesException e) {
+			LOGGER.error(e);
 		}
+		return lista;
 	}
 
 	@Override

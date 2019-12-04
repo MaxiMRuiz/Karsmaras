@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -87,6 +88,25 @@ public class ResultadoController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
+	}
+
+	/**
+	 * Servicio de actualizacion de un resultado
+	 * 
+	 * @param reglamentoDto
+	 * @return
+	 */
+	@PutMapping("/resultado/{id}")
+	public ResponseEntity<Boolean> actualizarResultado(@PathVariable(name = "id") Long id,
+			@RequestBody ResultadoDto resultadoDto) {
+
+		try {
+			LOGGER.info("Actualizando Resultado: R[" + id + "] - V[" + resultadoDto.getnVueltas() + "]");
+			return new ResponseEntity<>(resultadoService.actualizarResultado(id, resultadoDto), HttpStatus.OK);
+		} catch (RacesException ex) {
+			LOGGER.error("Error Actualizando Resultado: " + ex.getMessage());
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.races.dto;
 
+import java.util.Date;
+
 /**
  * Dto para Grandes Premios
  * 
@@ -11,6 +13,8 @@ public class GranPremioDto {
 	private Long idCampeonato;
 
 	private String ubicacion;
+	
+	private Date fecha;
 
 	/**
 	 * Constructor por defecto
@@ -25,10 +29,11 @@ public class GranPremioDto {
 	 * @param idCampeonato
 	 * @param ubicacion
 	 */
-	public GranPremioDto(Long idCampeonato, String ubicacion) {
+	public GranPremioDto(Long idCampeonato, String ubicacion, Date fecha) {
 		super();
 		this.idCampeonato = idCampeonato;
 		this.ubicacion = ubicacion;
+		this.fecha = fecha;
 	}
 
 	public Long getIdCampeonato() {
@@ -45,6 +50,14 @@ public class GranPremioDto {
 
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
 	}
 
 }

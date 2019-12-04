@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10 align-self-center">
+				<div class="panel-body centerElement">
+					<form id="formulariopuntuacion" th:action="@{/races/puntuaciones/__${id}__}"
+						class="formAlign bg-white text-dark" action="#" method="post">
+						<div class="centerElement">
+							<div class="centerElement">
+								<h2 align="center" class="mb-1 mt-1">Puntuacion del Reglamento [[${id}]] - [[${puntuacion.tipoSesion.toString()}]] - [[${puntuacion.posicion}]]º</h2>
+							</div>
+							<input type="hidden" th:field="*{puntuacion.id}" th:value="${puntuacion.id}"></input>
+							<input type="hidden" th:field="*{puntuacion.posicion}" th:value="${puntuacion.posicion}"></input>
+							<input type="hidden" th:field="*{puntuacion.tipoSesion.id}" th:value="${puntuacion.tipoSesion.id}"></input>
+							<div class="form-group row">
+								<label for="puntos" class="col-sm-5 col-form-label"><strong>Puntos</strong></label>
+								<div class="col-sm-7">
+									<input type="number" class="inputForm" th:field="*{puntuacion.puntos}"
+										th:value="${puntuacion.puntos}" required="required"></input>
+								</div>
+							</div>
+							<div><a href="#" th:href="@{/races/puntuaciones/__${id}__}">
+									<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
+										name="cancel">Volver
+									</button>
+								</a>
+								<button type="submit" class="btn btn-primary pull-right">Aceptar</button></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

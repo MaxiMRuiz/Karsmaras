@@ -1,0 +1,135 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">GRANDES PREMIOS DEL CAMPEONATO [[${nombre}]]</h2>
+					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead align="center">
+							<tr class="bg-danger text-white">
+								<th width="30%">GP</th>
+								<th width="40%">Sesiones</th>
+								<th width="30%">
+									<div class="col-xs-12 col-md-12 text-left">
+										<strong><em>Número de filas</em></strong>
+										<select id="nElements" name="nElements" onchange="searchFilter()">
+											<option value="5" selected="selected">5</option>
+											<option value="10">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+										</select>
+									</div>
+								</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="gp : ${listaGrandesPremios}">
+							<td th:text="${gp.toString()}"></td>
+							<td>
+								<div th:each="sesion: ${gp.sesiones}">
+									<a class="button" href="#" th:href="@{/races/sesion/__${id}__/__${sesion.id}__}">
+										<img class="icons" src="/icons/sesiones.png" alt="Sesiones"
+											title="Ver Sesiones"></img> [[${sesion.toString()}]]
+									</a>
+								</div>
+							</td>
+							<td align="center">
+								<div class="row ml-1">
+									<div class="col-6 col-xs-6">
+										<!-- <a class="button" href="#" th:href="@{/races/gp/__${id}__/__${gp.id}__}"> -->
+										<img class="icons" src="/icons/resultado.png" alt="Clasificacion"
+											title="Ver Clasificacion"></img>
+										<!-- </a> -->
+									</div>
+									<div class="col-6 col-xs-6">
+										<a class="button" href="#" th:onclick="'borrarGP('+ ${gp.id} +');'">
+											<img class="icons" src="/icons/borrar.png" alt="Borrar"
+												title="Borrar Gran Premio"></img>
+										</a>
+									</div>
+								</div>
+							</td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3" class="text-center">
+									<a class="button" th:href="@{/races/gp/__${id}__/new}">
+										<button type="button" class="btn btn-success"
+											style="width: -webkit-fill-available;">
+											<img class="icons" src="/icons/reglamento.png"></img> <span
+												class="d-none d-sm-inline"></span>Crear Nuevo Gran Premio</span>
+										</button>
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3" class="text-center">
+									<a class="button" th:href="@{/races/campeonatos}">
+										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
+											name="cancel">Volver
+										</button>
+									</a>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+	var href = document.getElementById("urlServices").value;
+	function borrarGP(id) {
+		if (id == null) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + '/' + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: false
+	});
+	function searchFilter() {
+		this.filter();
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: false
+		})
+	}
+
+	function getNumberOfElements() {
+		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+	}
+
+	function filter() {
+		var select, table, tr, td, i;
+		table = document.getElementById("table");
+		tr = table.getElementsByTagName("tr");
+		i = 1;
+	}
+
+</script>
+
+</html>

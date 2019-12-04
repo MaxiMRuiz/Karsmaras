@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.races.component.RacesException;
 import com.races.dto.InscripcionDto;
+import com.races.entity.Campeonato;
 import com.races.entity.Inscripcion;
+import com.races.entity.Piloto;
 
 /**
  * Interfaz de servicios para Inscripciones
@@ -52,7 +54,7 @@ public interface InscripcionService {
 	 * @return
 	 * @throws RacesException
 	 */
-	boolean borrarInscripcion(InscripcionDto dto) throws RacesException;
+	boolean borrarInscripcion(Long id) throws RacesException;
 
 	/**
 	 * Servicio de comprobacion de existencia de una inscripcion
@@ -61,5 +63,12 @@ public interface InscripcionService {
 	 * @return
 	 */
 	boolean existeInscripcion(InscripcionDto dto);
+
+	/**
+	 * Busca los pilotos de un campeonato
+	 * @param campeonato
+	 * @return
+	 */
+	List<Piloto> buscarPilotos(Campeonato campeonato);
 
 }

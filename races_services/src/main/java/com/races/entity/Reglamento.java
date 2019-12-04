@@ -17,6 +17,7 @@ public class Reglamento {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private String descripcion;
 	private Integer nEntrenamientos;
 	private Integer nClasificaciones;
 	private Integer nCarreras;
@@ -40,10 +41,11 @@ public class Reglamento {
 	 * @param nPilotos
 	 * @param nEquipos
 	 */
-	public Reglamento(Long id, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
+	public Reglamento(Long id, String descripcion, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
 			Integer nEquipos) {
 		super();
 		this.id = id;
+		this.setDescripcion(descripcion);
 		this.nEntrenamientos = nEntrenamientos;
 		this.nClasificaciones = nClasificaciones;
 		this.nCarreras = nCarreras;
@@ -97,6 +99,14 @@ public class Reglamento {
 
 	public void setnEquipos(Integer nEquipos) {
 		this.nEquipos = nEquipos;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

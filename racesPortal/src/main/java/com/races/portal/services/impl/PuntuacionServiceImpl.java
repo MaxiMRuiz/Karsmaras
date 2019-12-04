@@ -71,7 +71,7 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 
 	@Override
 	public Puntuacion buscarPuntuacion(String id, String subId) {
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.buscar");
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.buscar");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, subId);
@@ -96,21 +96,79 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	}
 
 	@Override
-	public Boolean editarPuntuacion(Puntuacion puntuacion) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean editarPuntuacion(Long reglamento,Puntuacion puntuacion) {
+		String url = env.getProperty(Constants.SERVICES_HOST)
+				+ env.getProperty("races.services.puntuaciones.actualizar") + puntuacion.getId();
+
+		Map<String, Object> body = new HashMap<>();
+		body.put(Constants.PARAM_POSICION, puntuacion.getPosicion());
+		body.put(Constants.PARAM_PUNTOS, puntuacion.getPuntos());
+		body.put(Constants.PARAM_ID_TIPO_SESION, puntuacion.getTipoSesion().getId());
+		body.put(Constants.PARAM_ID_REGLAMENTO, reglamento);
+		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
+
+		try {
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+			} else {
+				return true;
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return false;
 	}
 
 	@Override
-	public Boolean crearPuntuacion(Puntuacion puntuacion) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.crear");
+
+		Map<String, Object> body = new HashMap<>();
+		body.put(Constants.PARAM_POSICION, puntuacion.getPosicion());
+		body.put(Constants.PARAM_PUNTOS, puntuacion.getPuntos());
+		body.put(Constants.PARAM_ID_TIPO_SESION, puntuacion.getTipoSesion().getId());
+		body.put(Constants.PARAM_ID_REGLAMENTO, reglamento);
+
+		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
+
+		try {
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.POST);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+			} else {
+				return true;
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return false;
 	}
 
 	@Override
-	public Boolean borrarPuntuacion(String id, String obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public Boolean borrarPuntuacion(String id) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.borrar")
+				+ id;
+
+		try {
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+			} else {
+				return true;
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return false;
 	}
 
 }

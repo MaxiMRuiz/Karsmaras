@@ -47,7 +47,6 @@ public class Resultado {
 	 * @param piloto
 	 * @param sesion
 	 * @param nVueltas
-	 * @param posicion
 	 * @param tiempo
 	 */
 	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer nVueltas, Integer tiempo) {

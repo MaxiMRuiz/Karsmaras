@@ -5,6 +5,7 @@ import java.util.List;
 import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
 import com.races.entity.Puntuacion;
+import com.races.entity.Reglamento;
 
 /**
  * Interfaz de servicios para Puntuacion
@@ -71,5 +72,11 @@ public interface PuntuacionService {
 	 * @return
 	 */
 	boolean existePuntuacion(Long id);
+
+	/**
+	 * Crea todas las puntuaciones indicadas en un reglamento de forma automatica
+	 * @param reglamento
+	 */
+	void crearPuntuacionesReglamento(Reglamento reglamento);
 
 }

@@ -3,8 +3,6 @@ package com.races.portal.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
 import com.races.portal.constants.Constants;
@@ -18,6 +16,9 @@ import com.races.portal.dto.Reglamento;
 import com.races.portal.dto.Resultado;
 import com.races.portal.dto.Sesion;
 import com.races.portal.dto.TipoSesion;
+
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 
 @Component
 public class Converter {

@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,19 +9,21 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.races.portal.component.Converter;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Resultado;
 import com.races.portal.services.ResultadoService;
+
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import kong.unirest.json.JSONArray;
 
 /**
  * @author Maximino Mañanes Ruiz
@@ -105,6 +108,23 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+	}
+
+	@Override
+	public void sendFile(File fileResultados, Long idSesion, Long idGp) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.resultados.load")
+				+ idSesion;
+		try {
+
+			HttpResponse<?> response = Unirest.post(url).field("file", fileResultados).asEmpty();
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
 			}

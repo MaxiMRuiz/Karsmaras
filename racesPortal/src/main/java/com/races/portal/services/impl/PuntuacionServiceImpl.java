@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.races.portal.services.impl;
 
 import java.util.ArrayList;
@@ -11,19 +8,20 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.races.portal.component.Converter;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Puntuacion;
 import com.races.portal.services.PuntuacionService;
+
+import kong.unirest.HttpResponse;
+import kong.unirest.UnirestException;
+import kong.unirest.json.JSONArray;
 
 /**
  * @author Maximino Mañanes Ruiz

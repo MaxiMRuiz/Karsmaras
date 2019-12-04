@@ -213,5 +213,10 @@
     "name": "files.upload.basepath",
     "type": "java.lang.String",
     "description": "A description for 'files.upload.basepath'"
+  },
+  {
+    "name": "races.services.resultados.load",
+    "type": "java.lang.String",
+    "description": "A description for 'races.services.resultados.load'"
   }
 ]}

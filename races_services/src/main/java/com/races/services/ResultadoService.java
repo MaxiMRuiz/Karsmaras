@@ -2,6 +2,8 @@ package com.races.services;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
 import com.races.entity.Campeonato;
@@ -80,5 +82,7 @@ public interface ResultadoService {
 	 * @return
 	 */
 	Boolean actualizarResultado(Long id, ResultadoDto resultadoDto) throws RacesException;
+
+	void processFile(Long id, MultipartFile file);
 
 }

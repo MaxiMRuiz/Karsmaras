@@ -51,6 +51,20 @@ public class Vuelta {
 		this.nVuelta = nVuelta;
 		this.resultado = resultado;
 	}
+	
+	/**
+	 * Constructor por parametros
+	 * 
+	 * @param tiempo
+	 * @param nVuelta
+	 * @param resultado
+	 */
+	public Vuelta(Integer tiempo, Integer nVuelta, Resultado resultado) {
+		super();
+		this.tiempo = tiempo;
+		this.nVuelta = nVuelta;
+		this.resultado = resultado;
+	}
 
 	public Long getId() {
 		return id;

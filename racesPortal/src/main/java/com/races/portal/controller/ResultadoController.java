@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -90,32 +90,30 @@ public class ResultadoController {
 	}
 
 	@PostMapping(value = "/{idGp}/{idSesion}/upload")
-	public ModelAndView uploadFileHandler(@PathVariable Long idGp, @PathVariable Long idSesion, @RequestParam("file") MultipartFile file) {
+	public ModelAndView uploadFileHandler(@PathVariable Long idGp, @PathVariable Long idSesion,
+			@RequestParam("file") MultipartFile file) {
 
-		if (!file.isEmpty()) {
-			try {
-				byte[] bytes = file.getBytes();
+		if (!file.isEmpty() && FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")) {
 
-				// Creating the directory to store file
-				String rootPath = System.getProperty("files.upload.basepath");
-				File dir = new File(rootPath + File.separator + "tmpFiles");
-				if (!dir.exists())
-					dir.mkdirs();
+			// Creating the directory to store file
+			String rootPath = env.getProperty("files.upload.basepath");
+			File dir = new File(rootPath + File.separator + "tmpFiles");
+			if (!dir.exists())
+				dir.mkdirs();
 
-				// Create the file on server
-				File serverFile = new File(dir.getAbsolutePath() + File.separator + "uploadFile.txt");
-				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-				stream.write(bytes);
-				stream.close();
+			// Create the file on server
+			File serverFile = new File(dir.getAbsolutePath() + File.separator + "uploadFile.txt");
+			try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));) {
 
-				LOGGER.info("Server File Location=" + serverFile.getAbsolutePath());
+				stream.write(file.getBytes());
 
 				LOGGER.info("You successfully uploaded file");
 			} catch (Exception e) {
 				LOGGER.error("You failed to upload => " + e.getMessage());
 			}
+			resultados.sendFile(serverFile, idSesion, idGp);
 		} else {
-			LOGGER.warn("You failed to upload because the file was empty.");
+			LOGGER.warn("You failed to upload because the file was empty or is not a txt file.");
 		}
 		return new ModelAndView("redirect:/races/sesion/" + idGp + "/" + idSesion);
 	}

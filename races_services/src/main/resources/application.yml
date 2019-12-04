@@ -13,5 +13,7 @@ spring:
       enabled: true
 server:  port: 8081
   
-
+files:
+  upload:
+    basepath: C:\\Users\\mmr19\\Proyectos\\racesPortal\\Services
  

@@ -5,13 +5,14 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.UnirestException;
+import kong.unirest.json.JSONObject;
+
 
 @Component
 public class Utils {

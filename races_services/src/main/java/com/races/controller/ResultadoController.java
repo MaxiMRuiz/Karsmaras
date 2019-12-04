@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
@@ -107,6 +108,14 @@ public class ResultadoController {
 			LOGGER.error("Error Actualizando Resultado: " + ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
+	}
+
+	@PostMapping(value = "/resultado/load/{id}")
+	public ResponseEntity<Boolean> uploadFileHandler(@PathVariable Long id,
+			@RequestParam("file") MultipartFile file) {
+
+		resultadoService.processFile(id, file);
+		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
 
 }

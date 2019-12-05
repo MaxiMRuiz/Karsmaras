@@ -107,13 +107,12 @@ public class ResultadoController {
 
 				stream.write(file.getBytes());
 
-				LOGGER.info("You successfully uploaded file");
 			} catch (Exception e) {
-				LOGGER.error("You failed to upload => " + e.getMessage());
+				LOGGER.error("Fallo en la carga del fichero => " + e.getMessage());
 			}
 			resultados.sendFile(serverFile, idSesion, idGp);
 		} else {
-			LOGGER.warn("You failed to upload because the file was empty or is not a txt file.");
+			LOGGER.warn("Error en la carga del fichero debido a que está vacío o no tiene formato txt o csv.");
 		}
 		return new ModelAndView("redirect:/races/sesion/" + idGp + "/" + idSesion);
 	}

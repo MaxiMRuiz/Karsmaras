@@ -28,6 +28,7 @@ public class Reglamento {
 
 	/**
 	 * @param id
+	 * @param descripcion
 	 * @param nEntrenamientos
 	 * @param nClasificaciones
 	 * @param nCarreras
@@ -38,6 +39,7 @@ public class Reglamento {
 			Long nPilotos, Long nEquipos) {
 		super();
 		this.id = id;
+		this.descripcion = descripcion;
 		this.nEntrenamientos = nEntrenamientos;
 		this.nClasificaciones = nClasificaciones;
 		this.nCarreras = nCarreras;

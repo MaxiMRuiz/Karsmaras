@@ -16,12 +16,14 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.FileUploadDto;
 import com.races.dto.ResultadoDto;
+import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Piloto;
 import com.races.entity.Resultado;
@@ -76,21 +78,41 @@ public class ResultadoServiceImpl implements ResultadoService {
 		return resultadoRepo.save(newResultado);
 	}
 
-	public List<Resultado> buscarResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo) {
-		if (idPiloto == null && idSesion == null && nVueltas == null && tiempo == null && id == null) {
-			return resultadoRepo.findAll();
-		} else {
-			try {
-				Resultado probe = new Resultado(id == null ? null : id,
-						idPiloto == null ? null : pilotoService.buscarPiloto(idPiloto),
-						idSesion == null ? null : sesionService.buscarSesion(idSesion), nVueltas, tiempo);
-				return resultadoRepo.findAll(Example.of(probe));
-			} catch (RacesException e) {
-				LOGGER.error(e);
-				return resultadoRepo.findAll();
-			}
+	public List<ResultadoResponseDto> buscarResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas,
+			Integer tiempo) {
+		List<Resultado> lista = buscarListaResultados(id, idPiloto, idSesion, nVueltas, tiempo);
+		return resultado2Response(lista);
+	}
 
+	public List<Resultado> buscarListaResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas,
+			Integer tiempo) {
+		try {
+			Resultado probe = new Resultado(id == null ? null : id,
+					idPiloto == null ? null : pilotoService.buscarPiloto(idPiloto),
+					idSesion == null ? null : sesionService.buscarSesion(idSesion), nVueltas == null ? null : nVueltas,
+					tiempo == null ? null : tiempo);
+			return resultadoRepo.findAll(Example.of(probe),
+					new Sort(Sort.Direction.DESC, "nVueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
+		} catch (RacesException e) {
+			LOGGER.error(e);
+			return resultadoRepo.findAll();
 		}
+	}
+
+	/**
+	 * Transforma el listado de resultados en la respuesta del servicio, añadiendo
+	 * la vuelta rapida
+	 * 
+	 * @param lista
+	 * @return
+	 */
+	private List<ResultadoResponseDto> resultado2Response(List<Resultado> lista) {
+		List<ResultadoResponseDto> response = new ArrayList<>();
+		for (Resultado resultado : lista) {
+			Vuelta vRapida = vueltas.buscarVueltaRapida(resultado);
+			response.add(new ResultadoResponseDto(resultado, vRapida));
+		}
+		return response;
 	}
 
 	@Override
@@ -142,7 +164,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 		if (!dir.exists())
 			dir.mkdirs();
 
-		File serverFile = new File(dir.getAbsolutePath() + File.separator + "uploadFile.txt");
+		File serverFile = new File(
+				dir.getAbsolutePath() + File.separator + "Sesion" + idSesion + System.currentTimeMillis() + ".txt");
 		try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile))) {
 
 			stream.write(file.getBytes());
@@ -175,8 +198,14 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	}
 
+	/**
+	 * Actuliza los datos de nVueltas y Tiempo en base a las vueltas registradas en
+	 * la plataforma
+	 * 
+	 * @param sesion
+	 */
 	private void actualizarResultados(Sesion sesion) {
-		List<Resultado> resultados = buscarResultados(null, null, sesion.getId(), null, null);
+		List<Resultado> resultados = buscarListaResultados(null, null, sesion.getId(), null, null);
 		Integer nVueltas;
 		Integer tiempo;
 		for (Resultado resultado : resultados) {

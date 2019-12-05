@@ -193,6 +193,7 @@ public class Converter {
 				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
 		resultado.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
 		resultado.setVueltas(json.isNull(Constants.PARAM_N_VUELTAS) ? 0 : json.getInt(Constants.PARAM_N_VUELTAS));
+		resultado.setvRapida(json.isNull(Constants.PARAM_V_RAPIDA) ? 0 : json.getInt(Constants.PARAM_V_RAPIDA));
 		return resultado;
 	}
 

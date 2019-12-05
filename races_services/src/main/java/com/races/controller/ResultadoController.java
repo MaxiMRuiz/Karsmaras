@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
+import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Resultado;
 import com.races.services.ResultadoService;
 
@@ -61,7 +62,8 @@ public class ResultadoController {
 	 * @return
 	 */
 	@GetMapping("/resultado")
-	public ResponseEntity<List<Resultado>> buscarResultados(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<ResultadoResponseDto>> buscarResultados(
+			@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "idPiloto") Long idPiloto,
 			@RequestParam(required = false, name = "idSesion") Long idSesion,
 			@RequestParam(required = false, name = "nVueltas") Integer nVueltas,
@@ -111,8 +113,7 @@ public class ResultadoController {
 	}
 
 	@PostMapping(value = "/resultado/load/{id}")
-	public ResponseEntity<Boolean> uploadFileHandler(@PathVariable Long id,
-			@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<Boolean> uploadFileHandler(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
 
 		resultadoService.processFile(id, file);
 		return new ResponseEntity<>(true, HttpStatus.OK);

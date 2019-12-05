@@ -13,7 +13,6 @@ import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONObject;
 
-
 @Component
 public class Utils {
 
@@ -29,11 +28,9 @@ public class Utils {
 	 * @param method
 	 * @param isAsync
 	 * @return HttpResponse - String
-	 * @throws Exception
 	 */
 	public HttpResponse<String> executeHttpMethod(final String baseURI, final Map<String, Object> parametros,
-			final Map<String, Object> body, final Map<String, String> headers, final HttpMethod method)
-			throws UnirestException {
+			final Map<String, Object> body, final Map<String, String> headers, final HttpMethod method) {
 
 		Map<String, String> newHeaders = null;
 		Map<String, Object> newBody = null;
@@ -74,7 +71,7 @@ public class Utils {
 	 * @throws UnirestException
 	 */
 	private HttpResponse<String> processHttpResponse(String baseURI, Map<String, Object> newQueryString,
-			Map<String, Object> newBody, Map<String, String> newHeaders, HttpMethod method) throws UnirestException {
+			Map<String, Object> newBody, Map<String, String> newHeaders, HttpMethod method) {
 		HttpResponse<String> result = null;
 		switch (method) {
 		case GET:

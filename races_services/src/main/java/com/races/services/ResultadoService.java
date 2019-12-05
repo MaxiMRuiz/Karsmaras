@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
+import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Resultado;
 import com.races.entity.Sesion;
@@ -38,7 +39,8 @@ public interface ResultadoService {
 	 * @param tiempo
 	 * @return
 	 */
-	List<Resultado> buscarResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo);
+	List<ResultadoResponseDto> buscarResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas,
+			Integer tiempo);
 
 	/**
 	 * Servicio de busqueda de un resultado en base a su id
@@ -83,6 +85,24 @@ public interface ResultadoService {
 	 */
 	Boolean actualizarResultado(Long id, ResultadoDto resultadoDto) throws RacesException;
 
+	/**
+	 * Procesado del fichero de vueltas
+	 * 
+	 * @param id
+	 * @param file
+	 */
 	void processFile(Long id, MultipartFile file);
+
+	/**
+	 * Busqueda de listado de resultados
+	 * 
+	 * @param id
+	 * @param idPiloto
+	 * @param idSesion
+	 * @param nVueltas
+	 * @param tiempo
+	 * @return
+	 */
+	List<Resultado> buscarListaResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo);
 
 }

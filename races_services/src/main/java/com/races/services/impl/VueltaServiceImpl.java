@@ -11,6 +11,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
+import com.races.constants.Constants;
 import com.races.dto.FileUploadDto;
 import com.races.dto.VueltaDto;
 import com.races.entity.Piloto;
@@ -106,7 +107,7 @@ public class VueltaServiceImpl implements VueltaService {
 		for (FileUploadDto registro : listLines) {
 			List<Piloto> piloto = pilotoService.buscarPilotos(null, null, null, registro.getPiloto());
 			if (!piloto.isEmpty() && pilotoInscrito(piloto.get(0), pilotosInscritos)) {
-				List<Resultado> resultado = resultadoService.buscarResultados(null, piloto.get(0).getId(), sesion.getId(),
+				List<Resultado> resultado = resultadoService.buscarListaResultados(null, piloto.get(0).getId(), sesion.getId(),
 						null, null);
 				listaVueltas.add(new Vuelta(parseTiempo(registro.getTiempo()), registro.getVuelta(), resultado.get(0)));
 			}
@@ -162,7 +163,7 @@ public class VueltaServiceImpl implements VueltaService {
 			LOGGER.debug("Vuelta inferior a 1 min");
 			submilis = sub[0].split("\\.");
 			if (submilis.length != 2) {
-				LOGGER.debug("Formato Incorrecto");
+				LOGGER.debug(Constants.FORMATO_INCORRECTO);
 				return tiempoInteger;
 			}
 			tiempoInteger = Integer.parseInt(submilis[1]) + (Integer.parseInt(submilis[0]) * 1000);
@@ -171,7 +172,7 @@ public class VueltaServiceImpl implements VueltaService {
 			LOGGER.debug("Vuelta estandar con minutos y segundos");
 			submilis = sub[1].split("\\.");
 			if (submilis.length != 2) {
-				LOGGER.debug("Formato Incorrecto");
+				LOGGER.debug(Constants.FORMATO_INCORRECTO);
 				return tiempoInteger;
 			}
 			tiempoInteger = Integer.parseInt(submilis[1]) + (Integer.parseInt(submilis[0]) * 1000)
@@ -181,7 +182,7 @@ public class VueltaServiceImpl implements VueltaService {
 			LOGGER.debug("Vuelta larga de más de una hora");
 			submilis = sub[2].split("\\.");
 			if (submilis.length != 2) {
-				LOGGER.debug("Formato Incorrecto");
+				LOGGER.debug(Constants.FORMATO_INCORRECTO);
 				return tiempoInteger;
 			}
 			tiempoInteger = Integer.parseInt(submilis[1]) + (Integer.parseInt(submilis[0]) * 1000)
@@ -192,6 +193,11 @@ public class VueltaServiceImpl implements VueltaService {
 
 		}
 		return tiempoInteger;
+	}
+
+	@Override
+	public Vuelta buscarVueltaRapida(Resultado resultado) {
+		return vueltaRepo.findByResultadoOrderByTiempoAsc(resultado).get(0);
 	}
 
 }

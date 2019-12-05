@@ -7,6 +7,7 @@ public class Resultado {
 	private Sesion sesion;
 	private Integer tiempo;
 	private Integer vueltas;
+	private Integer vRapida;
 
 	/**
 	 * 
@@ -22,13 +23,14 @@ public class Resultado {
 	 * @param tiempo
 	 * @param vueltas
 	 */
-	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer tiempo, Integer vueltas) {
+	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer tiempo, Integer vueltas, Integer vRapida) {
 		super();
 		this.id = id;
 		this.piloto = piloto;
 		this.sesion = sesion;
 		this.tiempo = tiempo;
 		this.vueltas = vueltas;
+		this.setvRapida(vRapida);
 	}
 
 	/**
@@ -103,10 +105,65 @@ public class Resultado {
 
 	public String getTiempoString() {
 		if (tiempo == null || tiempo == 0) {
-			return "0:0:0.000";
+			return "0:0.000";
 		} else {
-			return (int) Math.floor(((tiempo / 1000) / 60) / 60) + ":" + (int) Math.floor(((tiempo / 1000) / 60) % 60)
-					+ ":" + (int) Math.floor((tiempo / 1000) % 60) + "." + tiempo % 1000;
+			return horas(tiempo) + min(tiempo) + seg(tiempo) + miliseg(tiempo);
+		}
+	}
+
+	public Integer getvRapida() {
+		return vRapida;
+	}
+
+	public void setvRapida(Integer vRapida) {
+		this.vRapida = vRapida;
+	}
+
+	public String getVueltaRapida() {
+		if (vRapida == null || vRapida == 0) {
+			return "0:0.000";
+		} else {
+			return horas(vRapida) + min(vRapida) + seg(vRapida) + miliseg(vRapida);
+		}
+	}
+
+	private String horas(Integer tiempo) {
+		Integer horas = (tiempo > 3599999 ? Integer.valueOf(tiempo / 3600000) : 0);
+		if (horas > 9) {
+			return horas + ":";
+		} else if (horas > 0) {
+			return "0" + horas + ":";
+		} else {
+			return "";
+		}
+	}
+
+	private String min(Integer tiempo) {
+		Integer min = (tiempo > 59999 ? Integer.valueOf((tiempo / 60000) % 60) : 0);
+		if (min > 9) {
+			return min + ":";
+		} else {
+			return "0" + min + ":";
+		}
+	}
+
+	private String seg(Integer tiempo) {
+		Integer seg = Integer.valueOf((tiempo / 1000) % 60);
+		if (seg > 9) {
+			return seg + ".";
+		} else {
+			return "0" + seg + ".";
+		}
+	}
+
+	private String miliseg(Integer tiempo) {
+		Integer miliseg = tiempo % 1000;
+		if (miliseg > 99) {
+			return "" + miliseg;
+		} else if (miliseg > 9) {
+			return "0" + miliseg;
+		} else {
+			return "00" + miliseg;
 		}
 	}
 

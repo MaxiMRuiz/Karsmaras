@@ -62,7 +62,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
@@ -92,7 +92,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.POST);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			}
 		} catch (UnirestException e) {
 			LOGGER.error(e);
@@ -107,7 +107,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
 				return true;
 			}

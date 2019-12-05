@@ -15,10 +15,11 @@
 					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
 						<thead align="center">
 							<tr class="bg-danger text-white">
-								<th width="30%">Piloto</th>
-								<th width="20%">Tiempo</th>
+								<th width="20%">Piloto</th>
+								<th width="20%">V.Rápida</th>
+								<th width="20%">Tiempo Sesion</th>
 								<th width="20%">Vueltas</th>
-								<th width="30%">
+								<th width="20%">
 									<div class="col-xs-12 col-md-12 text-left">
 										<strong><em>Número de filas</em></strong>
 										<select id="nElements" name="nElements" onchange="searchFilter()">
@@ -33,15 +34,16 @@
 						</thead>
 						<tbody class="bg-white text-black" th:each="resultado : ${listaResultados}">
 							<td th:text="${resultado.piloto.toString()}"></td>
+							<td th:text="${resultado.getVueltaRapida()}"></td>
 							<td th:text="${resultado.getTiempoString()}"></td>
 							<td th:text="${resultado.vueltas}"></td>
 							<td align="center">
 								<div class="row ml-1">
 									<div class="col-12 col-xs-12">
 										<a class="button" href="#"
-											th:href="@{/races/sesion/__${id}__/__${idSesion}__/__${resultado.id}__}">
-											<img class="icons" src="/icons/editar.png" alt="Editar"
-												title="Editar Resultado"></img>
+											th:href="@{/races/vueltas/__${id}__/__${idSesion}__/__${resultado.id}__}">
+											<img class="icons" src="/icons/vuelta.png" alt="Vueltas"
+												title="Ver Vueltas"></img>
 										</a>
 									</div>
 								</div>
@@ -49,7 +51,7 @@
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="4">
+								<td colspan="5">
 									<a class="button pull-left" th:href="@{/races/gp/__${id}__}">
 										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
 											name="cancel">Volver

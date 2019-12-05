@@ -5,6 +5,7 @@ import java.util.List;
 import com.races.component.RacesException;
 import com.races.dto.FileUploadDto;
 import com.races.dto.VueltaDto;
+import com.races.entity.Resultado;
 import com.races.entity.Sesion;
 import com.races.entity.Vuelta;
 
@@ -65,10 +66,19 @@ public interface VueltaService {
 
 	/**
 	 * Carga las vueltas desde un fichero
+	 * 
 	 * @param listLines
-	 * @return 
-	 * @throws RacesException 
+	 * @return
+	 * @throws RacesException
 	 */
 	void cargarVueltas(List<FileUploadDto> listLines, Sesion sesion) throws RacesException;
+
+	/**
+	 * Busqueda de la Vuelta Rapida de un piloto en una sesion
+	 * 
+	 * @param resultado
+	 * @return
+	 */
+	Vuelta buscarVueltaRapida(Resultado resultado);
 
 }

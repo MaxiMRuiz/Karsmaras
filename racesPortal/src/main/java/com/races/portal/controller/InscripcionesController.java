@@ -70,17 +70,17 @@ public class InscripcionesController {
 		case 'c':
 			LOGGER.info("Listando inscripciones del campeonato " + id.substring(1));
 			listaInscripciones = inscripciones.buscarInscripciones(id.substring(1), null, null);
-			model.addAttribute("nombre", campeonatos.buscarCampeonato(id.substring(1)).toString());
+			model.addAttribute(Constants.PARAM_NOMBRE, campeonatos.buscarCampeonato(id.substring(1)).toString());
 			break;
 		case 'p':
 			LOGGER.info("Listando inscripciones del piloto " + id.substring(1));
 			listaInscripciones = inscripciones.buscarInscripciones(null, id.substring(1), null);
-			model.addAttribute("nombre", pilotos.buscarPilotos(id.substring(1)).toString());
+			model.addAttribute(Constants.PARAM_NOMBRE, pilotos.buscarPilotos(id.substring(1)).toString());
 			break;
 		case 'e':
 			LOGGER.info("Listando inscripciones del equipo " + id.substring(1));
 			listaInscripciones = inscripciones.buscarInscripciones(null, null, id.substring(1));
-			model.addAttribute("nombre", equipos.buscarEquipos(id.substring(1)).toString());
+			model.addAttribute(Constants.PARAM_NOMBRE, equipos.buscarEquipos(id.substring(1)).toString());
 			break;
 		default:
 			LOGGER.info("Listando todas las inscripciones");
@@ -111,7 +111,7 @@ public class InscripcionesController {
 					listaPilotos.remove(inscripcion.getPiloto());
 				}
 			}
-			model.addAttribute("nombre", campeonatos.buscarCampeonato(id).toString());
+			model.addAttribute(Constants.PARAM_NOMBRE, campeonatos.buscarCampeonato(id).toString());
 			break;
 		case "p":
 			listaInscripciones = inscripciones.buscarInscripciones(null, id, null);
@@ -120,10 +120,10 @@ public class InscripcionesController {
 					listaCampeonatos.remove(inscripcion.getCampeonato());
 				}
 			}
-			model.addAttribute("nombre", pilotos.buscarPilotos(id).toString());
+			model.addAttribute(Constants.PARAM_NOMBRE, pilotos.buscarPilotos(id).toString());
 			break;
 		case "e":
-			model.addAttribute("nombre", equipos.buscarEquipos(id).toString());
+			model.addAttribute(Constants.PARAM_NOMBRE, equipos.buscarEquipos(id).toString());
 			break;
 		default:
 			return new ModelAndView("redirect:/races");

@@ -54,7 +54,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
@@ -80,7 +80,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				if (jsonArray.length() > 0) {
@@ -109,7 +109,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			}
 
 		} catch (UnirestException e) {
@@ -126,7 +126,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 			HttpResponse<?> response = Unirest.post(url).field("file", fileResultados).asEmpty();
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			}
 
 		} catch (UnirestException e) {

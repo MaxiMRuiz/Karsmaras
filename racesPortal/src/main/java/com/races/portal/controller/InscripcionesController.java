@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,7 +64,8 @@ public class InscripcionesController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView listaPuntuaciones(Model model, @PathVariable String id) {
+	public ModelAndView listaPuntuaciones(Model model, @PathVariable String id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
 
 		List<Inscripcion> listaInscripciones;
 		switch (id.charAt(0)) {
@@ -91,6 +93,7 @@ public class InscripcionesController {
 		model.addAttribute(Constants.PARAM_ID, id.substring(1));
 
 		model.addAttribute("urlServices", "/races/inscripciones/" + id);
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		return new ModelAndView("inscripciones");
 	}
 

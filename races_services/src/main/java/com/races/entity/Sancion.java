@@ -96,4 +96,10 @@ public class Sancion {
 		this.tiempo = tiempo;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - R[" + (resultado == null ? "null" : resultado) + "] M[" + descripcion + "] - " + puntos
+				+ "p & " + tiempo + "seg.";
+	}
+
 }

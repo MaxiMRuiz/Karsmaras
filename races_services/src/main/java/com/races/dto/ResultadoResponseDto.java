@@ -5,7 +5,7 @@ import com.races.entity.Resultado;
 import com.races.entity.Sesion;
 import com.races.entity.Vuelta;
 
-public class ResultadoResponseDto {
+public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 
 	private Long id;
 	private Piloto piloto;
@@ -42,6 +42,7 @@ public class ResultadoResponseDto {
 
 	/**
 	 * Constructor por Resultado y Vuelta
+	 * 
 	 * @param resultado
 	 * @param vRapida
 	 */
@@ -51,7 +52,7 @@ public class ResultadoResponseDto {
 		this.sesion = resultado.getSesion();
 		this.nVueltas = resultado.getnVueltas();
 		this.tiempo = resultado.getTiempo();
-		this.vRapida = vRapida.getTiempo();
+		this.vRapida = vRapida == null ? null : vRapida.getTiempo();
 	}
 
 	/**
@@ -136,6 +137,24 @@ public class ResultadoResponseDto {
 	 */
 	public void setvRapida(Integer vRapida) {
 		this.vRapida = vRapida;
+	}
+
+	/**
+	 * Metodo de ordenacion para Sort
+	 * 
+	 * @param o
+	 * @return
+	 */
+	@Override
+	public int compareTo(ResultadoResponseDto resultado2) {
+
+		if (vRapida != null && resultado2.getvRapida() != null && vRapida < resultado2.getvRapida()) {
+			return -1;
+		}
+		if (vRapida != null && resultado2.getvRapida() != null && vRapida > resultado2.getvRapida()) {
+			return 1;
+		}
+		return 0;
 	}
 
 }

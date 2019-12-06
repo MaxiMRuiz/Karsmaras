@@ -2,17 +2,18 @@ package com.races.portal.constants;
 
 /**
  * Clase de Constantes
+ * 
  * @author Maximino Mañanes Ruiz
  *
  */
 public class Constants {
-	
+
 	/**
 	 * Constructor
 	 */
 	private Constants() {
-	    throw new IllegalStateException("Constants class");
-	  }
+		throw new IllegalStateException("Constants class");
+	}
 
 	public static final String SERVICES_HOST = "races.services.host";
 	public static final String PARAM_ID = "id";
@@ -52,5 +53,12 @@ public class Constants {
 	public static final String PARAM_N_VUELTAS = "nVueltas";
 	public static final String PARAM_V_RAPIDA = "vRapida";
 	public static final String RESPONSE = "Response ";
+	public static final String PARAM_ID_RESULTADO = "idResultado";
+	public static final String PARAM_N_VUELTA = "nVuelta";
+	public static final String PARAM_RESULTADO = "resultado";
+	public static final String URL_VOLVER = "volver";
+	public static final String LISTA_CLASIFICACION = "listaClasificacion";
+	public static final String TYPE = "type";
+	public static final String CLASIFICACION = "clasificacion";
 
 }

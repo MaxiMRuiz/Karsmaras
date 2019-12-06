@@ -114,4 +114,10 @@ public class Puntuacion {
 		this.tipoSesion = tipoSesion;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - R[" + (reglamento == null ? "null" : reglamento) + "] - TS["
+				+ (tipoSesion == null ? "null" : tipoSesion) + "]" + posicion + "º -> " + puntos;
+	}
+
 }

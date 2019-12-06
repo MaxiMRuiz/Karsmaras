@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,7 +53,9 @@ public class GpController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView listaGrandesPremios(Model model, @PathVariable String id) {
+	public ModelAndView listaGrandesPremios(Model model, @PathVariable String id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		List<GranPremio> listaGrandesPremios = gpService.buscarGrandesPremios(id);
 		model.addAttribute("listaGrandesPremios", listaGrandesPremios);
 		model.addAttribute("nombre", campeonatos.buscarCampeonato(id).toString());

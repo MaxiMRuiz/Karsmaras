@@ -9,47 +9,58 @@
 		<div class="row columnaentera">
 			<div th:replace="fragments/menu::menu">
 			</div>
-			<div class="col-xs-10 col-10 align-self-center">
-				<div class="panel-body centerElement">
-					<form id="formulariopilotos" th:action="@{/races/pilotos}" class="formAlign bg-white text-dark"
-						action="#" method="post">
-						<div class="centerElement">
-							<div class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Nuevo Piloto</h2>
-							</div>
-							<input type="hidden" th:field="*{piloto.id}" th:value="${piloto.id}"></input>
-							<div class="form-group row">
-								<label for="Nombre" class="col-sm-5 col-form-label"><strong>Nombre</strong></label>
-								<div class="col-sm-7">
-									<input type="text" class="inputForm" th:field="*{piloto.nombre}"
-										th:value="${piloto.nombre}" required="required"></input>
+			<div class="col-xs-10 col-10 align-self-center columnaentera">
+				<div class="panel panel-default panel-body centerElement">
+					<div class="container row col-md-12 well well-sm">
+						<form id="formulariopilotos" th:action="@{/races/pilotos}"
+							class="form-horizontal inputForm formAlign" action="#" method="post">
+							<fieldset>
+								<legend class="text-center header">Nuevo Piloto</legend>
+								<input type="hidden" th:field="*{piloto.id}" th:value="${piloto.id}"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+											src="/icons/piloto.png" class="icons" alt="Nombre" title="Nombre">
+										Nombre</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" class="inputForm" th:field="*{piloto.nombre}"
+											th:value="${piloto.nombre}" required="required"
+											placeholder="Nombre del Piloto"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="apellido" class="col-sm-5 col-form-label"><strong>Apellido</strong></label>
-								<div class="col-sm-7">
-									<input type="text" th:field="*{piloto.apellido}" th:value="${piloto.apellido}"
-										class="inputForm" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+											src="/icons/piloto.png" class="icons" alt="Apellido" title="Apellido">
+										Apellido</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" th:field="*{piloto.apellido}" th:value="${piloto.apellido}"
+											class="inputForm" required="required" placeholder="Apellido"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="apodo" class="col-sm-5 col-form-label"><strong>Apodo</strong></label>
-								<div class="col-sm-7">
-									<input type="text" class="inputForm" th:field="*{piloto.apodo}"
-										th:value="${piloto.apodo}" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+											src="/icons/piloto.png" class="icons" alt="Apodo" title="Apodo del Piloto">
+										Apodo</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" class="inputForm" th:field="*{piloto.apodo}"
+											th:value="${piloto.apodo}" required="required" placeholder="Apodo"></input>
+									</div>
 								</div>
-							</div>
-							<div><a href="#" th:href="@{/races/pilotos}">
-									<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
-										name="cancel">Volver
-									</button>
-								</a>
-								<button type="submit" class="btn btn-primary pull-right">Aceptar</button></div>
-						</div>
-					</form>
+								<div class="form-group">
+									<div class="col-md-12 text-center">
+										<a href="#" th:href="${volver}">
+											<button type="button" class="btn btn-danger btn-primary pull-left"
+												id="cancel" name="cancel">Volver
+											</button>
+										</a>
+										<button type="submit" class="btn btn-primary pull-right">Aceptar</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 </body>
+
 </html>

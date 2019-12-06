@@ -41,11 +41,11 @@ public class Reglamento {
 	 * @param nPilotos
 	 * @param nEquipos
 	 */
-	public Reglamento(Long id, String descripcion, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras, Integer nPilotos,
-			Integer nEquipos) {
+	public Reglamento(Long id, String descripcion, Integer nEntrenamientos, Integer nClasificaciones, Integer nCarreras,
+			Integer nPilotos, Integer nEquipos) {
 		super();
 		this.id = id;
-		this.setDescripcion(descripcion);
+		this.descripcion = descripcion;
 		this.nEntrenamientos = nEntrenamientos;
 		this.nClasificaciones = nClasificaciones;
 		this.nCarreras = nCarreras;
@@ -107,6 +107,12 @@ public class Reglamento {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	@Override
+	public String toString() {
+		return "#" + id + " - " + descripcion + " - nE[" + nEntrenamientos + "] nCl[" + nClasificaciones + "] nC["
+				+ nCarreras + "] nP[" + nPilotos + "] nEq[" + nEquipos + "]";
 	}
 
 }

@@ -64,21 +64,24 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	@Override
 	public List<Puntuacion> buscarPuntuaciones(Long id, Long idReglamento, Integer posicion, Integer puntos,
 			Long idTipoSesion) {
-		if ((idReglamento == null || !reglamentoService.existeReglamento(idReglamento)) && posicion == null
-				&& puntos == null && (idTipoSesion == null || !tipoSesionService.existeTipoSesion(idTipoSesion))) {
-			return puntuacionRepo.findAll();
-		} else {
-			try {
-				Example<Puntuacion> example = Example.of(new Puntuacion(id,
-						idReglamento == null ? null : reglamentoService.buscarReglamento(idReglamento), posicion,
-						puntos, idTipoSesion == null ? null : tipoSesionService.buscarTipoSesion(idTipoSesion)));
 
-				return puntuacionRepo.findAll(example,new Sort(Sort.Direction.DESC, "tipoSesion.id").and(new Sort(Sort.Direction.ASC,"posicion")));
-			} catch (RacesException e) {
-				LOGGER.error(e);
-				return puntuacionRepo.findAll();
-			}
+		try {
+			Example<Puntuacion> example = Example.of(new Puntuacion(id == null ? null : id,
+					idReglamento == null ? null : reglamentoService.buscarReglamento(idReglamento),
+					posicion == null ? null : posicion, puntos == null ? null : puntos,
+					idTipoSesion == null ? null : tipoSesionService.buscarTipoSesion(idTipoSesion)));
+
+			return puntuacionRepo.findAll(example,
+					new Sort(Sort.Direction.DESC, "tipoSesion.id").and(new Sort(Sort.Direction.ASC, "posicion")));
+		} catch (RacesException e) {
+			LOGGER.error(e);
+			return puntuacionRepo.findAll();
 		}
+	}
+
+	@Override
+	public List<Puntuacion> buscarPuntuacionesValidas(Long id) {
+		return puntuacionRepo.findByReglamentoIdAndPuntosGreaterThan(id,0);
 	}
 
 	@Override

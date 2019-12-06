@@ -88,4 +88,10 @@ public class Sesion {
 		this.tipoSesion = tipoSesion;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - " + fecha + " - GP[" + (granPremio == null ? "null" : granPremio) + "] TS["
+				+ (tipoSesion == null ? "null" : tipoSesion) + "]";
+	}
+
 }

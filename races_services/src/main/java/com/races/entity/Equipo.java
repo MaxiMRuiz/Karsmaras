@@ -80,4 +80,9 @@ public class Equipo {
 		this.alias = alias;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - " + nombre + " (" + alias + ")";
+	}
+
 }

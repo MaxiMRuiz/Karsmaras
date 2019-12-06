@@ -6,11 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.races.portal.constants.Constants;
+import com.races.portal.services.ClasificacionService;
 
 @Controller
 @RequestMapping("/races/clasificacion")
@@ -20,6 +26,9 @@ public class ClasificacionesController {
 
 	@Autowired
 	Environment env;
+
+	@Autowired
+	ClasificacionService clasificacionService;
 
 	/**
 	 * Handler bad request
@@ -32,19 +41,40 @@ public class ClasificacionesController {
 		LOGGER.warn("Returning HTTP 400 Bad Request", exception);
 	}
 
-	@GetMapping
-	public ModelAndView mainPage() {
-		return new ModelAndView("home");
+	@GetMapping(value = "/gp/{id}")
+	public ModelAndView clasificacionGP(Model model, @PathVariable Long id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
+		model.addAttribute(Constants.LISTA_CLASIFICACION, clasificacionService.clasificacionGp(id));
+		model.addAttribute(Constants.TYPE, Constants.PARAM_PILOTO);
+		return new ModelAndView(Constants.CLASIFICACION);
 	}
 
-	@GetMapping(value = "/equipos")
-	public ModelAndView viewClasificacionEquipos() {
-		return new ModelAndView("home");
+	@GetMapping(value = "/campeonato/{id}")
+	public ModelAndView clasificacionCampeonato(Model model, @PathVariable Long id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
+		model.addAttribute(Constants.LISTA_CLASIFICACION, clasificacionService.clasificacionCampeonato(id));
+		model.addAttribute(Constants.TYPE, Constants.PARAM_PILOTO);
+		return new ModelAndView(Constants.CLASIFICACION);
 	}
 
-	@GetMapping(value = "/pilotos")
-	public ModelAndView viewClasificacionPilotos() {
-		return new ModelAndView("home");
+	@GetMapping(value = "/gp/{id}/equipos")
+	public ModelAndView clasificacionGpEquipos(Model model, @PathVariable Long id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
+		model.addAttribute(Constants.LISTA_CLASIFICACION, clasificacionService.clasificacionGpEquipos(id));
+		model.addAttribute(Constants.TYPE, Constants.PARAM_EQUIPO);
+		return new ModelAndView(Constants.CLASIFICACION);
+	}
+
+	@GetMapping(value = "/campeonato/{id}/equipos")
+	public ModelAndView clasificacionCampeonatoEquipos(Model model, @PathVariable Long id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
+		model.addAttribute(Constants.LISTA_CLASIFICACION, clasificacionService.clasificacionCampeonatoEquipos(id));
+		model.addAttribute(Constants.TYPE, Constants.PARAM_EQUIPO);
+		return new ModelAndView(Constants.CLASIFICACION);
 	}
 
 }

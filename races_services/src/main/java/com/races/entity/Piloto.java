@@ -93,4 +93,9 @@ public class Piloto {
 		this.apodo = apodo;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - " + nombre + " " + apellido + " (" + apodo + ")";
+	}
+
 }

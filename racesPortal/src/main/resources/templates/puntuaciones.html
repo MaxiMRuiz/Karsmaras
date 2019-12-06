@@ -15,41 +15,51 @@
 					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
 						<thead align="center">
 							<tr class="bg-danger text-white">
-								<th width="70%">Puntuacion</th>
-								<th width="30%">
-									<div class="col-xs-12 col-md-12 text-left">
-										<strong><em>Número de filas</em></strong>
-										<select id="nElements" name="nElements" onchange="searchFilter()">
-											<option value="5">5</option>
-											<option value="10" selected="selected">10</option>
-											<option value="15">15</option>
-											<option value="20">20</option>
-										</select>
-									</div>
-								</th>
+								<th width="10%"><select class="custom-select d-block w-100" id="sesion" name="sesion"
+										onchange="searchFilter()">
+										<option value="">Todas</option>
+										<option value="Entrenamiento">Entrenamiento</option>
+										<option value="Clasificacion">Clasificacion</option>
+										<option value="Carrera">Carrera</option>
+									</select></th>
+								<th width="90%">Puntuacion</th>
+								<th width="10%">Editar</th>
 							</tr>
 						</thead>
 						<tbody class="bg-white text-black" th:each="puntuacion : ${listaPuntuaciones}">
-							<td th:text="${puntuacion.toString()}"></td>
+							<td align="center" th:text="${puntuacion.tipoSesion.descripcion}"></td>
+							<td align="center" th:text="${puntuacion.toString()}"></td>
 							<td align="center">
-								<div class="row ml-1">
-									<div class="col-12 col-xs-12"><a class="button" href="#"
-											th:href="@{/races/puntuaciones/__${id}__/__${puntuacion.id}__}">
-											<img class="icons" src="/icons/editar.png" alt="Modificar"
-												title="Modificar Puntuacion"></img>
-										</a>
-									</div>
+								<div class="col-12 col-xs-12"><a class="button" href="#"
+										th:href="@{/races/puntuaciones/__${id}__/__${puntuacion.id}__}">
+										<img class="icons" src="/icons/editar.png" alt="Modificar"
+											title="Modificar Puntuacion"></img>
+									</a>
 								</div>
 							</td>
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="8" class="text-center"> 
-									<a class="button" th:href="@{/races/reglamentos}">
-										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
-											name="cancel">Volver
-										</button>
-									</a>
+								<td colspan="8" class="text-center">
+									<div class="row">
+										<a class="button pull-left col-6 centerVertical"
+										th:href="${volver}">
+											<button type="button" class="btn btn-danger btn-primary pull-left"
+												id="cancel" name="cancel">Volver
+											</button>
+										</a>
+										<div class="col-6 centerVertical">
+											<div class="pull-right">
+												<strong><em>Número de filas</em></strong>
+												<select id="nElements" name="nElements" onchange="searchFilter()">
+													<option value="5">5</option>
+													<option value="10" selected="selected">10</option>
+													<option value="15">15</option>
+													<option value="20">20</option>
+												</select>
+											</div>
+										</div>
+									</div>
 								</td>
 							</tr>
 						</tfoot>
@@ -58,40 +68,18 @@
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
-	<input type="hidden" id="reglamento" th:value="${id}"></input>
 </body>
 <script>
-	var href = document.getElementById("urlServices").value;
-	function borrarPuntuacion(id) {
-		if (id == null) {
-			return;
-		}
-		var reglamento = document.getElementById('reglamento').value;
-		$.ajax({
-			type: 'DELETE',
-			url: href + reglamento + '/' + id,
-			contentType: 'application/json;charset=UTF-8',
-			success: function (data) {
-				location.reload();
-			},
-			error: function (error) {
-				console.log(error);
-				location.reload();
-			}
-		})
-	};
-
 	$('#table').paginate({
 		limit: getNumberOfElements(),
-		filter: false
+		filter: true
 	});
 	function searchFilter() {
 		this.filter();
 		$('.page-navigation').remove();
 		$('#table').paginate({
 			limit: getNumberOfElements(),
-			filter: false
+			filter: true
 		})
 	}
 
@@ -100,10 +88,42 @@
 	}
 
 	function filter() {
-		var select, table, tr, td, i;
+		var select, table, tbody, tr, td, i, j;
+		select = document.getElementById("sesion");
 		table = document.getElementById("table");
-		tr = table.getElementsByTagName("tr");
-		i = 1;
+		tbody = table.getElementsByTagName("tbody");
+		i = 0;
+		while (tbody.length > i) {
+			tr = tbody[i].getElementsByTagName("tr")[0];
+			j = 0;
+			while (tbody.length > j) {
+				td = tr.children[0];
+				checkStatus(tr, td, select.options[select.selectedIndex].value, true);
+				j++;
+			}
+			i++;
+		}
+	}
+
+	function checkColumn(tr, td, filter, display) {
+		if (td && display) {
+			if (td.innerHTML.indexOf(filter) > -1) {
+				tr.style.display = "table-row";
+			} else {
+				tr.style.display = "none";
+			}
+		}
+	}
+
+	function checkStatus(tr, td, filter, display) {
+		if (td && display) {
+			if (td.childNodes[0].nodeValue == filter
+				|| filter == '') {
+				tr.style.display = "table-row";
+			} else {
+				tr.style.display = "none";
+			}
+		}
 	}
 
 </script>

@@ -16,7 +16,7 @@ public class Campeonato {
 
 	private String temporada;
 
-	private String reglamento;
+	private Reglamento reglamento;
 
 	/**
 	 * Constructor por defecto
@@ -34,7 +34,7 @@ public class Campeonato {
 	 * @param temporada
 	 * @param reglamento
 	 */
-	public Campeonato(Long id, String nombre, String descripcion, String temporada, String reglamento) {
+	public Campeonato(Long id, String nombre, String descripcion, String temporada, Reglamento reglamento) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -102,14 +102,14 @@ public class Campeonato {
 	/**
 	 * @return the reglamento
 	 */
-	public String getReglamento() {
+	public Reglamento getReglamento() {
 		return reglamento;
 	}
 
 	/**
 	 * @param reglamento the reglamento to set
 	 */
-	public void setReglamento(String reglamento) {
+	public void setReglamento(Reglamento reglamento) {
 		this.reglamento = reglamento;
 	}
 

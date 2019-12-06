@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.races.portal.constants.Constants;
 import com.races.portal.dto.Equipo;
 import com.races.portal.services.EquipoService;
 
@@ -47,7 +49,9 @@ public class EquiposController {
 	}
 
 	@GetMapping
-	public ModelAndView viewEquipos(Model model) {
+	public ModelAndView viewEquipos(Model model,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		List<Equipo> listaEquipos = equipos.buscarEquipos(null, null, null);
 		model.addAttribute("listaEquipos", listaEquipos);
 		model.addAttribute("urlServices", "/races/equipos/");
@@ -55,8 +59,9 @@ public class EquiposController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView formularioEquipos(Model model, @PathVariable String id) {
-
+	public ModelAndView formularioEquipos(Model model, @PathVariable String id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		Equipo equipo;
 		if ("new".equals(id)) {
 			equipo = new Equipo();

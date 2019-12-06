@@ -36,6 +36,7 @@ public class GranPremio {
 
 	/**
 	 * Constructor por parametros
+	 * 
 	 * @param id
 	 * @param campeonato
 	 * @param ubicacion
@@ -69,6 +70,11 @@ public class GranPremio {
 
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}
+
+	@Override
+	public String toString() {
+		return "#" + id + " - C[" + (campeonato == null ? "null" : campeonato) + "] " + ubicacion;
 	}
 
 }

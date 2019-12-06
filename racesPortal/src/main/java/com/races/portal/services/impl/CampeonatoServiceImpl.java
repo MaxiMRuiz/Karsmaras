@@ -128,7 +128,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		body.put(Constants.PARAM_NOMBRE, campeonato.getNombre());
 		body.put(Constants.PARAM_DESCRIPCION, campeonato.getDescripcion());
 		body.put(Constants.PARAM_TEMPORADA, campeonato.getTemporada());
-		body.put(Constants.PARAM_REGLAMENTO, campeonato.getReglamento());
+		body.put(Constants.PARAM_REGLAMENTO, campeonato.getReglamento().getId());
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);

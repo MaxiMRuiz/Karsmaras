@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,9 @@ import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Piloto;
 import com.races.entity.Resultado;
+import com.races.entity.Sancion;
 import com.races.entity.Sesion;
+import com.races.entity.TipoSesion;
 import com.races.entity.Vuelta;
 import com.races.repository.ResultadoRepository;
 import com.races.services.InscripcionService;
@@ -84,6 +87,13 @@ public class ResultadoServiceImpl implements ResultadoService {
 		return resultado2Response(lista);
 	}
 
+	@Override
+	public List<ResultadoResponseDto> buscarResultadosValidos(Long idSesion) {
+		List<Resultado> lista = resultadoRepo.findBySesionIdAndNVueltasGreaterThan(idSesion, 0,
+				new Sort(Sort.Direction.DESC, "nVueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
+		return resultado2Response(lista);
+	}
+
 	public List<Resultado> buscarListaResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas,
 			Integer tiempo) {
 		try {
@@ -108,10 +118,30 @@ public class ResultadoServiceImpl implements ResultadoService {
 	 */
 	private List<ResultadoResponseDto> resultado2Response(List<Resultado> lista) {
 		List<ResultadoResponseDto> response = new ArrayList<>();
+
+		if (lista.isEmpty()) {
+			return response;
+		}
+		TipoSesion tipo = lista.get(0).getSesion().getTipoSesion();
 		for (Resultado resultado : lista) {
 			Vuelta vRapida = vueltas.buscarVueltaRapida(resultado);
 			response.add(new ResultadoResponseDto(resultado, vRapida));
 		}
+		if (tipo.getDescripcion().equals("Carrera")) {
+			return response;
+		} else {
+			return orderVRapidaList(response);
+		}
+	}
+
+	/**
+	 * Metodo que ordena los resultados por V.Rapida de menor a mayor
+	 * 
+	 * @param response
+	 * @return
+	 */
+	private List<ResultadoResponseDto> orderVRapidaList(List<ResultadoResponseDto> response) {
+		Collections.sort(response);
 		return response;
 	}
 
@@ -220,6 +250,20 @@ public class ResultadoServiceImpl implements ResultadoService {
 			resultado.setTiempo(tiempo);
 		}
 		resultadoRepo.saveAll(resultados);
+	}
+
+	@Override
+	public void aplicarSancion(Sancion sancion) {
+		Resultado resultado = sancion.getResultado();
+		resultado.setTiempo(resultado.getTiempo() + (sancion.getTiempo() * 1000));
+		resultadoRepo.save(resultado);
+	}
+
+	@Override
+	public void eliminarSancion(Sancion sancion) {
+		Resultado resultado = sancion.getResultado();
+		resultado.setTiempo(resultado.getTiempo() - (sancion.getTiempo() * 1000));
+		resultadoRepo.save(resultado);
 	}
 
 }

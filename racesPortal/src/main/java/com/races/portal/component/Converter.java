@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Campeonato;
+import com.races.portal.dto.Clasificacion;
 import com.races.portal.dto.Equipo;
 import com.races.portal.dto.GranPremio;
 import com.races.portal.dto.Inscripcion;
@@ -14,8 +15,10 @@ import com.races.portal.dto.Piloto;
 import com.races.portal.dto.Puntuacion;
 import com.races.portal.dto.Reglamento;
 import com.races.portal.dto.Resultado;
+import com.races.portal.dto.Sancion;
 import com.races.portal.dto.Sesion;
 import com.races.portal.dto.TipoSesion;
+import com.races.portal.dto.Vuelta;
 
 import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
@@ -35,8 +38,8 @@ public class Converter {
 		campeonato.setNombre(json.isNull(Constants.PARAM_NOMBRE) ? "null" : json.getString(Constants.PARAM_NOMBRE));
 		campeonato.setTemporada(
 				json.isNull(Constants.PARAM_TEMPORADA) ? "null" : json.getString(Constants.PARAM_TEMPORADA));
-		campeonato.setReglamento(json.isNull(Constants.PARAM_REGLAMENTO) ? "0"
-				: "" + json.getJSONObject(Constants.PARAM_REGLAMENTO).getLong(Constants.PARAM_ID));
+		campeonato.setReglamento(json.isNull(Constants.PARAM_REGLAMENTO) ? new Reglamento()
+				: json2Reglamento(json.getJSONObject(Constants.PARAM_REGLAMENTO)));
 		campeonato.setDescripcion(
 				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
 		return campeonato;
@@ -195,6 +198,38 @@ public class Converter {
 		resultado.setVueltas(json.isNull(Constants.PARAM_N_VUELTAS) ? 0 : json.getInt(Constants.PARAM_N_VUELTAS));
 		resultado.setvRapida(json.isNull(Constants.PARAM_V_RAPIDA) ? 0 : json.getInt(Constants.PARAM_V_RAPIDA));
 		return resultado;
+	}
+
+	public Vuelta json2Vuelta(JSONObject json) {
+		Vuelta vuelta = new Vuelta();
+		vuelta.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		vuelta.setnVuelta(json.isNull(Constants.PARAM_N_VUELTA) ? 0 : json.getInt(Constants.PARAM_N_VUELTA));
+		vuelta.setResultado(json.isNull(Constants.PARAM_RESULTADO) ? new Resultado()
+				: json2Resultado(json.getJSONObject(Constants.PARAM_RESULTADO)));
+		vuelta.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
+		return vuelta;
+	}
+
+	public Sancion json2Sancion(JSONObject json) {
+		Sancion sancion = new Sancion();
+		sancion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		sancion.setDescripcion(
+				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
+		sancion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
+		sancion.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
+		sancion.setResultado(json.isNull(Constants.PARAM_RESULTADO) ? new Resultado()
+				: json2Resultado(json.getJSONObject(Constants.PARAM_RESULTADO)));
+		return sancion;
+	}
+
+	public Clasificacion json2Clasificacion(JSONObject json) {
+		Clasificacion clasificacion = new Clasificacion();
+		clasificacion.setPiloto(json.isNull(Constants.PARAM_PILOTO) ? new Piloto()
+				: json2Piloto(json.getJSONObject(Constants.PARAM_PILOTO)));
+		clasificacion.setEquipo(json.isNull(Constants.PARAM_EQUIPO) ? new Equipo()
+				: json2Equipo(json.getJSONObject(Constants.PARAM_EQUIPO)));
+		clasificacion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
+		return clasificacion;
 	}
 
 }

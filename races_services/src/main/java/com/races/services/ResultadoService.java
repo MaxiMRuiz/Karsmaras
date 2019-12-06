@@ -9,6 +9,7 @@ import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Resultado;
+import com.races.entity.Sancion;
 import com.races.entity.Sesion;
 
 /**
@@ -104,5 +105,26 @@ public interface ResultadoService {
 	 * @return
 	 */
 	List<Resultado> buscarListaResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo);
+
+	/**
+	 * Aplica sancion al resultado
+	 * 
+	 * @param newSancion
+	 */
+	void aplicarSancion(Sancion newSancion);
+
+	/**
+	 * Elimina la sancion del resultado
+	 * 
+	 * @param sancion
+	 */
+	void eliminarSancion(Sancion sancion);
+
+	/**
+	 * 
+	 * @param idSesion
+	 * @return
+	 */
+	List<ResultadoResponseDto> buscarResultadosValidos(Long idSesion);
 
 }

@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">Clasificacion de [[${nombre}]]</h2>
+					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead align="center">
+							<tr class="bg-danger text-white">
+								<th width="5%">Posicion</th>
+								<th th:if="${type == 'piloto'}" width="65%">Piloto</th>
+								<th th:if="${type == 'equipo'}" width="65%">Equipo</th>
+								<th width="30%">Puntos</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="clasificacion : ${listaClasificacion}">
+							<td th:if="${clasificacionStat.index == 0}" th:text="${clasificacionStat.index + 1}" align="center"
+								style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>
+							<td th:if="${clasificacionStat.index == 1}" th:text="${clasificacionStat.index + 1}" align="center"
+								style="background-color: rgb(138, 149, 151); font-weight: bold;"></td>
+							<td th:if="${clasificacionStat.index == 2}" th:text="${clasificacionStat.index + 1}" align="center"
+								style="background-color: rgb(205, 127, 50); font-weight: bold; "></td>
+							<td th:if="${clasificacionStat.index > 2}" th:text="${clasificacionStat.index + 1}" align="center"
+								style="background-color: black; font-weight: bold; color: white;"></td>
+							<td th:if="${type == 'piloto'}" th:text="${clasificacion.piloto.toString()}"></td>
+							<td th:if="${type == 'equipo'}" th:text="${clasificacion.equipo.toString()}" align="center"></td>
+							<td th:text="${clasificacion.puntos}" align="center"></td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="6">
+									<div class="row">
+										<a class="button pull-left col-6" th:href="${volver}">
+											<button type="button" class="btn btn-danger btn-primary pull-left"
+												id="cancel" name="cancel">Volver
+											</button>
+										</a>
+										<div class="col-6 centerVertical">
+											<div class="pull-right">
+												<strong><em>Número de filas</em></strong>
+												<select id="nElements" name="nElements" onchange="searchFilter()">
+													<option value="5">5</option>
+													<option value="10" selected="selected">10</option>
+													<option value="15">15</option>
+													<option value="20">20</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: false
+	});
+	function searchFilter() {
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: false
+		})
+	}
+
+	function getNumberOfElements() {
+		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+	}
+
+</script>
+
+</html>

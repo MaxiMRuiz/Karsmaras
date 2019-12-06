@@ -96,4 +96,10 @@ public class Campeonato {
 		this.reglamento = reglamento;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - " + nombre + " " + temporada + " (" + descripcion + ") R["
+				+ (reglamento == null ? "null" : reglamento.getId()) + "]";
+	}
+
 }

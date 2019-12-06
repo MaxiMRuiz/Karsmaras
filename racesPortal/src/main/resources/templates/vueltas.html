@@ -1,0 +1,79 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">Vueltas del Piloto [[${piloto}]] en la sesion [[${nombre}]]</h2>
+					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead align="center">
+							<tr class="bg-danger text-white">
+								<th width="10%">Nº Vuelta</th>
+								<th width="90%">Tiempo</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="vuelta : ${listaVueltas}">
+							<td th:text="${vuelta.nVuelta}" align="center"></td>
+							<td th:text="${vuelta.getTiempoFormat()}" align="center"></td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="2">
+									<a class="button pull-left" th:href="${volver}">
+										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
+											name="cancel">Volver
+										</button>
+									</a>
+									<div class="pull-right">
+										<strong><em>Número de filas</em></strong>
+										<select id="nElements" name="nElements" onchange="searchFilter()">
+											<option value="5">5</option>
+											<option value="10" selected="selected">10</option>
+											<option value="15">15</option>
+											<option value="20">20</option>
+										</select>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: false
+	});
+	function searchFilter() {
+		this.filter();
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: false
+		})
+	}
+
+	function getNumberOfElements() {
+		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+	}
+
+	function filter() {
+		var select, table, tr, td, i;
+		table = document.getElementById("table");
+		tr = table.getElementsByTagName("tr");
+		i = 1;
+	}
+
+</script>
+
+</html>

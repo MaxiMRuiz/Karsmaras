@@ -50,10 +50,10 @@
 								<label for="reglamento"
 									class="col-sm-5 col-form-label"><strong>Reglamento</strong></label>
 								<div class="col-sm-7">
-									<select th:field="*{campeonato.reglamento}" class="inputForm" name="reglamento">
+									<select th:field="*{campeonato.reglamento.id}" class="inputForm" name="reglamento">
 										<option th:each="reglamento : ${reglamentos}" th:value="${reglamento.id}"
-											th:text="${reglamento.id}"
-											th:selected="${reglamento.id == campeonato.reglamento}"></option>
+											th:text="${reglamento}"
+											th:selected="${reglamento.id == campeonato.reglamento.id}"></option>
 									</select>
 								</div>
 							</div>

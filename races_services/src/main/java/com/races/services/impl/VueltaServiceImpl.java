@@ -107,8 +107,8 @@ public class VueltaServiceImpl implements VueltaService {
 		for (FileUploadDto registro : listLines) {
 			List<Piloto> piloto = pilotoService.buscarPilotos(null, null, null, registro.getPiloto());
 			if (!piloto.isEmpty() && pilotoInscrito(piloto.get(0), pilotosInscritos)) {
-				List<Resultado> resultado = resultadoService.buscarListaResultados(null, piloto.get(0).getId(), sesion.getId(),
-						null, null);
+				List<Resultado> resultado = resultadoService.buscarListaResultados(null, piloto.get(0).getId(),
+						sesion.getId(), null, null);
 				listaVueltas.add(new Vuelta(parseTiempo(registro.getTiempo()), registro.getVuelta(), resultado.get(0)));
 			}
 		}
@@ -197,7 +197,8 @@ public class VueltaServiceImpl implements VueltaService {
 
 	@Override
 	public Vuelta buscarVueltaRapida(Resultado resultado) {
-		return vueltaRepo.findByResultadoOrderByTiempoAsc(resultado).get(0);
+		List<Vuelta> lista = vueltaRepo.findByResultadoOrderByTiempoAsc(resultado);
+		return lista.isEmpty() ? null : lista.get(0);
 	}
 
 }

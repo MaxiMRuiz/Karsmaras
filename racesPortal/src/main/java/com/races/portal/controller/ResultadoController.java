@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -60,7 +61,9 @@ public class ResultadoController {
 	}
 
 	@GetMapping(value = "/{idGp}/{idSesion}")
-	public ModelAndView listaResultados(Model model, @PathVariable Long idGp, @PathVariable Long idSesion) {
+	public ModelAndView listaResultados(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		List<Resultado> listaResultados = resultados.buscarResultados(idSesion);
 		model.addAttribute("listaResultados", listaResultados);
 		model.addAttribute(Constants.PARAM_ID, idGp);

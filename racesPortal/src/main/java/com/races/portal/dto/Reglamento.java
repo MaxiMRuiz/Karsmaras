@@ -1,10 +1,5 @@
 package com.races.portal.dto;
 
-
-import com.races.portal.constants.Constants;
-
-import kong.unirest.json.JSONObject;
-
 /**
  * 
  * @author Maximino Mañanes Ruiz
@@ -141,16 +136,7 @@ public class Reglamento {
 
 	@Override
 	public String toString() {
-		JSONObject reglamento = new JSONObject();
-		reglamento.put(Constants.PARAM_ID, "#" + id);
-		reglamento.put(Constants.PARAM_DESCRIPCION, descripcion);
-		reglamento.put(Constants.PARAM_N_ENTRENAMIENTOS, nEntrenamientos);
-		reglamento.put(Constants.PARAM_N_CLASIFICACIONES, nClasificaciones);
-		reglamento.put(Constants.PARAM_N_CARRERAS, nCarreras);
-		reglamento.put(Constants.PARAM_N_PILOTOS, nPilotos);
-		reglamento.put(Constants.PARAM_N_EQUIPOS, nEquipos);
-
-		return reglamento.toString();
+		return "#" + id + " - " + descripcion;
 	}
 
 }

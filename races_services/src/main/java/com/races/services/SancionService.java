@@ -61,4 +61,12 @@ public interface SancionService {
 	 */
 	boolean existeSancion(Long id);
 
+	/**
+	 * Modificacion de una sancion
+	 * @param id
+	 * @param sancionDto
+	 * @return
+	 */
+	Sancion editarSancion(Long id, SancionDto sancionDto) throws RacesException;
+
 }

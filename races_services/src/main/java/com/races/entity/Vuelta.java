@@ -51,7 +51,7 @@ public class Vuelta {
 		this.nVuelta = nVuelta;
 		this.resultado = resultado;
 	}
-	
+
 	/**
 	 * Constructor por parametros
 	 * 
@@ -96,6 +96,12 @@ public class Vuelta {
 
 	public void setResultado(Resultado resultado) {
 		this.resultado = resultado;
+	}
+
+	@Override
+	public String toString() {
+		return "#" + id + " - " + tiempo + "ms - " + nVuelta + "v - R[" + (resultado == null ? "null" : resultado)
+				+ "]";
 	}
 
 }

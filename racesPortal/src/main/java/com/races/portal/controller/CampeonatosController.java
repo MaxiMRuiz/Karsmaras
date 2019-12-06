@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.races.portal.constants.Constants;
 import com.races.portal.dto.Campeonato;
+import com.races.portal.dto.Reglamento;
 import com.races.portal.services.CampeonatoService;
 import com.races.portal.services.ReglamentoService;
 
@@ -51,11 +54,12 @@ public class CampeonatosController {
 	}
 
 	@GetMapping
-	public ModelAndView listaCampeonatos(Model model) {
-
+	public ModelAndView listaCampeonatos(Model model,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		List<Campeonato> listCampeonatos = campeonatos.buscarCampeonatos(null, null, null, null);
 		model.addAttribute("listCampeonatos", listCampeonatos);
-		model.addAttribute("urlServices","/races/campeonatos/");
+		model.addAttribute("urlServices", "/races/campeonatos/");
 		return new ModelAndView("campeonatos");
 	}
 
@@ -65,11 +69,12 @@ public class CampeonatosController {
 		Campeonato campeonato;
 		if ("new".equals(id)) {
 			campeonato = new Campeonato();
-		} else if (id.startsWith("clone")){
+			campeonato.setReglamento(new Reglamento());
+		} else if (id.startsWith("clone")) {
 			String subId = id.substring(5);
 			campeonato = campeonatos.buscarCampeonato(subId);
 			campeonato.setId(null);
-		}else {
+		} else {
 			campeonato = campeonatos.buscarCampeonato(id);
 		}
 		model.addAttribute("reglamentos", reglamentos.buscarReglamentos());
@@ -83,7 +88,7 @@ public class CampeonatosController {
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(campeonatos.borrarCampeonato(id),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(campeonatos.borrarCampeonato(id), HttpStatus.BAD_REQUEST);
 		}
 	}
 

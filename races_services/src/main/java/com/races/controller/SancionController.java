@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,6 +81,25 @@ public class SancionController {
 		try {
 			LOGGER.info("Eliminando Sancion " + id);
 			return new ResponseEntity<>(sancionService.borrarSancion(id), HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error borrando la Sancion " + id + ": " + e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	/**
+	 * Servicio para el borrado de una sancion
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@PutMapping("/sancion/{id}")
+	public ResponseEntity<Sancion> editarSancion(@PathVariable(name = "id") Long id,
+			@RequestBody SancionDto sancionDto) {
+
+		try {
+			LOGGER.info("Eliminando Sancion " + id);
+			return new ResponseEntity<>(sancionService.editarSancion(id, sancionDto), HttpStatus.OK);
 		} catch (RacesException e) {
 			LOGGER.error("Error borrando la Sancion " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

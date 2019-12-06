@@ -9,42 +9,49 @@
 		<div class="row columnaentera">
 			<div th:replace="fragments/menu::menu">
 			</div>
-			<div class="col-xs-10 col-10 align-self-center">
-				<div class="panel-body centerElement">
-					<form id="formularioEquipos" th:action="@{/races/equipos}"
-						class="formAlign bg-white text-dark" action="#" method="post">
-						<div class="centerElement">
-							<div th:if="${equipo.id == null}" class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Nuevo Equipo</h2>
-							</div>
-							<div th:if="${equipo.id != null}" class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Editar Equipo</h2>
-							</div>
-							<input type="hidden" th:field="*{equipo.id}" th:value="${equipo.id}"></input>
-							<div class="form-group row">
-								<label for="Nombre" class="col-sm-5 col-form-label"><strong>Nombre</strong></label>
-								<div class="col-sm-7">
-									<input type="text" class="inputForm" th:field="*{equipo.nombre}"
-										th:value="${equipo.nombre}" required="required"
-										th:readonly="${equipo.id != null}"></input>
+			<div class="col-xs-10 col-10 align-self-center columnaentera">
+				<div class="panel panel-default panel-body centerElement">
+					<div class="container row col-md-12 well well-sm">
+						<form id="formularioEquipos" th:action="@{/races/equipos}"
+							class="form-horizontal inputForm formAlign" action="#" method="post">
+							<fieldset>
+								<legend th:if="${equipo.id == null}" class="text-center header">Nuevo Equipo
+								</legend>
+								<legend th:if="${equipo.id != null}" class="text-center header">Editar Equipo
+									[[${equipo}]]</legend>
+								<input type="hidden" th:field="*{equipo.id}" th:value="${equipo.id}"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+											src="/icons/equipo.png" class="icons" alt="Nombre" title="Nombre">
+										Nombre</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" class="inputForm" th:field="*{equipo.nombre}"
+											th:value="${equipo.nombre}" required="required"
+											th:readonly="${equipo.id != null}" placeholder="Nombre del Equipo"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="descripcion"
-									class="col-sm-5 col-form-label"><strong>Alias</strong></label>
-								<div class="col-sm-7">
-									<input type="text" th:field="*{equipo.alias}"
-										th:value="${equipo.alias}" class="inputForm"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+											src="/icons/equipo.png" class="icons" alt="Alias" title="Alias del Equipo">
+										Alias</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" th:field="*{equipo.alias}" th:value="${equipo.alias}"
+											class="inputForm" placeholder="Alias" required="required"></input>
+									</div>
 								</div>
-							</div>
-							<div><a href="#" th:href="@{/races/equipos}">
-									<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
-										name="cancel">Volver
-									</button>
-								</a>
-								<button type="submit" class="btn btn-primary pull-right">Aceptar</button></div>
-						</div>
-					</form>
+								<div class="form-group">
+									<div class="col-md-12 text-center">
+										<a href="#" th:href="${volver}">
+											<button type="button" class="btn btn-danger btn-primary pull-left"
+												id="cancel" name="cancel">Volver
+											</button>
+										</a>
+										<button type="submit" class="btn btn-primary pull-right">Aceptar</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

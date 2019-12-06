@@ -79,4 +79,11 @@ public interface PuntuacionService {
 	 */
 	void crearPuntuacionesReglamento(Reglamento reglamento);
 
+	/**
+	 * Busca las puntuaciones de un reglamento con mas de 0 puntos
+	 * @param id
+	 * @return
+	 */
+	List<Puntuacion> buscarPuntuacionesValidas(Long id);
+
 }

@@ -4,7 +4,7 @@
 <head th:replace="fragments/header::header-css">
 </head>
 
-<body class="body columnaentera">
+<body class="body columnaentera" onload="searchFilter()">
 	<div class="container-fluid columnaentera">
 		<div class="row columnaentera">
 			<div th:replace="fragments/menu::menu">
@@ -15,23 +15,16 @@
 					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
 						<thead align="center">
 							<tr class="bg-danger text-white">
-								<th width="10%">Id <input type="text" id="id" onkeyup="searchFilter()" placeholder="Id"
-										class="col-6 col-xs-6"></input></th>
-								<th width="20%">Descripcion</th>
+								<th width="5%"><input type="text" id="id" onkeyup="searchFilter()" placeholder="Id"
+										class="col-12 col-xs-12" th:value="${filterId}"></input></th>
+								<th width="50%">Descripcion <input type="text" id="descripcion" onkeyup="searchFilter()"
+										placeholder="Buscar" class="col-10 col-xs-10"></th>
 								<th width="10%">Nº Sesiones</th>
 								<th width="10%">Nº Participantes</th>
-								<th width="20%">Puntuaciones</th>
-								<th width="30%">
-									<div class="col-xs-12 col-md-12 text-left">
-										<strong><em>Número de filas</em></strong>
-										<select id="nElements" name="nElements" onchange="searchFilter()">
-											<option value="5">5</option>
-											<option value="10" selected="selected">10</option>
-											<option value="15">15</option>
-											<option value="20">20</option>
-										</select>
-									</div>
-								</th>
+								<th width="10%">Puntuaciones</th>
+								<th width="5%">Editar</th>
+								<th width="5%">Clonar</th>
+								<th width="5%">Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="bg-white text-black" th:each="reglamento : ${listaReglamentos}">
@@ -53,46 +46,60 @@
 								</a>
 							</td>
 							<td align="center">
-								<div class="row ml-1">
-									<div class="col-4 col-xs-4"><a class="button" href="#"
-											th:href="@{/races/reglamentos/__${reglamento.id}__}">
-											<img class="icons" src="/icons/editar.png" alt="Editar"
-												title="Editar Reglamento"></img>
-										</a>
-									</div>
-									<div class="col-4 col-xs-4">
-										<a class="button" href="#"
-											th:onclick="'borrarreglamento('+ ${reglamento.id} +');'">
-											<img class="icons" src="/icons/borrar.png" alt="Borrar"
-												title="Borrar Reglamento"></img>
-										</a>
-									</div>
-									<div class="col-4 col-xs-4"><a class="button" href="#"
-											th:href="@{/races/reglamentos/clone__${reglamento.id}__}">
-											<img class="icons" src="/icons/copiar.png" alt="Clonar"
-												title="Clonar Reglamento"></img>
-										</a>
-									</div>
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#" th:href="@{/races/reglamentos/__${reglamento.id}__}">
+										<img class="icons" src="/icons/editar.png" alt="Editar"
+											title="Editar Reglamento"></img>
+									</a>
 								</div>
 							</td>
+							<td align="center">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#"
+										th:href="@{/races/reglamentos/clone__${reglamento.id}__}">
+										<img class="icons" src="/icons/copiar.png" alt="Clonar"
+											title="Clonar Reglamento"></img>
+									</a>
+								</div>
+							</td>
+							<td align="center">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#" th:onclick="'borrarreglamento('+ ${reglamento.id} +');'">
+										<img class="icons" src="/icons/borrar.png" alt="Borrar"
+											title="Borrar Reglamento"></img>
+									</a>
+								</div>
+							</td>
+
 						</tbody>
 						<tfoot>
 							<tr>
-								<td colspan="8" class="text-center"> <a class="button" href="/races/reglamentos/new">
-										<button type="button" class="btn btn-success"
-											style="width: -webkit-fill-available;">
-											<img class="icons" src="/icons/reglamento.png"></img> <span
-												class="d-none d-sm-inline"></span>Crear Nuevo Reglamento</span>
-										</button>
-									</a></td>
-							</tr>
-							<tr>
 								<td colspan="8" class="text-center">
-									<a class="button" th:href="@{/races}">
-										<button type="button" class="btn btn-danger btn-primary pull-left" id="cancel"
-											name="cancel">Volver
-										</button>
-									</a>
+									<div class="row">
+										<a class="button pull-left col-3 centerVertical" th:href="${volver}">
+											<button type="button" class="btn btn-danger btn-primary pull-left"
+												id="cancel" name="cancel">Volver
+											</button>
+										</a>
+										<a class="button centerVertical col-6" href="/races/reglamentos/new">
+											<button type="button" class="btn btn-success"
+												style="width: -webkit-fill-available;">
+												<img class="icons" src="/icons/reglamento.png"></img> <span
+													class="d-none d-sm-inline"></span>Crear Nuevo Reglamento</span>
+											</button>
+										</a>
+										<div class="col-3 centerVertical">
+											<div class="pull-right">
+												<strong><em>Número de filas</em></strong>
+												<select id="nElements" name="nElements" onchange="searchFilter()">
+													<option value="5">5</option>
+													<option value="10" selected="selected">10</option>
+													<option value="15">15</option>
+													<option value="20">20</option>
+												</select>
+											</div>
+										</div>
+									</div>
 								</td>
 							</tr>
 						</tfoot>
@@ -141,37 +148,22 @@
 	}
 
 	function filter() {
-		var select, table, tr, td, i;
+		var select, table, tbody, tr, td, i, j;
 		table = document.getElementById("table");
-		tr = table.getElementsByTagName("tr");
-		i = 1;
+		tbody = table.getElementsByTagName("tbody");
+		i = 0;
+		while (tbody.length > i) {
+			tr = tbody[i].getElementsByTagName("tr")[0];
+			j = 0;
+			while (tbody.length > j) {
+				td = tr.children[0];
+				checkColumn(tr, td, document.getElementById("id").value, true);
 
-		while (tr.length > i) {
-			td = tr[i].getElementsByTagName("td")[0];
-			checkColumn(tr[i], td,
-				document.getElementById("id").value, true);
-
-			td = tr[i].getElementsByTagName("td")[1];
-			checkColumn(tr[i], td, document
-				.getElementById("carreras").value,
-				tr[i].style.display == "table-row");
-
-			td = tr[i].getElementsByTagName("td")[2];
-			checkColumn(tr[i], td,
-				document.getElementById("clasis").value,
-				tr[i].style.display == "table-row");
-			td = tr[i].getElementsByTagName("td")[3];
-			checkColumn(tr[i], td,
-				document.getElementById("entrenos").value,
-				tr[i].style.display == "table-row");
-			td = tr[i].getElementsByTagName("td")[4];
-			checkColumn(tr[i], td,
-				document.getElementById("pilotos").value,
-				tr[i].style.display == "table-row");
-			td = tr[i].getElementsByTagName("td")[5];
-			checkColumn(tr[i], td,
-				document.getElementById("equipos").value,
-				tr[i].style.display == "table-row");
+				td = tr.children[1];
+				checkColumn(tr, td, document.getElementById("descripcion").value,
+				tr.style.display == "table-row");
+				j++;
+			}
 			i++;
 		}
 	}

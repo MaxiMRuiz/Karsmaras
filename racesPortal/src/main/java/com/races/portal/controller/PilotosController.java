@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.races.portal.constants.Constants;
 import com.races.portal.dto.Piloto;
 import com.races.portal.services.PilotoService;
 
@@ -53,7 +55,9 @@ public class PilotosController {
 	}
 
 	@GetMapping
-	public ModelAndView listaPilotos(Model model) {
+	public ModelAndView listaPilotos(Model model,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 
 		List<Piloto> listaPilotos = pilotos.buscarPilotos(null, null, null, null);
 		model.addAttribute("listaPilotos", listaPilotos);
@@ -62,8 +66,9 @@ public class PilotosController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView formularioPilotos(Model model, @PathVariable String id) {
-
+	public ModelAndView formularioPilotos(Model model, @PathVariable String id,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		Piloto piloto;
 		if ("new".equals(id)) {
 			piloto = new Piloto();

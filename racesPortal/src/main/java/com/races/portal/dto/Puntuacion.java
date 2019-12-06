@@ -89,7 +89,7 @@ public class Puntuacion {
 
 	@Override
 	public String toString() {
-		return tipoSesion + ": " + posicion + "º -> " + puntos + "p.";
+		return posicion + "º -> " + puntos + "p.";
 	}
 
 }

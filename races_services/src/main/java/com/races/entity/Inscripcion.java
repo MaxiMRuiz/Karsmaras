@@ -102,4 +102,10 @@ public class Inscripcion {
 		this.equipo = equipo;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - C[" + (campeonato == null ? "null" : campeonato) + "] - P["
+				+ (piloto == null ? "null" : piloto) + "] - E[" + (equipo == null ? "null" : equipo) + "]";
+	}
+
 }

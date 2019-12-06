@@ -1,6 +1,7 @@
 package com.races.repository;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,13 @@ import com.races.entity.Puntuacion;
  */
 @Repository("PuntuacionRepository")
 public interface PuntuacionRepository extends JpaRepository<Puntuacion, Serializable>{
+
+	/**
+	 * 
+	 * @param id
+	 * @param i
+	 * @return
+	 */
+	List<Puntuacion> findByReglamentoIdAndPuntosGreaterThan(Long id, int i);
 
 }

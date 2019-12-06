@@ -23,6 +23,11 @@ html {
     width: 90%;
 }
 
+.centerVertical {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
 .formAlign {
     margin-left: 20%;
     width: initial;

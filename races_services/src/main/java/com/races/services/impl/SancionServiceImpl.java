@@ -43,22 +43,21 @@ public class SancionServiceImpl implements SancionService {
 		if (sancionRepo.findOne(Example.of(newSancion)).isPresent()) {
 			throw new RacesException("Sancion duplicada");
 		}
-		return sancionRepo.save(newSancion);
+		newSancion = sancionRepo.save(newSancion);
+		resultadoService.aplicarSancion(newSancion);
+		return newSancion;
 	}
 
 	@Override
 	public List<Sancion> buscarSanciones(Long id, Long idResultado, Integer puntos, Integer tiempo) {
-		if (id == null && idResultado == null && puntos == null && tiempo == null) {
+		try {
+			Sancion probe = new Sancion(id == null ? null : id,
+					idResultado == null ? null : resultadoService.buscarResultado(idResultado), null,
+					puntos == null ? null : puntos, tiempo == null ? null : tiempo);
+			return sancionRepo.findAll(Example.of(probe));
+		} catch (RacesException e) {
+			LOGGER.error(e);
 			return sancionRepo.findAll();
-		} else {
-			try {
-				Sancion probe = new Sancion(id, resultadoService.buscarResultado(idResultado), null, puntos, tiempo);
-				return sancionRepo.findAll(Example.of(probe));
-			} catch (RacesException e) {
-				LOGGER.error(e);
-				return sancionRepo.findAll();
-			}
-
 		}
 
 	}
@@ -80,8 +79,22 @@ public class SancionServiceImpl implements SancionService {
 
 	@Override
 	public boolean borrarSancion(Long id) throws RacesException {
-		sancionRepo.delete(buscarSancion(id));
+		Sancion sancion = buscarSancion(id);
+		resultadoService.eliminarSancion(sancion);
+		sancionRepo.delete(sancion);
 		return true;
+	}
+
+	@Override
+	public Sancion editarSancion(Long id, SancionDto sancionDto) throws RacesException {
+		Sancion sancion = buscarSancion(id);
+		sancion.setDescripcion(sancionDto.getDescripcion());
+		sancion.setPuntos(sancionDto.getPuntos());
+		resultadoService.eliminarSancion(sancion);
+		sancion.setTiempo(sancionDto.getTiempo());
+		sancion = sancionRepo.save(sancion);
+		resultadoService.aplicarSancion(sancion);
+		return sancion;
 	}
 
 }

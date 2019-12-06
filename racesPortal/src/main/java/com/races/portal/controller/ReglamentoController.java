@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.races.portal.constants.Constants;
 import com.races.portal.dto.Reglamento;
 import com.races.portal.services.ReglamentoService;
 
@@ -47,10 +50,14 @@ public class ReglamentoController {
 	}
 
 	@GetMapping
-	public ModelAndView listaReglamentos(Model model) {
+	public ModelAndView listaReglamentos(Model model,
+			@RequestParam(required = false, value = "filterId") String filterId,
+			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		List<Reglamento> listaReglamentos = reglamentos.buscarReglamentos();
 		model.addAttribute("listaReglamentos", listaReglamentos);
 		model.addAttribute("urlServices", "/races/reglamentos/");
+		model.addAttribute("filterId", filterId);
 		return new ModelAndView("reglamentos");
 	}
 

@@ -98,4 +98,10 @@ public class Resultado {
 		this.tiempo = tiempo;
 	}
 
+	@Override
+	public String toString() {
+		return "#" + id + " - P[" + (piloto == null ? "null" : piloto) + "] S[" + (sesion == null ? "null" : sesion) + "] "
+				+ nVueltas + "v. " + tiempo + "ms";
+	}
+
 }

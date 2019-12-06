@@ -1,0 +1,133 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement">
+					<h2 class="text-center racesTitle">Sanciones del piloto [[${piloto}]] en la sesion [[${nombre}]]
+					</h2>
+					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead align="center">
+							<tr class="bg-danger text-white">
+								<th width="70%">Motivo</th>
+								<th width="10%">Puntos</th>
+								<th width="10%">Tiempo (seg.)</th>
+								<th width="5%">Editar</th>
+								<th width="5%">Borrar</th>
+							</tr>
+						</thead>
+						<tbody class="bg-white text-black" th:each="sancion : ${listaSanciones}">
+							<td th:text="${sancion.descripcion}"></td>
+							<td>
+									<img class="icons" src="/icons/puntos.png" alt="Puntos"
+									title="Puntos"></img>[[${sancion.puntos}]]
+							</td>
+							<td>
+									<img class="icons" src="/icons/vuelta.png" alt="Tiempo"
+									title="Tiempo"></img>[[${sancion.tiempo}]]
+							</td>
+							<td align="center">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#"
+										th:href="@{/races/sancion/__${id}__/__${idSesion}__/__${idResultado}__/__${sancion.id}__}">
+										<img class="icons" src="/icons/editar.png" alt="Editar"
+											title="Editar sancion"></img>
+									</a>
+								</div>
+							</td>
+							<td align="center">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#" th:onclick="'borrarSancion('+ ${sancion.id} +');'">
+										<img class="icons" src="/icons/borrar.png" alt="Eliminar"
+											title="Borrar Sancion"></img>
+									</a>
+								</div>
+							</td>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5" class="text-center">
+									<div class="row">
+										<a class="button col-3 centerVertical"
+										th:href="${volver}">
+											<button type="button" class="btn btn-danger btn-primary pull-left"
+												id="cancel" name="cancel">Volver
+											</button>
+										</a>
+										<a class="button col-6 centerVertical"
+											th:href="@{/races/sancion/__${id}__/__${idSesion}__/__${idResultado}__/new}">
+											<button type="button" class="btn btn-success"
+												style="width: -webkit-fill-available;">
+												<img class="icons" src="/icons/sancion.png"></img> <span
+													class="d-none d-sm-inline"></span>Crear Nueva Sancion</span>
+											</button>
+										</a>
+										<div class="col-3 centerVertical">
+											<div class="pull-right">
+												<strong><em>Número de filas</em></strong>
+												<select id="nElements" name="nElements" onchange="searchFilter()">
+													<option value="1" selected="selected">1</option>
+													<option value="3">3</option>
+													<option value="5">5</option>
+													<option value="10">10</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+
+	var href = document.getElementById("urlServices").value;
+	function borrarSancion(id) {
+		if (id == null) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + '/' + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: false
+	});
+	function searchFilter() {
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: false
+		})
+	}
+
+	function getNumberOfElements() {
+		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+	}
+
+</script>
+
+</html>

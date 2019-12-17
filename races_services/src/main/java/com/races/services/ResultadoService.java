@@ -98,13 +98,13 @@ public interface ResultadoService {
 	 * Busqueda de listado de resultados
 	 * 
 	 * @param id
-	 * @param idPiloto
+	 * @param idInscripcion
 	 * @param idSesion
 	 * @param nVueltas
 	 * @param tiempo
 	 * @return
 	 */
-	List<Resultado> buscarListaResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo);
+	List<Resultado> buscarListaResultados(Long id, Long idInscripcion, Long idSesion, Integer nVueltas, Integer tiempo);
 
 	/**
 	 * Aplica sancion al resultado

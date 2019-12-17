@@ -43,5 +43,15 @@
     "name": "driver-class-name",
     "type": "java.lang.String",
     "description": "A description for 'driver-class-name'"
+  },
+  {
+    "name": "files",
+    "type": "java.lang.String",
+    "description": "A description for 'files'"
+  },
+  {
+    "name": "race.files.upload.basepath",
+    "type": "java.lang.String",
+    "description": "A description for 'race.files.upload.basepath'"
   }
 ]}

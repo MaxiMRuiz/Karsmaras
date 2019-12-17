@@ -3,7 +3,6 @@ package com.races.services.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
@@ -69,13 +68,21 @@ public class PilotoServiceImpl implements PilotoService {
 	}
 
 	@Override
-	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo) {
-		if (id == null && StringUtils.isBlank(nombre) && StringUtils.isBlank(apellido) && StringUtils.isBlank(apodo)) {
-			return pilotoRepo.findAll();
+	public Piloto buscarPiloto(String apodo) throws RacesException {
+		Optional<Piloto> opPiloto = pilotoRepo.findByApodo(apodo);
+		if (opPiloto.isPresent()) {
+			return opPiloto.get();
 		} else {
-			Example<Piloto> example = Example.of(new Piloto(id, nombre, apellido, apodo));
-			return pilotoRepo.findAll(example);
+			throw new RacesException("Piloto no encontrado");
 		}
+	}
+	
+	@Override
+	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo) {
+
+		Example<Piloto> example = Example.of(new Piloto(id, nombre, apellido, apodo));
+		return pilotoRepo.findAll(example);
+
 	}
 
 	@Override

@@ -1,28 +1,36 @@
 <div th:fragment="menu" class="column col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 menu " id="sidebar">
     <ul class="nav flex-column flex-nowrap overflow-hidden col-12 col-xs-12">
         <li class="nav-item" style="background: linear-gradient(90deg, red, transparent 80px);">
-            <a class="nav-link text-truncate menuoption" href="/races"><img class="icons" src="/icons/main.png"></img>
+            <a class="nav-link text-truncate menuoption" href="/races"><img class="iconsmenu"
+                    src="/icons/main.png"></img>
                 <span class="d-none d-sm-inline">RACES MANAGEMENT</span></a>
         </li>
         <li>
             <hr style="height:1px" color="black">
         </li>
-        <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/campeonatos"><img class="icons"
+        <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/campeonatos"><img class="iconsmenu"
                     src="/icons/campeonato.png"></img> <span class="d-none d-sm-inline">Campeonatos</span></a></li>
         <li>
             <hr style="height:1px" color="black">
         </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/reglamentos"><img class="icons"
-                    src="/icons/reglamento.png"></img> <span class="d-none d-sm-inline">Reglamento</span></a></li>
+        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/reglamentos"><img
+                    class="iconsmenu" src="/icons/reglamento.png"></img> <span
+                    class="d-none d-sm-inline">Reglamento</span></a></li>
         <li>
             <hr style="height:1px" color="black">
         </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/pilotos"><img class="icons"
+        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/pilotos"><img class="iconsmenu"
                     src="/icons/piloto.png"></img> <span class="d-none d-sm-inline">Pilotos</span></a></li>
         <li>
             <hr style="height:1px" color="black">
         </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/equipos"><img class="icons"
+        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/equipos"><img class="iconsmenu"
                     src="/icons/equipo.png"></img> <span class="d-none d-sm-inline">Equipos</span></a></li>
+        <li>
+            <hr style="height:1px" color="black">
+        </li>
+        <li class="nav-item"><a class="nav-link text-truncate menuoption" th:href="@{__${volver}__}"><img
+                    class="iconsmenu" src="/icons/volver.png"></img> <span class="d-none d-sm-inline">Volver</span></a>
+        </li>
     </ul>
 </div>

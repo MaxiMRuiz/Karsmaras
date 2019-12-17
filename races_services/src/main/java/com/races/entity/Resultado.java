@@ -22,8 +22,8 @@ public class Resultado {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_piloto")
-	private Piloto piloto;
+	@JoinColumn(name = "id_inscripcion")
+	private Inscripcion inscripcion;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_sesion")
@@ -49,10 +49,10 @@ public class Resultado {
 	 * @param nVueltas
 	 * @param tiempo
 	 */
-	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer nVueltas, Integer tiempo) {
+	public Resultado(Long id, Inscripcion inscripcion, Sesion sesion, Integer nVueltas, Integer tiempo) {
 		super();
 		this.id = id;
-		this.piloto = piloto;
+		this.inscripcion = inscripcion;
 		this.sesion = sesion;
 		this.nVueltas = nVueltas;
 		this.tiempo = tiempo;
@@ -66,12 +66,12 @@ public class Resultado {
 		this.id = id;
 	}
 
-	public Piloto getPiloto() {
-		return piloto;
+	public Inscripcion getInscripcion() {
+		return inscripcion;
 	}
 
-	public void setPiloto(Piloto piloto) {
-		this.piloto = piloto;
+	public void setInscripcion(Inscripcion inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 
 	public Sesion getSesion() {
@@ -100,8 +100,8 @@ public class Resultado {
 
 	@Override
 	public String toString() {
-		return "#" + id + " - P[" + (piloto == null ? "null" : piloto) + "] S[" + (sesion == null ? "null" : sesion) + "] "
-				+ nVueltas + "v. " + tiempo + "ms";
+		return "#" + id + " - I[" + (inscripcion == null ? "null" : inscripcion) + "] S["
+				+ (sesion == null ? "null" : sesion) + "] " + nVueltas + "v. " + tiempo + "ms";
 	}
 
 }

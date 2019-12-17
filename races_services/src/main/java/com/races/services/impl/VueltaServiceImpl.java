@@ -8,13 +8,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
 import com.races.constants.Constants;
 import com.races.dto.FileUploadDto;
 import com.races.dto.VueltaDto;
-import com.races.entity.Piloto;
+import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.Sesion;
 import com.races.entity.Vuelta;
@@ -71,7 +72,8 @@ public class VueltaServiceImpl implements VueltaService {
 		} else {
 			try {
 				return vueltaRepo.findAll(
-						Example.of(new Vuelta(id, tiempo, nVuelta, resultadoService.buscarResultado(idResultado))));
+						Example.of(new Vuelta(id, tiempo, nVuelta, resultadoService.buscarResultado(idResultado))),
+						new Sort(Sort.Direction.ASC, "nVuelta"));
 			} catch (RacesException e) {
 				LOGGER.error(e);
 				return vueltaRepo.findAll();
@@ -103,27 +105,21 @@ public class VueltaServiceImpl implements VueltaService {
 	@Override
 	public void cargarVueltas(List<FileUploadDto> listLines, Sesion sesion) throws RacesException {
 		List<Vuelta> listaVueltas = new ArrayList<>();
-		List<Piloto> pilotosInscritos = inscripciones.buscarPilotos(sesion.getGranPremio().getCampeonato());
 		for (FileUploadDto registro : listLines) {
-			List<Piloto> piloto = pilotoService.buscarPilotos(null, null, null, registro.getPiloto());
-			if (!piloto.isEmpty() && pilotoInscrito(piloto.get(0), pilotosInscritos)) {
-				List<Resultado> resultado = resultadoService.buscarListaResultados(null, piloto.get(0).getId(),
-						sesion.getId(), null, null);
-				listaVueltas.add(new Vuelta(parseTiempo(registro.getTiempo()), registro.getVuelta(), resultado.get(0)));
+			try {
+				List<Inscripcion> inscritos = inscripciones.buscarInscripciones(sesion.getGranPremio().getCampeonato().getId(),pilotoService.buscarPiloto(registro.getPiloto()).getId(),null);
+				if (!inscritos.isEmpty()) {
+					List<Resultado> resultado = resultadoService.buscarListaResultados(null, inscritos.get(0).getId(),
+							sesion.getId(), null, null);
+					vueltaRepo.deleteAll(vueltaRepo.findByResultadoOrderByTiempoAsc(resultado.get(0)));
+					listaVueltas
+							.add(new Vuelta(parseTiempo(registro.getTiempo()), registro.getVuelta(), resultado.get(0)));
+				}
+			} catch (RacesException e) {
+				LOGGER.warn(e.getMessage());
 			}
 		}
 		actualizarRegistros(listaVueltas);
-	}
-
-	/**
-	 * Metodo que comprueba si el piloto esta inscrito en el campeonato
-	 * 
-	 * @param piloto
-	 * @param pilotosInscritos
-	 * @return
-	 */
-	private boolean pilotoInscrito(Piloto piloto, List<Piloto> pilotosInscritos) {
-		return pilotosInscritos.contains(piloto);
 	}
 
 	/**
@@ -135,7 +131,9 @@ public class VueltaServiceImpl implements VueltaService {
 		Optional<Vuelta> prueba;
 		Vuelta registro;
 		List<Vuelta> saveAllList = new ArrayList<>();
+
 		for (Vuelta vuelta : listaVueltas) {
+			LOGGER.info(vuelta);
 			prueba = vueltaRepo.findOne(Example.of(new Vuelta(null, vuelta.getnVuelta(), vuelta.getResultado())));
 			if (prueba.isPresent()) {
 				registro = prueba.get();

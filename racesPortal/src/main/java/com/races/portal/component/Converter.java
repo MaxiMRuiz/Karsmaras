@@ -190,8 +190,8 @@ public class Converter {
 	public Resultado json2Resultado(JSONObject json) {
 		Resultado resultado = new Resultado();
 		resultado.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
-		resultado.setPiloto(json.isNull(Constants.PARAM_PILOTO) ? new Piloto()
-				: json2Piloto(json.getJSONObject(Constants.PARAM_PILOTO)));
+		resultado.setInscripcion(json.isNull(Constants.PARAM_INSCRIPCION) ? new Inscripcion()
+				: json2Inscripcion(json.getJSONObject(Constants.PARAM_INSCRIPCION)));
 		resultado.setSesion(json.isNull(Constants.PARAM_SESION) ? new Sesion()
 				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
 		resultado.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
@@ -216,7 +216,7 @@ public class Converter {
 		sancion.setDescripcion(
 				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
 		sancion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
-		sancion.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
+		sancion.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? "0" : "" + Double.valueOf(json.getInt(Constants.PARAM_TIEMPO))/1000);
 		sancion.setResultado(json.isNull(Constants.PARAM_RESULTADO) ? new Resultado()
 				: json2Resultado(json.getJSONObject(Constants.PARAM_RESULTADO)));
 		return sancion;
@@ -224,10 +224,10 @@ public class Converter {
 
 	public Clasificacion json2Clasificacion(JSONObject json) {
 		Clasificacion clasificacion = new Clasificacion();
-		clasificacion.setPiloto(json.isNull(Constants.PARAM_PILOTO) ? new Piloto()
-				: json2Piloto(json.getJSONObject(Constants.PARAM_PILOTO)));
-		clasificacion.setEquipo(json.isNull(Constants.PARAM_EQUIPO) ? new Equipo()
-				: json2Equipo(json.getJSONObject(Constants.PARAM_EQUIPO)));
+		clasificacion.setPiloto(json.isNull(Constants.PARAM_INSCRIPCION) ? new Piloto()
+				: json2Piloto(json.getJSONObject(Constants.PARAM_INSCRIPCION).getJSONObject(Constants.PARAM_PILOTO)));
+		clasificacion.setEquipo(json.isNull(Constants.PARAM_INSCRIPCION) ? new Equipo()
+				: json2Equipo(json.getJSONObject(Constants.PARAM_INSCRIPCION).getJSONObject(Constants.PARAM_EQUIPO)));
 		clasificacion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
 		return clasificacion;
 	}

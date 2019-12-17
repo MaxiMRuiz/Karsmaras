@@ -1,42 +1,33 @@
 package com.races.dto;
 
-import com.races.entity.Piloto;
+import com.races.entity.Inscripcion;
 
 public class ClasificacionDto implements Comparable<ClasificacionDto> {
 
-	private Piloto piloto;
+	private Inscripcion inscripcion;
 
 	private Integer puntos;
 
+	private Integer[] puestos;
+
 	/**
 	 * 
-	 */
-	public ClasificacionDto() {
-		super();
-	}
-
-	/**
 	 * @param piloto
 	 * @param puntos
+	 * @param puestos
+	 * @param puesto
 	 */
-	public ClasificacionDto(Piloto piloto, Integer puntos) {
+	public ClasificacionDto(Inscripcion inscripcion, Integer puntos, Integer[] puestos, Integer puesto, boolean isCarrera) {
 		super();
-		this.piloto = piloto;
+		this.inscripcion = inscripcion;
 		this.puntos = puntos;
-	}
-
-	/**
-	 * @return the piloto
-	 */
-	public Piloto getPiloto() {
-		return piloto;
-	}
-
-	/**
-	 * @param piloto the piloto to set
-	 */
-	public void setPiloto(Piloto piloto) {
-		this.piloto = piloto;
+		this.puestos = puestos;
+		for(int i =0 ; i < puestos.length; i++) {
+			this.puestos[i]=0;
+		}
+		if (isCarrera && puesto > puestos.length) {
+			this.puestos[puesto] = 1;
+		}
 	}
 
 	/**
@@ -61,7 +52,44 @@ public class ClasificacionDto implements Comparable<ClasificacionDto> {
 		if (puntos > o.getPuntos()) {
 			return -1;
 		}
+		int i = 0;
+		while (this.puestos.length > i) {
+			if (puestos[i] < o.getPuestos()[i]) {
+				return 1;
+			}
+			if (puestos[i] > o.getPuestos()[i]) {
+				return -1;
+			}
+			i++;
+		}
 		return 0;
+	}
+
+	public Integer[] getPuestos() {
+		return puestos;
+	}
+
+	public void setPuestos(Integer[] puestos) {
+		this.puestos = puestos;
+	}
+
+	public void addPuesto(Integer posicion) {
+		this.puestos[posicion] = this.puestos[posicion] + 1;
+	}
+
+	public void mergePuestos(Integer[] puestos2) {
+		for (int i = 0; i < this.puestos.length && i < puestos2.length; i++) {
+
+			this.puestos[i] = this.puestos[i] + puestos2[i];
+		}
+	}
+
+	public Inscripcion getInscripcion() {
+		return inscripcion;
+	}
+
+	public void setInscripcion(Inscripcion inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 
 }

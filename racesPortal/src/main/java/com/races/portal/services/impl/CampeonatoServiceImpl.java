@@ -46,7 +46,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		List<Campeonato> listCampeonatos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.buscar");
-
+		LOGGER.info("Enviando peticion [" + HttpMethod.GET + "] a: " + url);
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
@@ -68,7 +68,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 	public Campeonato buscarCampeonato(String id) {
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.campeonatos.buscar");
-
+		LOGGER.info("Enviando peticion [" + HttpMethod.GET + "] a: " + url);
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
@@ -100,11 +100,10 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 		body.put(Constants.PARAM_NOMBRE, campeonato.getNombre());
 		body.put(Constants.PARAM_TEMPORADA, campeonato.getTemporada());
 		body.put(Constants.PARAM_REGLAMENTO, campeonato.getReglamento());
-		
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
-
+		LOGGER.info("Enviando peticion [" + HttpMethod.PUT + "] a: " + url);
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
@@ -132,7 +131,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
-
+		LOGGER.info("Enviando peticion [" + HttpMethod.POST + "] a: " + url);
 		try {
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.POST);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
@@ -154,6 +153,7 @@ public class CampeonatoServiceImpl implements CampeonatoService {
 				+ id;
 
 		try {
+			LOGGER.info("Enviando peticion [" + HttpMethod.DELETE + "] a: " + url);
 			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));

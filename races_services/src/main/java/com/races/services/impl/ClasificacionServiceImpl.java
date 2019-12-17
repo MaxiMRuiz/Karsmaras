@@ -6,14 +6,14 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-//import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.races.constants.Constants;
 import com.races.dto.ClasificacionDto;
 import com.races.dto.GranPremioSesionesDto;
 import com.races.dto.ResultadoResponseDto;
-import com.races.entity.Piloto;
+import com.races.entity.Inscripcion;
 import com.races.entity.Puntuacion;
 import com.races.entity.Sancion;
 import com.races.entity.Sesion;
@@ -66,7 +66,7 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 					+ granPremio.get(0).getGp().getCampeonato().getReglamento());
 			List<Puntuacion> puntuaciones = puntuacionService
 					.buscarPuntuacionesValidas(granPremio.get(0).getGp().getCampeonato().getReglamento().getId());
-			LOGGER.info("Encontradas " + puntuaciones.size() + " posiciones.");
+			LOGGER.info(Constants.ENCONTRADAS + puntuaciones.size() + " posiciones.");
 			return calcularClasificacionGranPremio(granPremio.get(0), puntuaciones);
 		}
 	}
@@ -83,10 +83,11 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 			for (ResultadoResponseDto resultado : resultados) {
 				if (resultado.getnVueltas() > 0) {
 					List<Sancion> sanciones = sancionService.buscarSanciones(null, resultado.getId(), null, null);
-					LOGGER.info("Encontradas " + sanciones.size() + " sanciones");
-					LOGGER.info("Actualizando el resultado del piloto " + resultado.getPiloto());
-					actualizarClasificacion(clasificaciones, resultado.getPiloto(),
-							getPuntuacion(puntuaciones, j, sanciones, sesion.getTipoSesion()));
+					LOGGER.info(Constants.ENCONTRADAS + sanciones.size() + " sanciones");
+					LOGGER.info("Actualizando el resultado del piloto " + resultado.getInscripcion().getPiloto());
+					actualizarClasificacion(clasificaciones, resultado.getInscripcion(),
+							getPuntuacion(puntuaciones, j, sanciones, sesion.getTipoSesion()), resultados.size(),
+							(j - 1), resultado.getSesion().getTipoSesion().getDescripcion().equals(Constants.CARRERA));
 					j++;
 				}
 
@@ -96,17 +97,22 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 		return clasificaciones;
 	}
 
-	private void actualizarClasificacion(List<ClasificacionDto> clasificaciones, Piloto piloto, Integer puntuacion) {
+	private void actualizarClasificacion(List<ClasificacionDto> clasificaciones, Inscripcion inscripcion,
+			Integer puntuacion, int totalResultados, Integer posicion, boolean isCarrera) {
 		for (ClasificacionDto clasificacion : clasificaciones) {
-			if (clasificacion.getPiloto().getId().equals(piloto.getId())) {
-				LOGGER.info("Sumando los puntos del piloto " + piloto + " de " + clasificacion.getPuntos() + " a "
-						+ (clasificacion.getPuntos() + puntuacion));
+			if (clasificacion.getInscripcion().getId().equals(inscripcion.getId())) {
+				LOGGER.info("Sumando los puntos del piloto " + inscripcion.getPiloto() + " de "
+						+ clasificacion.getPuntos() + " a " + (clasificacion.getPuntos() + puntuacion));
 				clasificacion.setPuntos(clasificacion.getPuntos() + puntuacion);
+				if (isCarrera) {
+					clasificacion.addPuesto(posicion);
+				}
 				return;
 			}
 		}
-		LOGGER.info("Piloto no encontrado en la lista, añadiendo el resultado del piloto " + piloto);
-		clasificaciones.add(new ClasificacionDto(piloto, puntuacion));
+		LOGGER.info("Piloto no encontrado en la lista, añadiendo el resultado del piloto " + inscripcion.getPiloto());
+		clasificaciones
+				.add(new ClasificacionDto(inscripcion, puntuacion, new Integer[totalResultados], posicion, isCarrera));
 	}
 
 	private Integer getPuntuacion(List<Puntuacion> puntuaciones, int j, List<Sancion> sanciones,
@@ -136,7 +142,7 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 				"Obteniendo las puntuaciones del Reglamento " + listaGp.get(0).getGp().getCampeonato().getReglamento());
 		List<Puntuacion> puntuaciones = puntuacionService
 				.buscarPuntuacionesValidas(listaGp.get(0).getGp().getCampeonato().getReglamento().getId());
-		LOGGER.info("Encontradas " + puntuaciones.size() + " posiciones.");
+		LOGGER.info(Constants.ENCONTRADAS + puntuaciones.size() + " posiciones.");
 		for (GranPremioSesionesDto granPremio : listaGp) {
 			clasificacionGp = calcularClasificacionGranPremio(granPremio, puntuaciones);
 			if (count == 0) {
@@ -152,15 +158,23 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 
 	private void actualizarClasificacionGeneral(List<ClasificacionDto> clasificaciones,
 			List<ClasificacionDto> clasificacionGp) {
-		for (ClasificacionDto clasificacionGeneral : clasificaciones) {
-			for (ClasificacionDto clasficacionGranPremio : clasificacionGp) {
-				if (clasificacionGeneral.getPiloto().getId().equals(clasficacionGranPremio.getPiloto().getId())) {
+		boolean nuevo = true;
+		for (ClasificacionDto clasficacionGranPremio : clasificacionGp) {
+			for (ClasificacionDto clasificacionGeneral : clasificaciones) {
+				if (clasificacionGeneral.getInscripcion().getId()
+						.equals(clasficacionGranPremio.getInscripcion().getId())) {
 					LOGGER.info("Sumando " + clasificacionGeneral.getPuntos() + " con "
 							+ clasficacionGranPremio.getPuntos());
 					clasificacionGeneral
 							.setPuntos(clasificacionGeneral.getPuntos() + clasficacionGranPremio.getPuntos());
+					clasificacionGeneral.mergePuestos(clasficacionGranPremio.getPuestos());
+					nuevo = false;
 				}
 			}
+			if (nuevo) {
+				clasificaciones.add(clasficacionGranPremio);
+			}
+			nuevo = true;
 		}
 	}
 

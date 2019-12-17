@@ -71,4 +71,12 @@ public interface InscripcionService {
 	 */
 	List<Piloto> buscarPilotos(Campeonato campeonato);
 
+	/**
+	 * Busca la inscripcion por id
+	 * @param idInscripcion
+	 * @return
+	 * @throws RacesException 
+	 */
+	Inscripcion buscarInscripcion(Long idInscripcion) throws RacesException;
+
 }

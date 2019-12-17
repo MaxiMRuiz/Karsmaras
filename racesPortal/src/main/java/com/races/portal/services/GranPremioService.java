@@ -13,4 +13,6 @@ public interface GranPremioService {
 
 	Boolean borrarGP(String id);
 
+	GranPremio buscarGranPremio(Long id);
+
 }

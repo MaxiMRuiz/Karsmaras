@@ -6,7 +6,7 @@ public class Sancion {
 	private Resultado resultado;
 	private String descripcion;
 	private Integer puntos;
-	private Integer tiempo;
+	private String tiempo;
 
 	/**
 	 * 
@@ -22,7 +22,7 @@ public class Sancion {
 	 * @param puntos
 	 * @param tiempo
 	 */
-	public Sancion(Long id, Resultado resultado, String descripcion, Integer puntos, Integer tiempo) {
+	public Sancion(Long id, Resultado resultado, String descripcion, Integer puntos, String tiempo) {
 		super();
 		this.id = id;
 		this.resultado = resultado;
@@ -90,14 +90,14 @@ public class Sancion {
 	/**
 	 * @return the tiempo
 	 */
-	public Integer getTiempo() {
+	public String getTiempo() {
 		return tiempo;
 	}
 
 	/**
 	 * @param tiempo the tiempo to set
 	 */
-	public void setTiempo(Integer tiempo) {
+	public void setTiempo(String tiempo) {
 		this.tiempo = tiempo;
 	}
 

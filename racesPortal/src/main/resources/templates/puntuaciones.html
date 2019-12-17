@@ -10,10 +10,10 @@
 			<div th:replace="fragments/menu::menu">
 			</div>
 			<div class="col-xs-10 col-10">
-				<div class="table-responsive centerElement">
-					<h2 class="text-center racesTitle">SISTEMA DE PUNTUACION DEL REGLAMENTO [[${id}]]</h2>
-					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center">
+				<div class="table-responsive centerElement" id="content">
+					<h2 class="text-center racesTitle" id="title">SISTEMA DE PUNTUACION DEL REGLAMENTO [[${id}]]</h2>
+					<table class="table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead align="center" id="thead">
 							<tr class="bg-danger text-white">
 								<th width="10%"><select class="custom-select d-block w-100" id="sesion" name="sesion"
 										onchange="searchFilter()">
@@ -27,9 +27,9 @@
 							</tr>
 						</thead>
 						<tbody class="bg-white text-black" th:each="puntuacion : ${listaPuntuaciones}">
-							<td align="center" th:text="${puntuacion.tipoSesion.descripcion}"></td>
-							<td align="center" th:text="${puntuacion.toString()}"></td>
-							<td align="center">
+							<td class="td-table" th:text="${puntuacion.tipoSesion.descripcion}"></td>
+							<td class="td-table" th:text="${puntuacion.toString()}"></td>
+							<td class="td-table">
 								<div class="col-12 col-xs-12"><a class="button" href="#"
 										th:href="@{/races/puntuaciones/__${id}__/__${puntuacion.id}__}">
 										<img class="icons" src="/icons/editar.png" alt="Modificar"
@@ -38,31 +38,6 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="8" class="text-center">
-									<div class="row">
-										<a class="button pull-left col-6 centerVertical"
-										th:href="${volver}">
-											<button type="button" class="btn btn-danger btn-primary pull-left"
-												id="cancel" name="cancel">Volver
-											</button>
-										</a>
-										<div class="col-6 centerVertical">
-											<div class="pull-right">
-												<strong><em>Número de filas</em></strong>
-												<select id="nElements" name="nElements" onchange="searchFilter()">
-													<option value="5">5</option>
-													<option value="10" selected="selected">10</option>
-													<option value="15">15</option>
-													<option value="20">20</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</td>
-							</tr>
-						</tfoot>
 					</table>
 				</div>
 			</div>
@@ -84,7 +59,13 @@
 	}
 
 	function getNumberOfElements() {
-		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+
+		let heightTitle = document.getElementById("title").offsetHeight;
+		let heightContent = window.screen.height - 2 * document.getElementById("content").offsetTop;
+		let heightHead = document.getElementById("thead").offsetHeight;
+		// let heightFoot = document.getElementById("tfoot").offsetHeight;
+		let tam = document.getElementsByClassName("td-table")[0].offsetHeight;
+		return (heightContent - (heightTitle * 2) - (heightHead * 4) - (tam * 2)) / tam;
 	}
 
 	function filter() {

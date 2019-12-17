@@ -67,4 +67,13 @@ public interface PilotoService {
 	 */
 	boolean existePiloto(Long id);
 
+	/**
+	 * Busca un piloto por su alias
+	 * 
+	 * @param piloto
+	 * @return
+	 * @throws RacesException 
+	 */
+	Piloto buscarPiloto(String apodo) throws RacesException;
+
 }

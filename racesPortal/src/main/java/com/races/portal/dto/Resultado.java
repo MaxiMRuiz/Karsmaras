@@ -3,7 +3,7 @@ package com.races.portal.dto;
 public class Resultado {
 
 	private Long id;
-	private Piloto piloto;
+	private Inscripcion inscripcion;
 	private Sesion sesion;
 	private Integer tiempo;
 	private Integer vueltas;
@@ -23,14 +23,14 @@ public class Resultado {
 	 * @param tiempo
 	 * @param vueltas
 	 */
-	public Resultado(Long id, Piloto piloto, Sesion sesion, Integer tiempo, Integer vueltas, Integer vRapida) {
+	public Resultado(Long id, Inscripcion inscripcion, Sesion sesion, Integer tiempo, Integer vueltas, Integer vRapida) {
 		super();
 		this.id = id;
-		this.piloto = piloto;
+		this.inscripcion = inscripcion;
 		this.sesion = sesion;
 		this.tiempo = tiempo;
 		this.vueltas = vueltas;
-		this.setvRapida(vRapida);
+		this.vRapida = vRapida;
 	}
 
 	/**
@@ -50,15 +50,15 @@ public class Resultado {
 	/**
 	 * @return the piloto
 	 */
-	public Piloto getPiloto() {
-		return piloto;
+	public Inscripcion getInscripcion() {
+		return inscripcion;
 	}
 
 	/**
 	 * @param piloto the piloto to set
 	 */
-	public void setPiloto(Piloto piloto) {
-		this.piloto = piloto;
+	public void setInscripcion(Inscripcion inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 
 	/**

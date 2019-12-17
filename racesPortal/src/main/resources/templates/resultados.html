@@ -10,10 +10,10 @@
 			<div th:replace="fragments/menu::menu">
 			</div>
 			<div class="col-xs-10 col-10">
-				<div class="table-responsive centerElement">
-					<h2 class="text-center racesTitle">Resultados de la sesion [[${nombre}]]</h2>
-					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center">
+				<div class="table-responsive centerElement" id="content">
+					<h2 class="text-center racesTitle" id="title">Resultados de la sesion [[${nombre}]]</h2>
+					<table class="table-bordered centerTable racesTable" id="table" onload="searchFilter()">
+						<thead align="center" id="thead">
 							<tr class="bg-danger text-white">
 								<th width="5%">Posicion</th>
 								<th width="45%">Piloto</th>
@@ -24,60 +24,45 @@
 							</tr>
 						</thead>
 						<tbody class="bg-white text-black" th:each="resultado : ${listaResultados}">
-							<td th:if="${resultadoStat.index == 0}" th:text="${resultadoStat.index + 1}" align="center"
+							<td class="td-table" th:if="${resultadoStat.index == 0}"
+								th:text="${resultadoStat.index + 1}"
 								style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>
-							<td th:if="${resultadoStat.index == 1}" th:text="${resultadoStat.index + 1}" align="center"
+							<td class="td-table" th:if="${resultadoStat.index == 1}"
+								th:text="${resultadoStat.index + 1}"
 								style="background-color: rgb(138, 149, 151); font-weight: bold;"></td>
-							<td th:if="${resultadoStat.index == 2}" th:text="${resultadoStat.index + 1}" align="center"
+							<td class="td-table" th:if="${resultadoStat.index == 2}"
+								th:text="${resultadoStat.index + 1}"
 								style="background-color: rgb(205, 127, 50); font-weight: bold; "></td>
-							<td th:if="${resultadoStat.index > 2}" th:text="${resultadoStat.index + 1}" align="center"
+							<td class="td-table" th:if="${resultadoStat.index > 2}" th:text="${resultadoStat.index + 1}"
 								style="background-color: black; font-weight: bold; color: white;"></td>
-							<td th:text="${resultado.piloto.toString()}"></td>
-							<td th:text="${resultado.getVueltaRapida()}" align="center"></td>
-							<td th:text="${resultado.getTiempoString()}" align="center"></td>
-							<td align="center">
+							<td class="td-table" th:text="${resultado.inscripcion.toString()}"></td>
+							<td class="td-table" th:text="${resultado.getVueltaRapida()}"></td>
+							<td class="td-table" th:text="${resultado.getTiempoString()}"></td>
+							<td class="td-table">
 								<a class="button" href="#"
 									th:href="@{/races/vueltas/__${id}__/__${idSesion}__/__${resultado.id}__}">
 									<img class="icons" src="/icons/vuelta.png" alt="Vueltas"
 										title="Ver Vueltas"></img>[[${resultado.vueltas}]]
 								</a>
 							</td>
-							<td align="center">
-								<div class="col-6 col-xs-6">
-									<a class="button" href="#"
-										th:href="@{/races/sancion/__${id}__/__${idSesion}__/__${resultado.id}__}">
-										<img class="icons" src="/icons/sancion.png" alt="Sanciones"
-											title="Ver Sanciones"></img>
-									</a>
-								</div>
+							<td class="td-table">
+								<a class="button" href="#"
+									th:href="@{/races/sancion/__${id}__/__${idSesion}__/__${resultado.id}__}">
+									<img class="icons" src="/icons/sancion.png" alt="Sanciones"
+										title="Ver Sanciones"></img>
+								</a>
 							</td>
 						</tbody>
-						<tfoot>
+						<tfoot id="tfoot">
 							<tr>
-								<td colspan="6">
+								<td colspan="6" class="text-center td-table">
 									<div class="row">
-										<a class="button pull-left" th:href="@{/races/gp/__${id}__}">
-											<button type="button" class="btn btn-danger btn-primary pull-left"
-												id="cancel" name="cancel">Volver
-											</button>
-										</a>
-										<form align="center" method="post" class="col-6"
+										<form align="center" method="post" class="col-12"
 											th:action="@{/races/sesion/__${id}__/__${idSesion}__/upload}"
 											enctype="multipart/form-data">
 											<input type="file" name="file">
 											<input type="submit" value="Upload">
 										</form>
-										<div class="col-3 centerVertical">
-											<div class="pull-right">
-												<strong><em>Número de filas</em></strong>
-												<select id="nElements" name="nElements" onchange="searchFilter()">
-													<option value="5">5</option>
-													<option value="10" selected="selected">10</option>
-													<option value="15">15</option>
-													<option value="20">20</option>
-												</select>
-											</div>
-										</div>
 									</div>
 								</td>
 							</tr>
@@ -102,7 +87,12 @@
 	}
 
 	function getNumberOfElements() {
-		return document.getElementById("nElements").options[document.getElementById("nElements").selectedIndex].value;
+		let heightTitle = document.getElementById("title").offsetHeight;
+		let heightContent = window.screen.height - 2 * document.getElementById("content").offsetTop;
+		let heightHead = document.getElementById("thead").offsetHeight;
+		let heightFoot = document.getElementById("tfoot").offsetHeight;
+		let tam = document.getElementsByClassName("td-table")[0].offsetHeight;
+		return (heightContent - (heightTitle * 2) - (heightHead * 2) - (heightFoot) - (tam * 2)) / tam;
 	}
 
 </script>

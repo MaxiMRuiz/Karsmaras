@@ -10,8 +10,8 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.races.portal</groupId>
-	<artifactId>racesPortal</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<artifactId>Races-Portal</artifactId>
+	<version>1.0.0</version>
 	<name>racesPortal</name>
 	<description>Portal de RacesManagement</description>
 

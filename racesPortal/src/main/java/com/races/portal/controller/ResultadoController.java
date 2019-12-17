@@ -80,7 +80,7 @@ public class ResultadoController {
 		model.addAttribute("resultado", resultado);
 		model.addAttribute(Constants.PARAM_ID, idGp);
 		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
-		model.addAttribute("nombre", resultado.getPiloto().toString());
+		model.addAttribute("nombre", resultado.getInscripcion().getPiloto().toString());
 		model.addAttribute("sesion", resultado.getSesion().toString());
 		return new ModelAndView("resultado");
 	}
@@ -100,12 +100,12 @@ public class ResultadoController {
 
 			// Creating the directory to store file
 			String rootPath = env.getProperty("files.upload.basepath");
-			File dir = new File(rootPath + File.separator + "tmpFiles");
+			File dir = new File(rootPath + File.separator);
 			if (!dir.exists())
 				dir.mkdirs();
 
 			// Create the file on server
-			File serverFile = new File(dir.getAbsolutePath() + File.separator + "uploadFile.txt");
+			File serverFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
 			try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));) {
 
 				stream.write(file.getBytes());

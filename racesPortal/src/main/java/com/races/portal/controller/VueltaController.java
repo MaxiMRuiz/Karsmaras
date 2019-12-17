@@ -57,7 +57,7 @@ public class VueltaController {
 		model.addAttribute(Constants.PARAM_ID_RESULTADO, idSesion);
 		Resultado resultado = resultados.buscarResultado(idResultado);
 		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesion().toString());
-		model.addAttribute(Constants.PARAM_PILOTO, resultado.getPiloto().toString());
+		model.addAttribute(Constants.PARAM_PILOTO, resultado.getInscripcion().getPiloto().toString());
 		model.addAttribute("urlServices", "/races/sancion/" + idGp + "/" + idSesion + "/" + idResultado);
 		return new ModelAndView("vueltas");
 	}

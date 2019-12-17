@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,16 +52,14 @@ public class SancionController {
 
 	@GetMapping(value = "/{idGp}/{idSesion}/{idResultado}")
 	public ModelAndView listaSanciones(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long idResultado,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
-		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
+			@PathVariable Long idResultado) {
 		model.addAttribute("listaSanciones", sanciones.buscarSanciones(idResultado));
 		model.addAttribute(Constants.PARAM_ID, idGp);
 		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
 		model.addAttribute(Constants.PARAM_ID_RESULTADO, idResultado);
 		Resultado resultado = resultados.buscarResultado(idResultado);
 		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesion().toString());
-		model.addAttribute(Constants.PARAM_PILOTO, resultado.getPiloto().toString());
+		model.addAttribute(Constants.PARAM_PILOTO, resultado.getInscripcion().getPiloto().toString());
 		model.addAttribute("urlServices", "/races/sancion/" + idGp + "/" + idSesion + "/" + idResultado);
 		return new ModelAndView("sanciones");
 	}
@@ -82,9 +79,9 @@ public class SancionController {
 		model.addAttribute("sancion", sancion);
 		model.addAttribute(Constants.PARAM_ID, idGp);
 		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
-
+		model.addAttribute(Constants.PARAM_ID_RESULTADO, idResultado);
 		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesion().toString());
-		model.addAttribute(Constants.PARAM_PILOTO, resultado.getPiloto().toString());
+		model.addAttribute(Constants.PARAM_PILOTO, resultado.getInscripcion().getPiloto().toString());
 		return new ModelAndView("sancion");
 	}
 

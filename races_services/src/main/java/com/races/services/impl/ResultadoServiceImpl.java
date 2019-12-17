@@ -26,7 +26,7 @@ import com.races.dto.FileUploadDto;
 import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
-import com.races.entity.Piloto;
+import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.Sancion;
 import com.races.entity.Sesion;
@@ -72,7 +72,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 	public Resultado crearResultado(ResultadoDto resultadoDto) throws RacesException {
 		Resultado newResultado = new Resultado();
 		newResultado.setnVueltas(resultadoDto.getnVueltas());
-		newResultado.setPiloto(pilotoService.buscarPiloto(resultadoDto.getIdPiloto()));
+		newResultado.setInscripcion(inscripciones.buscarInscripcion(resultadoDto.getIdInscripcion()));
 		newResultado.setSesion(sesionService.buscarSesion(resultadoDto.getIdSesion()));
 		newResultado.setTiempo(resultadoDto.getTiempo());
 		if (resultadoRepo.findOne(Example.of(newResultado)).isPresent()) {
@@ -81,9 +81,9 @@ public class ResultadoServiceImpl implements ResultadoService {
 		return resultadoRepo.save(newResultado);
 	}
 
-	public List<ResultadoResponseDto> buscarResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas,
+	public List<ResultadoResponseDto> buscarResultados(Long id, Long idInscripcion, Long idSesion, Integer nVueltas,
 			Integer tiempo) {
-		List<Resultado> lista = buscarListaResultados(id, idPiloto, idSesion, nVueltas, tiempo);
+		List<Resultado> lista = buscarListaResultados(id, idInscripcion, idSesion, nVueltas, tiempo);
 		return resultado2Response(lista);
 	}
 
@@ -94,11 +94,11 @@ public class ResultadoServiceImpl implements ResultadoService {
 		return resultado2Response(lista);
 	}
 
-	public List<Resultado> buscarListaResultados(Long id, Long idPiloto, Long idSesion, Integer nVueltas,
+	public List<Resultado> buscarListaResultados(Long id, Long idInscripcion, Long idSesion, Integer nVueltas,
 			Integer tiempo) {
 		try {
 			Resultado probe = new Resultado(id == null ? null : id,
-					idPiloto == null ? null : pilotoService.buscarPiloto(idPiloto),
+					idInscripcion == null ? null : inscripciones.buscarInscripcion(idInscripcion),
 					idSesion == null ? null : sesionService.buscarSesion(idSesion), nVueltas == null ? null : nVueltas,
 					tiempo == null ? null : tiempo);
 			return resultadoRepo.findAll(Example.of(probe),
@@ -168,11 +168,11 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	@Override
 	public void crearResultados(List<Sesion> listSesion, Campeonato campeonato) {
-		List<Piloto> pilotos = inscripciones.buscarPilotos(campeonato);
+		List<Inscripcion> listInscripciones = inscripciones.buscarInscripciones(campeonato.getId(), null, null);
 		List<Resultado> resultados = new ArrayList<>();
 		for (Sesion sesion : listSesion) {
-			for (Piloto piloto : pilotos) {
-				resultados.add(new Resultado(null, piloto, sesion, 0, 0));
+			for (Inscripcion inscripcion : listInscripciones) {
+				resultados.add(new Resultado(null, inscripcion, sesion, 0, 0));
 			}
 		}
 		resultadoRepo.saveAll(resultados);
@@ -189,8 +189,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	@Override
 	public void processFile(Long idSesion, MultipartFile file) {
-		String rootPath = env.getProperty("files.upload.basepath");
-		File dir = new File(rootPath + File.separator + "tmpFiles");
+		String rootPath = env.getProperty("race.files.upload.basepath");
+		File dir = new File(rootPath);
 		if (!dir.exists())
 			dir.mkdirs();
 
@@ -210,7 +210,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 			while ((line = bufferReader.readLine()) != null) {
 				String[] parts = line.split(";");
 				if (parts.length == 3) {
-					listLines.add(new FileUploadDto(parts[0], Integer.parseInt(parts[1]), parts[2]));
+					listLines.add(new FileUploadDto(parts[0].replaceAll("[^a-zA-Z]", ""), Integer.parseInt(parts[1]), parts[2]));
 				}
 			}
 			LOGGER.info("Fichero procesado");
@@ -255,14 +255,14 @@ public class ResultadoServiceImpl implements ResultadoService {
 	@Override
 	public void aplicarSancion(Sancion sancion) {
 		Resultado resultado = sancion.getResultado();
-		resultado.setTiempo(resultado.getTiempo() + (sancion.getTiempo() * 1000));
+		resultado.setTiempo(resultado.getTiempo() + sancion.getTiempo());
 		resultadoRepo.save(resultado);
 	}
 
 	@Override
 	public void eliminarSancion(Sancion sancion) {
 		Resultado resultado = sancion.getResultado();
-		resultado.setTiempo(resultado.getTiempo() - (sancion.getTiempo() * 1000));
+		resultado.setTiempo(resultado.getTiempo() - sancion.getTiempo());
 		resultadoRepo.save(resultado);
 	}
 

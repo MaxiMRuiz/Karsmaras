@@ -118,6 +118,7 @@ CREATE TABLE `inscripcion` (
 	`id_campeonato` INT NOT NULL,
 	`id_piloto` INT NOT NULL,
 	`id_equipo` INT NOT NULL,
+	PRIMARY KEY (`id`),
 	CONSTRAINT `FK__campeonato_inscipcion` FOREIGN KEY (`id_campeonato`) REFERENCES `campeonato` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `FK__piloto_inscripcion` FOREIGN KEY (`id_piloto`) REFERENCES `piloto` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `FK__equipo_inscripcion` FOREIGN KEY (`id_equipo`) REFERENCES `equipo` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
@@ -126,13 +127,12 @@ COLLATE='latin1_spanish_ci';
 
 CREATE TABLE `resultado` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`id_piloto` INT(11) NOT NULL,
+	`id_inscripcion` INT(11) NOT NULL,
 	`id_sesion` INT(11) NOT NULL,
 	`n_vueltas` SMALLINT UNSIGNED NOT NULL,
-	`posicion` TINYINT UNSIGNED NOT NULL,
 	`tiempo` INT UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `FK__piloto` FOREIGN KEY (`id_piloto`) REFERENCES `piloto` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT `FK__inscripcion` FOREIGN KEY (`id_inscripcion`) REFERENCES `inscripcion` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
 	CONSTRAINT `FK__sesion` FOREIGN KEY (`id_sesion`) REFERENCES `sesion` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 )
 COLLATE='latin1_spanish_ci';
@@ -152,7 +152,7 @@ CREATE TABLE `sancion` (
 	`id_resultado` INT(11) NOT NULL,
 	`descripcion` TEXT NOT NULL,
 	`puntos` TINYINT NULL DEFAULT NULL,
-	`tiempo` INT UNSIGNED NULL DEFAULT NULL,
+	`tiempo` INT NULL DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `FK__resultado_sancion` FOREIGN KEY (`id_resultado`) REFERENCES `resultado` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 )
@@ -161,3 +161,4 @@ COLLATE='latin1_spanish_ci';
 INSERT INTO `race_management_db`.`tipo_sesion` (`descripcion`) VALUES ('Entrenamiento');
 INSERT INTO `race_management_db`.`tipo_sesion` (`descripcion`) VALUES ('Clasificacion');
 INSERT INTO `race_management_db`.`tipo_sesion` (`descripcion`) VALUES ('Carrera');
+INSERT INTO `race_management_db`.`equipo` (`Nombre`,`Alias`) VALUES ('Libre','LIBRE');

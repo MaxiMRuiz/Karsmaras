@@ -34,7 +34,6 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
 		try {
 			request.setAttribute("startTime", System.currentTimeMillis());
-
 			return true;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);

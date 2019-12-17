@@ -10,8 +10,4 @@ public interface ClasificacionService {
 
 	List<Clasificacion> clasificacionCampeonato(Long id);
 
-	List<Clasificacion> clasificacionGpEquipos(Long id);
-
-	List<Clasificacion> clasificacionCampeonatoEquipos(Long id);
-
 }

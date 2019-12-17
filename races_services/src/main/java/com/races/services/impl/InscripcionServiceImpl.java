@@ -132,4 +132,14 @@ public class InscripcionServiceImpl implements InscripcionService {
 		return listaPilotos;
 	}
 
+	@Override
+	public Inscripcion buscarInscripcion(Long idInscripcion) throws RacesException {
+		Optional<Inscripcion> op = inscriptionRepo.findById(idInscripcion);
+		if (op.isPresent()) {
+			return op.get();
+		} else {
+			throw new RacesException("Inscripcion no encontrada");
+		}
+	}
+
 }

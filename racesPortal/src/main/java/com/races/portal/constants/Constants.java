@@ -60,5 +60,7 @@ public class Constants {
 	public static final String LISTA_CLASIFICACION = "listaClasificacion";
 	public static final String TYPE = "type";
 	public static final String CLASIFICACION = "clasificacion";
+	public static final String PARAM_INSCRIPCION = "inscripcion";
+	public static final String LISTA_EQUIPOS = "listaEquipos";
 
 }

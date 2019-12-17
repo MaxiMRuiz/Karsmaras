@@ -46,9 +46,11 @@ public class SancionServiceImpl implements SancionService {
 		List<Sancion> listaSanciones = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sancion.buscar");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Constants.PARAM_ID_RESULTADO, idResultado);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -117,7 +119,7 @@ public class SancionServiceImpl implements SancionService {
 		Map<String, Object> body = new HashMap<>();
 		body.put(Constants.PARAM_DESCRIPCION, sancion.getDescripcion());
 		body.put(Constants.PARAM_PUNTOS, sancion.getPuntos());
-		body.put(Constants.PARAM_TIEMPO, sancion.getTiempo());
+		body.put(Constants.PARAM_TIEMPO, Long.getLong(sancion.getTiempo()) * 1000);
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
@@ -144,7 +146,7 @@ public class SancionServiceImpl implements SancionService {
 		Map<String, Object> body = new HashMap<>();
 		body.put(Constants.PARAM_DESCRIPCION, sancion.getDescripcion());
 		body.put(Constants.PARAM_PUNTOS, sancion.getPuntos());
-		body.put(Constants.PARAM_TIEMPO, sancion.getTiempo());
+		body.put(Constants.PARAM_TIEMPO, (int) (Double.parseDouble(sancion.getTiempo()) * 1000));
 		body.put(Constants.PARAM_ID_RESULTADO, sancion.getResultado().getId());
 
 		Map<String, String> headers = new HashMap<>();

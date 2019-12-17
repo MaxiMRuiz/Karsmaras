@@ -32,4 +32,8 @@ public class Constants {
 
 	public static final String FORMATO_INCORRECTO = "Formato Incorrecto";
 
+	public static final String CARRERA = "Carrera";
+
+	public static final String ENCONTRADAS = "Encontradas ";
+
 }

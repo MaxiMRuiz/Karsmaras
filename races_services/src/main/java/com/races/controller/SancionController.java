@@ -64,7 +64,7 @@ public class SancionController {
 			@RequestParam(required = false, name = "puntos") Integer puntos,
 			@RequestParam(required = false, name = "tiempo") Integer tiempo) {
 
-		LOGGER.info("Buscando sanciones");
+		LOGGER.info("Buscando sanciones - " + id + " R[" + idResultado + "] - " + puntos + "p - " + tiempo + "s");
 		return new ResponseEntity<>(sancionService.buscarSanciones(id, idResultado, puntos, tiempo), HttpStatus.OK);
 
 	}

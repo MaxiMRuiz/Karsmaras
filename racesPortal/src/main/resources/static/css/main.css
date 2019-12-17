@@ -13,6 +13,7 @@ html {
     margin-right: 5%;
     margin-top: 5%;
     min-height: 90%;
+    max-height: 90%;
     width: 90%;
 }
 
@@ -55,6 +56,7 @@ html {
     color: maroon;
     font-size: larger;
     font-weight: bold;
+    vertical-align: text-top;
 }
 
 .header {
@@ -106,6 +108,11 @@ html {
     width: 30px;
 }
 
+.iconsmenu {
+    height: 40px;
+    width: 40px;
+}
+
 .nav-link[data-toggle].collapsed:after {
     content: "▾";
 }
@@ -133,7 +140,16 @@ a {
     color: #04090c;
 }
 
-button {
+ul {
+    display: flex;
+    flex-direction: column;
+}
+  
+ul > :last-child {
+    margin-top: auto;
+}
+
+  button {
     box-shadow: none;
     border: 1px solid transparent;
     font-size: 14px;
@@ -176,6 +192,15 @@ input[type="file"] {
 
 .racesTable {
     background-color: beige;
+    padding: 0.25rem;
+    vertical-align: middle;
+}
+
+.td-table{
+    padding: 0.25rem;
+    vertical-align: middle;
+    text-align: center;
+    font-weight: bold;
 }
 
 .racesTitle {
@@ -194,18 +219,60 @@ input[type="file"] {
     }
 }
 
-@media (max-width: 1250px){
+@media (max-width: 1850px){
     .d-sm-inline {
         display: none!important;
     }
-}
-
-@media (min-width: 1250px){
-    .d-sm-inline {
-        display: inline!important;
+    .iconsmenu {
+        height: 45px;
+        width: 45px;
     }
 }
 
+@media (min-width: 1850px){
+    .d-sm-inline {
+        display: inline!important;
+    }
+   
+}
+
+@media screen and (max-width: 1026px) {
+    table {
+        width:100%;
+    }
+    thead {
+        display: none;
+    }
+    tfoot {
+        display: none;
+    }
+    tr:nth-of-type(2n) {
+        background-color: inherit;
+    }
+    tr td:first-child {
+        background: #f0f0f0;
+        font-weight:bold;
+        font-size:1.3em;
+    }
+    tbody td {
+        display: block;
+        text-align:center;
+    }
+    tbody td:before {
+        content: attr(data-th);
+        display: block;
+        text-align:center;
+    }
+    .icons {
+        height: 15px;
+        width: 15px;
+    }
+
+    .iconsmenu {
+        height: 30px;
+        width: 30px;
+    }
+}
 
 .upload-container {
       max-width: 750px;

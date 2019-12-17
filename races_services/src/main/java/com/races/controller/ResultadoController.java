@@ -48,7 +48,7 @@ public class ResultadoController {
 	public ResponseEntity<Resultado> crearResultado(@RequestBody ResultadoDto resultadoDto) {
 
 		try {
-			LOGGER.info("Creando nuevo Resultado: P[" + resultadoDto.getIdPiloto() + "] - S["
+			LOGGER.info("Creando nuevo Resultado: I[" + resultadoDto.getIdInscripcion() + "] - S["
 					+ resultadoDto.getIdSesion() + "]");
 			return new ResponseEntity<>(resultadoService.crearResultado(resultadoDto), HttpStatus.OK);
 		} catch (RacesException ex) {
@@ -65,13 +65,13 @@ public class ResultadoController {
 	@GetMapping("/resultado")
 	public ResponseEntity<List<ResultadoResponseDto>> buscarResultados(
 			@RequestParam(required = false, name = "id") Long id,
-			@RequestParam(required = false, name = "idPiloto") Long idPiloto,
+			@RequestParam(required = false, name = "idInscripcion") Long idInscripcion,
 			@RequestParam(required = false, name = "idSesion") Long idSesion,
 			@RequestParam(required = false, name = "nVueltas") Integer nVueltas,
 			@RequestParam(required = false, name = "tiempo") Integer tiempo) {
 
 		LOGGER.info("Buscando resultados - id [" + id + "]");
-		return new ResponseEntity<>(resultadoService.buscarResultados(id, idPiloto, idSesion, nVueltas, tiempo),
+		return new ResponseEntity<>(resultadoService.buscarResultados(id, idInscripcion, idSesion, nVueltas, tiempo),
 				HttpStatus.OK);
 
 	}

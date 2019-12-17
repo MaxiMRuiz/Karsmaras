@@ -6,7 +6,7 @@
 
 	<groupId>com.races</groupId>
 	<artifactId>Races-Services</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Races Services</name>
@@ -94,37 +94,37 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>com.github.kongchen</groupId>
-				<artifactId>swagger-maven-plugin</artifactId>
-				<version>${swagger.maven.plugin}</version>
-				<configuration>
-					<apiSources>
-						<apiSource>
-							<springmvc>true</springmvc>
-							<locations>com.races.services.controller</locations>
-							<schemes>http,https</schemes>
-							<host>localhost</host>
-							<basePath>/</basePath>
-							<info>
-								<title>Races Services</title>
-								<version>v1</version>
-								<description>Races Services APIs</description>
-							</info>
-							<templatePath>${basedir}/templates/strapdown.html.hbs</templatePath>
-							<outputPath>${basedir}/generated/swagger.html</outputPath>
-							<swaggerDirectory>generated/swagger-ui</swaggerDirectory>
-						</apiSource>
-					</apiSources>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>com.github.kongchen</groupId> -->
+<!-- 				<artifactId>swagger-maven-plugin</artifactId> -->
+<!-- 				<version>${swagger.maven.plugin}</version> -->
+<!-- 				<configuration> -->
+<!-- 					<apiSources> -->
+<!-- 						<apiSource> -->
+<!-- 							<springmvc>true</springmvc> -->
+<!-- 							<locations>com.races.services.controller</locations> -->
+<!-- 							<schemes>http,https</schemes> -->
+<!-- 							<host>localhost</host> -->
+<!-- 							<basePath>/</basePath> -->
+<!-- 							<info> -->
+<!-- 								<title>Races Services</title> -->
+<!-- 								<version>v1</version> -->
+<!-- 								<description>Races Services APIs</description> -->
+<!-- 							</info> -->
+<!-- 							<templatePath>${basedir}/templates/strapdown.html.hbs</templatePath> -->
+<!-- 							<outputPath>${basedir}/generated/swagger.html</outputPath> -->
+<!-- 							<swaggerDirectory>generated/swagger-ui</swaggerDirectory> -->
+<!-- 						</apiSource> -->
+<!-- 					</apiSources> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<goals> -->
+<!-- 							<goal>generate</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -163,6 +163,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
-
 </project>

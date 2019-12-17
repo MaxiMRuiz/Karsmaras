@@ -1,9 +1,5 @@
 package com.races.portal.dto;
 
-import com.races.portal.constants.Constants;
-
-import kong.unirest.json.JSONObject;
-
 public class Inscripcion {
 
 	private Long id;
@@ -83,11 +79,7 @@ public class Inscripcion {
 
 	@Override
 	public String toString() {
-		JSONObject inscripcion = new JSONObject();
-		inscripcion.put(Constants.PARAM_PILOTO, piloto.toString());
-		inscripcion.put(Constants.PARAM_EQUIPO, equipo.toString());
-		inscripcion.put(Constants.PARAM_CAMPEONATO, campeonato.toString());
-		return inscripcion.toString();
+		return piloto.toString() + " [" + equipo.getAlias()+"]";
 	}
 
 }

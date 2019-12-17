@@ -64,6 +64,31 @@ public class GranPremioServiceImpl implements GranPremioService {
 	}
 
 	@Override
+	public GranPremio buscarGranPremio(Long id) {
+
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.gp.buscar");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Constants.PARAM_ID, id);
+
+		try {
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
+			} else {
+				JSONArray jsonArray = new JSONArray(response.getBody());
+				if (jsonArray.length() > 0) {
+					return converter.json2Gp(jsonArray.getJSONObject(0));
+				}
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return new GranPremio();
+	}
+
+	@Override
 	public void crearGranPremio(String id, GranPremio gp) {
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.gp.crear");

@@ -1,6 +1,6 @@
 package com.races.dto;
 
-import com.races.entity.Piloto;
+import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.Sesion;
 import com.races.entity.Vuelta;
@@ -8,7 +8,7 @@ import com.races.entity.Vuelta;
 public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 
 	private Long id;
-	private Piloto piloto;
+	private Inscripcion inscripcion;
 	private Sesion sesion;
 	private Integer nVueltas;
 	private Integer tiempo;
@@ -29,11 +29,11 @@ public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 	 * @param tiempo
 	 * @param vRapida
 	 */
-	public ResultadoResponseDto(Long id, Piloto piloto, Sesion sesion, Integer nVueltas, Integer tiempo,
+	public ResultadoResponseDto(Long id, Inscripcion inscripcion, Sesion sesion, Integer nVueltas, Integer tiempo,
 			Integer vRapida) {
 		super();
 		this.id = id;
-		this.piloto = piloto;
+		this.inscripcion = inscripcion;
 		this.sesion = sesion;
 		this.nVueltas = nVueltas;
 		this.tiempo = tiempo;
@@ -48,7 +48,7 @@ public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 	 */
 	public ResultadoResponseDto(Resultado resultado, Vuelta vRapida) {
 		this.id = resultado.getId();
-		this.piloto = resultado.getPiloto();
+		this.inscripcion = resultado.getInscripcion();
 		this.sesion = resultado.getSesion();
 		this.nVueltas = resultado.getnVueltas();
 		this.tiempo = resultado.getTiempo();
@@ -72,15 +72,15 @@ public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 	/**
 	 * @return the piloto
 	 */
-	public Piloto getPiloto() {
-		return piloto;
+	public Inscripcion getInscripcion() {
+		return inscripcion;
 	}
 
 	/**
 	 * @param piloto the piloto to set
 	 */
-	public void setPiloto(Piloto piloto) {
-		this.piloto = piloto;
+	public void setInscripcion(Inscripcion inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 
 	/**

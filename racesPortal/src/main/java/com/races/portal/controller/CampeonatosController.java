@@ -56,6 +56,7 @@ public class CampeonatosController {
 	@GetMapping
 	public ModelAndView listaCampeonatos(Model model,
 			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+		LOGGER.info("Accediendo a la pantalla de Campeonatos");
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		List<Campeonato> listCampeonatos = campeonatos.buscarCampeonatos(null, null, null, null);
 		model.addAttribute("listCampeonatos", listCampeonatos);
@@ -68,13 +69,16 @@ public class CampeonatosController {
 
 		Campeonato campeonato;
 		if ("new".equals(id)) {
+			LOGGER.info("Accediendo a la pantalla de Creacion de Campeonatos");
 			campeonato = new Campeonato();
 			campeonato.setReglamento(new Reglamento());
 		} else if (id.startsWith("clone")) {
+			LOGGER.info("Accediendo a la pantalla de Creacion de Campeonatos");
 			String subId = id.substring(5);
 			campeonato = campeonatos.buscarCampeonato(subId);
 			campeonato.setId(null);
 		} else {
+			LOGGER.info("Accediendo a la pantalla de Edicion de Campeonatos [" + id + "]");
 			campeonato = campeonatos.buscarCampeonato(id);
 		}
 		model.addAttribute("reglamentos", reglamentos.buscarReglamentos());
@@ -84,7 +88,7 @@ public class CampeonatosController {
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Boolean> borrarCampeonato(Model model, @PathVariable String id) {
-
+		LOGGER.info("Borrando el campeonato [" + id + "]");
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
@@ -92,12 +96,13 @@ public class CampeonatosController {
 		}
 	}
 
-	@PostMapping()
+	@PostMapping
 	public ModelAndView postFormularioCampeonatos(Model model, @ModelAttribute Campeonato campeonato) {
-
 		if (campeonato.getId() != null) {
+			LOGGER.info("Editando el campeonato [" + campeonato.getId() + "]");
 			campeonatos.editarCampeonato(campeonato);
 		} else {
+			LOGGER.info("Creando un nuevo campeonato [" + campeonato + "]");
 			campeonatos.crearCampeonato(campeonato);
 		}
 		return new ModelAndView("redirect:/races/campeonatos");

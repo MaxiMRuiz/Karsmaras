@@ -8,7 +8,7 @@ package com.races.dto;
  */
 public class ResultadoDto {
 
-	private Long idPiloto;
+	private Long idInscripcion;
 
 	private Long idSesion;
 
@@ -31,20 +31,12 @@ public class ResultadoDto {
 	 * @param nVueltas
 	 * @param tiempo
 	 */
-	public ResultadoDto(Long idPiloto, Long idSesion, Integer nVueltas, Integer tiempo) {
+	public ResultadoDto(Long idInscripcion, Long idSesion, Integer nVueltas, Integer tiempo) {
 		super();
-		this.idPiloto = idPiloto;
+		this.idInscripcion = idInscripcion;
 		this.idSesion = idSesion;
 		this.nVueltas = nVueltas;
 		this.tiempo = tiempo;
-	}
-
-	public Long getIdPiloto() {
-		return idPiloto;
-	}
-
-	public void setIdPiloto(Long idPiloto) {
-		this.idPiloto = idPiloto;
 	}
 
 	public Long getIdSesion() {
@@ -69,6 +61,14 @@ public class ResultadoDto {
 
 	public void setTiempo(Integer tiempo) {
 		this.tiempo = tiempo;
+	}
+
+	public Long getIdInscripcion() {
+		return idInscripcion;
+	}
+
+	public void setIdInscripcion(Long idInscripcion) {
+		this.idInscripcion = idInscripcion;
 	}
 
 }

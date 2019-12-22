@@ -20,16 +20,19 @@
 					<div th:if="${type == 'e'}" class="text-center racesTitle">
 						<h2 class="text-center racesTitle" id="title">INSCRIPCIONES DEL EQUIPO [[${nombre}]]</h2>
 					</div>
-					<table class="table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center" id="thead">
-							<tr class="bg-danger text-white">
-								<th th:if="${type == 'p' || type == 'e'}" width="47.5%">Campeonato</th>
-								<th th:if="${type == 'c' || type == 'e'}" width="47.5%">Piloto</th>
-								<th th:if="${type == 'c' || type == 'p'}" width="47.5%">Equipo</th>
-								<th width="5%">Borrar</th>
+					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th th:if="${type == 'p' || type == 'e'}" width="47.5%" class="thead-dark-th">Campeonato
+								</th>
+								<th th:if="${type == 'c' || type == 'e'}" width="47.5%" class="thead-dark-th">Piloto
+								</th>
+								<th th:if="${type == 'c' || type == 'p'}" width="47.5%" class="thead-dark-th">Equipo
+								</th>
+								<th width="5%" class="thead-dark-th">Borrar</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white text-black" th:each="inscripcion : ${listaInscripciones}">
+						<tbody class="table-warning" th:each="inscripcion : ${listaInscripciones}">
 							<td class="td-table" th:if="${type == 'p' || type == 'e'}"
 								th:text="${inscripcion.campeonato.toString()}"></td>
 							<td class="td-table" th:if="${type == 'c' || type == 'e'}"
@@ -48,7 +51,7 @@
 						</tbody>
 						<tfoot id="tfoot">
 							<tr>
-								<td colspan="3" class="td-table text-center">
+								<td colspan="3" class="td-table text-center table-success">
 									<div class="row">
 										<a class="button col-12 centerVertical pull-right"
 											th:href="@{/races/inscripciones/__${type}__/__${id}__}">

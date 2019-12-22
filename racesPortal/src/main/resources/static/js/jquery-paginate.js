@@ -1,15 +1,15 @@
-(function($) {
+(function ($) {
 	'use strict';
 
-	var Paginator = function() {
+	var Paginator = function () {
 		return {
 			// Attributes
-			obj : null,
-			options : null,
-			nav : null,
+			obj: null,
+			options: null,
+			nav: null,
 
 			// Methods
-			build : function(obj, opts) {
+			build: function (obj, opts) {
 				this.obj = obj;
 				this.options = opts;
 
@@ -23,87 +23,87 @@
 				return this.obj;
 			},
 
-			_createNavigation : function() {
+			_createNavigation: function () {
 				this._createNavigationWrapper();
 				this._createNavigationButtons();
 				this._appendNavigation();
 				this._addNavigationCallbacks();
 			},
-			_createNavigationWrapper : function() {
+			_createNavigationWrapper: function () {
 				this.nav = $('<div>', {
-					class : this.options.navigationClass,
+					class: this.options.navigationClass,
 					align: "center"
 				});
 			},
-			_createNavigationButtons : function() {
+			_createNavigationButtons: function () {
 				// Add 'first' button
 				if (this.options.first) {
 					this._createNavigationButton(this.options.firstText, {
-						'data-first' : true,
-						'onclick' : "filter()"
+						'data-first': true,
+						'onclick': "filter()"
 					});
 				}
 
 				// Add 'previous' button
 				if (this.options.previous) {
 					this._createNavigationButton(this.options.previousText, {
-						'data-direction' : -1,
-						'data-previous' : true,
-						'onclick' : "filter()"
+						'data-direction': -1,
+						'data-previous': true,
+						'onclick': "filter()"
 					});
 				}
 
 				// Add page buttons
 				for (var i = 0; i < this._totalPages(); ++i) {
 					this._createNavigationButton(this.options.pageToText(i), {
-						'data-page' : i,
-						'onclick' : "filter()"
+						'data-page': i,
+						'onclick': "filter()"
 					});
 				}
 
 				// Add 'next' button
 				if (this.options.next) {
 					this._createNavigationButton(this.options.nextText, {
-						'data-direction' : 1,
-						'data-next' : true,
-						'onclick' : "filter()"
+						'data-direction': 1,
+						'data-next': true,
+						'onclick': "filter()"
 					});
 				}
 
 				// Add 'last' button
 				if (this.options.last) {
 					this._createNavigationButton(this.options.lastText, {
-						'data-last' : true,
-						'onclick' : "filter()"
+						'data-last': true,
+						'onclick': "filter()"
 					});
 				}
 			},
-			_createNavigationButton : function(text, options) {
+			_createNavigationButton: function (text, options) {
 				this.nav.append($('<a>', $.extend(options, {
-					href : '#',
-					text : text,
-					class : 'btn btn-info',
-					role : 'button'
+					href: '#',
+					text: text,
+					class: 'btn btn-dark paginate-btn',
+					role: 'button'
 				})));
 
 			},
-			_createNavigationText : function(current, options) {
-				this.nav.append($('<strong>', $.extend(options, {
-					text : 'Página ' + current + "/" + this._totalPages(),
-					class : 'text-white'
-				})));
-			},
+			// _createNavigationText: function (current, options) {
+			// 	this.nav.append($('<strong>', $.extend(options, {
+			// 		text: ' Página ' + current + "/" + this._totalPages(),
+			// 		class: 'paginate-btn'
+			// 	})));
+			// },
 
-			_appendNavigation : function() {
+			_appendNavigation: function () {
 				// Add the content to the navigation block
 				if (this.options.navigationWrapper) this.options.navigationWrapper.append(this.nav);
 				// Add it after the table
 				else this.obj.before(this.nav);
 			},
-			_addNavigationCallbacks : function() {
+			_addNavigationCallbacks: function () {
 				var paginator = this;
 
-				paginator.nav.find('a').click(function(e) {
+				paginator.nav.find('a').click(function (e) {
 					var direction = $(this).data('direction') * 1;
 
 					// 'First' button
@@ -135,13 +135,13 @@
 				});
 			},
 
-			_setPage : function(index) {
+			_setPage: function (index) {
 				if (index == undefined)
 					index = this.options.initialPage;
 				var i;
 				var totalPages = this._totalPages();
 				this.nav.find('strong').remove();
-				this._createNavigationText(index + 1);
+				// this._createNavigationText(index + 1);
 
 				// Hide all elements, and then show the current page.
 				this._rows().hide().slice(index * this.options.limit, (index + 1) * this.options.limit).show();
@@ -175,56 +175,56 @@
 				}
 			},
 
-			_currentPage : function() {
+			_currentPage: function () {
 				return this.nav.find('a[data-selected=true]').data('page');
 			},
-			_totalRows : function() {
+			_totalRows: function () {
 				// Count the total rows of the selector
 				return this._rows().length;
 			},
-			_rows : function() {
+			_rows: function () {
 				if (this.options.filter)
-					return this.obj.find(this.options.childrenSelector).filter(function() {
+					return this.obj.find(this.options.childrenSelector).filter(function () {
 						return $(this).css('display') == "table-row";
 					});
 				else
 					return this.obj.find(this.options.childrenSelector);
 			},
-			_totalPages : function() {
+			_totalPages: function () {
 				return Math.ceil(this._totalRows() / this.options.limit);
 			}
 		};
 	};
 
-	$.fn.paginate = function(options) {
+	$.fn.paginate = function (options) {
 
 		return Paginator().build(this, $.extend({}, $.fn.paginate.defaults, options));
 
 	};
 
 	$.fn.paginate.defaults = {
-		limit : 4,
-		initialPage : 0,
+		limit: 4,
+		initialPage: 0,
 
-		previous : true,
-		previousText : '<',
-		next : true,
-		nextText : '>',
-		first : true,
-		firstText : '<<',
-		last : true,
-		lastText : '>>',
+		previous: true,
+		previousText: '<',
+		next: true,
+		nextText: '>',
+		first: true,
+		firstText: '<<',
+		last: true,
+		lastText: '>>',
 
-		optional : true,
-		align : 'right',
-		onCreate : null,
-		onSelect : null,
-		filter : true,
+		optional: true,
+		align: 'right',
+		onCreate: null,
+		onSelect: null,
+		filter: true,
 
-		childrenSelector : "tbody > tr",
-		navigationWrapper : null,
-		navigationClass : "page-navigation mb-1",
-		pageToText : function(i) {
+		childrenSelector: "tbody > tr",
+		navigationWrapper: null,
+		navigationClass: "page-navigation mb-1",
+		pageToText: function (i) {
 			return (i + 1).toString();
 		}
 	}

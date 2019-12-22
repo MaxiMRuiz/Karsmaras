@@ -12,14 +12,12 @@
 			<div class="col-xs-10 col-10 align-self-center columnaentera">
 				<div class="panel panel-default panel-body centerElement">
 					<div class="container row col-md-12 well well-sm">
-						<form id="formulariopuntuacion" th:action="@{/races/gp/__${id}__}" class="form-horizontal inputForm formAlign"
+						<form id="formulariopuntuacion" th:action="@{/races/gp/__${id}__}" class="form-horizontal formAlign"
 							method="post">
 							<fieldset>
-								<legend class="text-center header">Nuevo GP para el Campeonato
-									[[${nombre}]]</legend>
-
+								<legend class="header" align="center">Nuevo GP de [[${nombre}]]</legend>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center "><img
 											src="/icons/ubicacion.png" class="icons" alt="Fecha" title="Fecha del GP">
 										Ubicacion</span>
 									<div class="col-12 col-md-12 col-xs-12">
@@ -29,11 +27,11 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
 											src="/icons/sesiones.png" class="icons" alt="Fecha" title="Fecha del GP">
 										Fecha</span>
 									<div class="col-12 col-md-12 col-xs-12">
-										<input type="date" class="form-control" id="fecha" th:field="*{gp.fecha}"
+										<input type="date" class="inputForm" id="fecha" th:field="*{gp.fecha}"
 											th:value="${gp.fecha}" required></input>
 									</div>
 								</div>

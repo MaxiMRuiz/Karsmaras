@@ -1,36 +1,41 @@
-<div th:fragment="menu" class="column col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 menu " id="sidebar">
-    <ul class="nav flex-column flex-nowrap overflow-hidden col-12 col-xs-12">
-        <li class="nav-item" style="background: linear-gradient(90deg, red, transparent 80px);">
-            <a class="nav-link text-truncate menuoption" href="/races"><img class="iconsmenu"
-                    src="/icons/main.png"></img>
-                <span class="d-none d-sm-inline">RACES MANAGEMENT</span></a>
-        </li>
-        <li>
-            <hr style="height:1px" color="black">
-        </li>
-        <li class="nav-item"><a class="nav-link py-0 menuoption" href="/races/campeonatos"><img class="iconsmenu"
-                    src="/icons/campeonato.png"></img> <span class="d-none d-sm-inline">Campeonatos</span></a></li>
-        <li>
-            <hr style="height:1px" color="black">
-        </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/reglamentos"><img
-                    class="iconsmenu" src="/icons/reglamento.png"></img> <span
-                    class="d-none d-sm-inline">Reglamento</span></a></li>
-        <li>
-            <hr style="height:1px" color="black">
-        </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/pilotos"><img class="iconsmenu"
-                    src="/icons/piloto.png"></img> <span class="d-none d-sm-inline">Pilotos</span></a></li>
-        <li>
-            <hr style="height:1px" color="black">
-        </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" href="/races/equipos"><img class="iconsmenu"
-                    src="/icons/equipo.png"></img> <span class="d-none d-sm-inline">Equipos</span></a></li>
-        <li>
-            <hr style="height:1px" color="black">
-        </li>
-        <li class="nav-item"><a class="nav-link text-truncate menuoption" th:href="@{__${volver}__}"><img
-                    class="iconsmenu" src="/icons/volver.png"></img> <span class="d-none d-sm-inline">Volver</span></a>
-        </li>
-    </ul>
+<div th:fragment="menu" class="area col-1 col-xs-1" id="sidebar">
+    <div class="area"></div>
+    <nav class="main-menu">
+        <ul>
+            <li>
+                <a href="/races"><img class="iconsmenu fa img-2x" src="/icons/main.png"></img>
+                    <span class="nav-text">RACES MANAGEMENT</span></a>
+            </li>
+        </ul>
+        <ul class="ul-menu">
+            <li>
+                <hr style="height:1px" color="black">
+            </li>
+            <li class="has-subnav"><a href="/races/campeonatos"><img class="iconsmenu fa img-2x"
+                        src="/icons/campeonato.png"></img> <span class="nav-text">Campeonatos</span></a></li>
+            <li>
+                <hr style="height:1px" color="black">
+            </li>
+            <li class="has-subnav"><a href="/races/reglamentos"><img class="iconsmenu fa img-2x"
+                        src="/icons/reglamento.png"></img> <span class="nav-text"> Reglamento</span></a></li>
+            <li>
+                <hr style="height:1px" color="black">
+            </li>
+            <li class="has-subnav"><a href="/races/pilotos"><img class="iconsmenu fa img-2x"
+                        src="/icons/piloto.png"></img> <span class="nav-text"> Pilotos</span></a></li>
+            <li>
+                <hr style="height:1px" color="black">
+            </li>
+            <li class="has-subnav"><a href="/races/equipos"><img class="iconsmenu fa img-2x"
+                        src="/icons/equipo.png"></img> <span class="nav-text"> Equipos</span></a></li>
+            <li>
+                <hr style="height:1px" color="black">
+            </li>
+        </ul>
+        <ul class="logout">
+            <li><a href="javascript:history.back()"><img class="iconsmenu fa img-2x" src="/icons/volver.png"></img>
+                    <span class="nav-text"> Volver</span></a>
+            </li>
+        </ul>
+    </nav>
 </div>

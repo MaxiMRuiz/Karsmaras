@@ -13,14 +13,14 @@
 				<div class="table-responsive centerElement" id="content">
 					<h2 class="text-center racesTitle" id="title">Vueltas del Piloto [[${piloto}]] en la sesion
 						[[${nombre}]]</h2>
-					<table class="table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center" id="thead">
-							<tr class="bg-danger text-white">
-								<th width="10%">Nº Vuelta</th>
-								<th width="90%">Tiempo</th>
+					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th width="10%" class="thead-dark-th">Nº Vuelta</th>
+								<th width="90%" class="thead-dark-th">Tiempo</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white text-black" th:each="vuelta : ${listaVueltas}">
+						<tbody class="table-warning" th:each="vuelta : ${listaVueltas}">
 							<td class="td-table" th:text="${vuelta.nVuelta}"></td>
 							<td class="td-table" th:text="${vuelta.getTiempoFormat()}"></td>
 						</tbody>

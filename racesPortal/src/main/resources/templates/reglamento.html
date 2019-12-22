@@ -9,65 +9,88 @@
 		<div class="row columnaentera">
 			<div th:replace="fragments/menu::menu">
 			</div>
-			<div class="col-xs-10 col-10 align-self-center">
-				<div class="panel-body centerElement">
-					<form id="formularioreglamentos" th:action="@{/races/reglamentos}"
-						class="formAlign bg-white text-dark" action="#" method="post">
-						<div class="centerElement">
-							<div th:if="${reglamento.id == null}" class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Nuevo Reglamento</h2>
-							</div>
-							<div th:if="${reglamento.id != null}" class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Editar Reglamento</h2>
-							</div>
-							<input type="hidden" th:field="*{reglamento.id}" th:value="${reglamento.id}"></input>
-							<div class="form-group row">
-								<label for="descripcion" class="col-sm-5 col-form-label"><strong>Descripcion</strong></label>
-								<div class="col-sm-7">
-									<input type="text" class="inputForm" th:field="*{reglamento.descripcion}"
-										th:value="${reglamento.descripcion}" required="required"></input>
+			<div class="col-xs-10 col-10 align-self-center columnaentera">
+				<div class="panel panel-default panel-body centerElement">
+					<div class="container row col-md-12 well well-sm">
+						<form id="formularioreglamentos" th:action="@{/races/reglamentos}"
+							class="form-horizontal formAlign" action="#" method="post">
+							<fieldset>
+								<legend th:if="${reglamento.id == null}" class="header" align="center">Nuevo Reglamento
+								</legend>
+								<legend th:if="${reglamento.id != null}" class="header" align="center">Editar Reglamento
+								</legend>
+								<input type="hidden" th:field="*{reglamento.id}" th:value="${reglamento.id}"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/reglamento.png" class="icons" alt="Descripcion"
+											title="Descripcion">Descripcion
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" class="inputForm" th:field="*{reglamento.descripcion}"
+											th:value="${reglamento.descripcion}" required="required"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="nCarreras" class="col-sm-5 col-form-label"><strong>Nº Carreras</strong></label>
-								<div class="col-sm-7">
-									<input type="number" class="inputForm" th:field="*{reglamento.nCarreras}"
-										th:value="${reglamento.nCarreras}" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/campeonato.png" class="icons" alt="nCarreras"
+											title="nCarreras">Nº
+										Carreras
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="number" class="inputForm" th:field="*{reglamento.nCarreras}"
+											th:value="${reglamento.nCarreras}" required="required"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="nClasificaciones" class="col-sm-5 col-form-label"><strong>Nº Clasificaciones</strong></label>
-								<div class="col-sm-7">
-									<input type="number" class="inputForm" th:field="*{reglamento.nClasificaciones}"
-										th:value="${reglamento.nClasificaciones}" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/vuelta.png" class="icons" alt="nClasificaciones"
+											title="nClasificaciones">Nº Clasificaciones
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="number" class="inputForm" th:field="*{reglamento.nClasificaciones}"
+											th:value="${reglamento.nClasificaciones}" required="required"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="nEntrenamientos" class="col-sm-5 col-form-label"><strong>Nº Entrenamientos</strong></label>
-								<div class="col-sm-7">
-									<input type="number" class="inputForm" th:field="*{reglamento.nEntrenamientos}"
-										th:value="${reglamento.nEntrenamientos}" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/inscripcion.png" class="icons" alt="nEntrenamientos"
+											title="nEntrenamientos">Nº Entrenamientos
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="number" class="inputForm" th:field="*{reglamento.nEntrenamientos}"
+											th:value="${reglamento.nEntrenamientos}" required="required"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="nEquipos" class="col-sm-5 col-form-label"><strong>Nº Equipos</strong></label>
-								<div class="col-sm-7">
-									<input type="number" class="inputForm" th:field="*{reglamento.nEquipos}"
-										th:value="${reglamento.nEquipos}" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/equipo.png" class="icons" alt="nEquipos"
+											title="nEquipos">Nº
+										Equipos
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="number" class="inputForm" th:field="*{reglamento.nEquipos}"
+											th:value="${reglamento.nEquipos}" required="required"></input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="nPilotos" class="col-sm-5 col-form-label"><strong>Nº Pilotos</strong></label>
-								<div class="col-sm-7">
-									<input type="number" class="inputForm" th:field="*{reglamento.nPilotos}"
-										th:value="${reglamento.nPilotos}" required="required"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/piloto.png" class="icons" alt="nPilotos"
+											title="nPilotos">Nº
+										Pilotos
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="number" class="inputForm" th:field="*{reglamento.nPilotos}"
+											th:value="${reglamento.nPilotos}" required="required"></input>
+									</div>
 								</div>
-							</div>
-							
-							<div>
-								<button type="submit" class="btn btn-primary pull-center">Aceptar</button></div>
-						</div>
-					</form>
+								<div class="form-group">
+									<div class="col-md-12 text-center">
+										<button type="submit" class="btn btn-primary pull-center">Aceptar</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

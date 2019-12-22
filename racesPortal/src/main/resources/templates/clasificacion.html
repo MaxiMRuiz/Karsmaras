@@ -14,15 +14,15 @@
 					<h2 class="text-center racesTitle" id="title">Clasificacion de [[${nombre}]]</h2>
 					<div class="row col-12">
 						<div class="col-6 col-xs-12">
-							<table class="table-bordered racesTable" id="tablePilotos" onload="searchFilter()">
-								<thead align="center" id="thead">
-									<tr class="bg-danger text-white">
-										<th width="5%">Posicion</th>
-										<th width="65%">Piloto</th>
-										<th width="30%">Puntos</th>
+							<table class="table-bordered  table-dark centerTable racesTable" id="tablePilotos" onload="searchFilter()">
+								<thead class="thead-dark" align="center" id="thead">
+									<tr>
+										<th width="5%" class="thead-dark-th">Posicion</th>
+										<th width="65%" class="thead-dark-th">Piloto</th>
+										<th width="30%" class="thead-dark-th">Puntos</th>
 									</tr>
 								</thead>
-								<tbody class="bg-white text-black" th:each="clasificacion : ${listaClasificacion}">
+								<tbody class="table-warning" th:each="clasificacion : ${listaClasificacion}">
 									<td class="td-table" th:if="${clasificacionStat.index == 0}"
 										th:text="${clasificacionStat.index + 1}"
 										style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>
@@ -41,15 +41,15 @@
 							</table>
 						</div>
 						<div class="col-6 col-xs-12">
-							<table class="table-bordered racesTable" id="tableEquipos" onload="searchFilter()">
-								<thead align="center" id="thead">
-									<tr class="bg-danger text-white">
-										<th width="5%">Posicion</th>
-										<th width="65%">Equipo</th>
-										<th width="30%">Puntos</th>
+							<table class="table-bordered table-dark racesTable" id="tableEquipos" onload="searchFilter()">
+								<thead class="thead-dark" align="center" id="thead">
+									<tr>
+										<th width="5%" class="thead-dark-th">Posicion</th>
+										<th width="65%" class="thead-dark-th">Equipo</th>
+										<th width="30%" class="thead-dark-th">Puntos</th>
 									</tr>
 								</thead>
-								<tbody class="bg-white text-black" th:each="equipos : ${listaEquipos}">
+								<tbody class="table-warning" th:each="equipos : ${listaEquipos}">
 									<td class="td-table" th:if="${equiposStat.index == 0}"
 										th:text="${equiposStat.index + 1}"
 										style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>

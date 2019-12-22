@@ -14,14 +14,14 @@
 					<div class="container row col-md-12 well well-sm">
 						<form id="formulariopuntuacion"
 							th:action="@{/races/sancion/__${id}__/__${idSesion}__/__${idResultado}__}"
-							class="form-horizontal inputForm formAlign" method="post">
+							class="form-horizontal formAlign" method="post">
 							<fieldset>
-								<legend th:if="${sancion.id == null}" class="text-center header">Nueva Sancion para [[${piloto}]] en la sesion [[${nombre}]]</legend>
-								<legend th:if="${sancion.id != null}" class="text-center header">Modificar Sancion de [[${piloto}]] en la sesion [[${nombre}]]</legend>
+								<legend th:if="${sancion.id == null}" class="header" align="center">Nueva Sancion para [[${piloto}]] en la sesion [[${nombre}]]</legend>
+								<legend th:if="${sancion.id != null}" class="header" align="center">Modificar Sancion de [[${piloto}]] en la sesion [[${nombre}]]</legend>
 								<input type="hidden" th:field="*{sancion.id}" th:value="${sancion.id}"></input>
 								<input type="hidden" th:field="*{sancion.resultado.id}" th:value="${sancion.resultado.id}"></input>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
 											src="/icons/ubicacion.png" class="icons" alt="Descripcion"
 											title="Descripcion de la Sancion">
 										Descripción</span>
@@ -32,7 +32,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
 											src="/icons/puntos.png" class="icons" alt="Puntos"
 											title="Puntos descontados por la Sancion">
 										Puntos</span>
@@ -43,7 +43,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
 											src="/icons/vuelta.png" class="icons" alt="Segundos"
 											title="Segundos añadidos por la Sancion">
 										Tiempo (seg.)</span>

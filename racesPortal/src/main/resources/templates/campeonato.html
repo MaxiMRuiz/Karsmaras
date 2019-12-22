@@ -9,58 +9,75 @@
 		<div class="row columnaentera">
 			<div th:replace="fragments/menu::menu">
 			</div>
-			<div class="col-xs-10 col-10 align-self-center">
-				<div class="panel-body centerElement">
-					<form id="formularioCampeonatos" th:action="@{/races/campeonatos}"
-						class="formAlign bg-white text-dark" action="#" method="post">
-						<div class="centerElement">
-							<div th:if="${campeonato.id == null}" class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Nuevo Campeonato</h2>
-							</div>
-							<div th:if="${campeonato.id != null}" class="centerElement">
-								<h2 align="center" class="mb-1 mt-1">Editar Campeonato</h2>
-							</div>
-							<input type="hidden" th:field="*{campeonato.id}" th:value="${campeonato.id}"></input>
-							<div class="form-group row">
-								<label for="Nombre" class="col-sm-5 col-form-label"><strong>Nombre</strong></label>
-								<div class="col-sm-7">
-									<input type="text" class="inputForm" th:field="*{campeonato.nombre}"
-										th:value="${campeonato.nombre}" required="required"
-										th:readonly="${campeonato.id != null}"></input>
+			<div class="col-xs-10 col-10 align-self-center columnaentera">
+				<div class="panel panel-default panel-body centerElement">
+					<div class="container row col-md-12 well well-sm">
+						<form id="formularioCampeonatos" th:action="@{/races/campeonatos}"
+							class="form-horizontal formAlign" action="#" method="post">
+							<fieldset>
+								<legend th:if="${campeonato.id == null}" class="header" align="center">Nuevo Campeonato
+								</legend>
+								<legend th:if="${campeonato.id != null}" class="header" align="center">Editar Campeonato
+								</legend>
+								<input type="hidden" th:field="*{campeonato.id}" th:value="${campeonato.id}"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/campeonato.png" class="icons" alt="Nombre"
+											title="Nombre">Nombre
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" class="inputForm" th:field="*{campeonato.nombre}"
+											th:value="${campeonato.nombre}" required="required"
+											th:readonly="${campeonato.id != null}">
+										</input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="descripcion"
-									class="col-sm-5 col-form-label"><strong>Descripcion</strong></label>
-								<div class="col-sm-7">
-									<input type="text" th:field="*{campeonato.descripcion}"
-										th:value="${campeonato.descripcion}" class="inputForm"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/inscripcion.png" class="icons" alt="Descripcion"
+											title="Descripcion">Descripcion
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" th:field="*{campeonato.descripcion}"
+											th:value="${campeonato.descripcion}" class="inputForm">
+										</input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="temporada"
-									class="col-sm-5 col-form-label"><strong>Temporada</strong></label>
-								<div class="col-sm-7">
-									<input type="text" class="inputForm" th:field="*{campeonato.temporada}"
-										th:value="${campeonato.temporada}" required="required"
-										th:readonly="${campeonato.id != null}"></input>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/sesiones.png" class="icons" alt="Temporada"
+											title="Temporada">Temporada
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="text" class="inputForm" th:field="*{campeonato.temporada}"
+											th:value="${campeonato.temporada}" required="required"
+											th:readonly="${campeonato.id != null}">
+										</input>
+									</div>
 								</div>
-							</div>
-							<div class="form-group row">
-								<label for="reglamento"
-									class="col-sm-5 col-form-label"><strong>Reglamento</strong></label>
-								<div class="col-sm-7">
-									<select th:field="*{campeonato.reglamento.id}" class="inputForm" name="reglamento">
-										<option th:each="reglamento : ${reglamentos}" th:value="${reglamento.id}"
-											th:text="${reglamento}"
-											th:selected="${reglamento.id == campeonato.reglamento.id}"></option>
-									</select>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center">
+										<img src="/icons/reglamento.png" class="icons" alt="Temporada"
+											title="Temporada">Reglamento
+									</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<select th:field="*{campeonato.reglamento.id}" class="inputForm"
+											name="reglamento" style="padding: 5px;">
+											<option th:each="reglamento : ${reglamentos}" th:value="${reglamento.id}"
+												th:text="${reglamento}"
+												th:selected="${reglamento.id == campeonato.reglamento.id}">
+											</option>
+										</select>
+									</div>
 								</div>
-							</div>
-							<div>
-								<button type="submit" class="btn btn-primary pull-center">Aceptar</button></div>
-						</div>
-					</form>
+								<div class="form-group">
+									<div class="col-md-12 text-center">
+										<button type="submit" class="btn btn-primary pull-center">Aceptar</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

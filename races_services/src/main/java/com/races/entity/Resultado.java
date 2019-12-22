@@ -58,6 +58,14 @@ public class Resultado {
 		this.tiempo = tiempo;
 	}
 
+	public Resultado(Inscripcion inscripcion, Sesion sesion) {
+		super();
+		this.inscripcion = inscripcion;
+		this.sesion = sesion;
+		this.nVueltas = 0;
+		this.tiempo = 0;
+	}
+
 	public Long getId() {
 		return id;
 	}

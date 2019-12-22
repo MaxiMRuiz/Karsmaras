@@ -18,7 +18,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Log LOGGER = LogFactory.getLog(RequestTimeInterceptor.class);
-
+	
 	/**
 	 * Metodo pre ejecucion de todas las peticiones
 	 * 

@@ -12,18 +12,18 @@
 			<div class="col-xs-10 col-10">
 				<div class="table-responsive centerElement" id="content">
 					<h2 class="text-center racesTitle" id="title">Resultados de la sesion [[${nombre}]]</h2>
-					<table class="table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center" id="thead">
-							<tr class="bg-danger text-white">
-								<th width="5%">Posicion</th>
-								<th width="45%">Piloto</th>
-								<th width="15%">V.Rápida</th>
-								<th width="15%">Tiempo Sesion</th>
-								<th width="10%">Vueltas</th>
-								<th width="10%">Sanciones</th>
+					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th width="5%" class="thead-dark-th">Posicion</th>
+								<th width="45%" class="thead-dark-th">Piloto</th>
+								<th width="15%" class="thead-dark-th">V.Rápida</th>
+								<th width="15%" class="thead-dark-th">Tiempo Sesion</th>
+								<th width="10%" class="thead-dark-th">Vueltas</th>
+								<th width="10%" class="thead-dark-th">Sanciones</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white text-black" th:each="resultado : ${listaResultados}">
+						<tbody class="table-warning" th:each="resultado : ${listaResultados}">
 							<td class="td-table" th:if="${resultadoStat.index == 0}"
 								th:text="${resultadoStat.index + 1}"
 								style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>
@@ -55,7 +55,7 @@
 						</tbody>
 						<tfoot id="tfoot">
 							<tr>
-								<td colspan="6" class="text-center td-table">
+								<td colspan="6" class="text-center td-table table-success">
 									<div class="row">
 										<form align="center" method="post" class="col-12"
 											th:action="@{/races/sesion/__${id}__/__${idSesion}__/upload}"

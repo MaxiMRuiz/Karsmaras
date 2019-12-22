@@ -11,19 +11,21 @@
 			</div>
 			<div class="col-xs-10 col-10">
 				<div class="table-responsive centerElement" id="content">
-					<h2 class="text-center racesTitle" id="title">GRANDES PREMIOS DEL CAMPEONATO [[${nombre}]]</h2>
-					<table class="table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center" id="thead">
-							<tr class="bg-danger text-white">
-								<th width="20%">GP <input type="text" id="gp" onkeyup="searchFilter()"
-										placeholder="Buscar" class="col-10 col-xs-10"></input></th>
-								<th width="65%">Sesiones <input type="text" id="sesiones" onkeyup="searchFilter()"
-										placeholder="Buscar" class="col-10 col-xs-10"></input></th>
-								<th width="10%">Clasificacion</th>
-								<th width="5%">Borrar</th>
+					<h2 class="text-center racesTitle" id="title">GRANDES PREMIOS DEL CAMPEONATO <br>[[${nombre}]]</h2>
+					<table class="table-bordered table-dark centerTable racesTable" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th width="20%" class="thead-dark-th">GP <input type="text" id="gp"
+										onkeyup="searchFilter()" placeholder="Buscar" class="col-10 col-xs-10"></input>
+								</th>
+								<th width="65%" class="thead-dark-th">Sesiones <input type="text" id="sesiones"
+										onkeyup="searchFilter()" placeholder="Buscar" class="col-10 col-xs-10"></input>
+								</th>
+								<th width="10%" class="thead-dark-th">Clasificacion</th>
+								<th width="5%" class="thead-dark-th">Borrar</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white text-black" th:each="gp : ${listaGrandesPremios}">
+						<tbody class="table-warning" th:each="gp : ${listaGrandesPremios}">
 							<td class="td-table" th:text="${gp.toString()}"></td>
 							<td class="td-table">
 								<div th:each="sesion: ${gp.sesiones}">
@@ -52,7 +54,7 @@
 						</tbody>
 						<tfoot id="tfoot">
 							<tr>
-								<td colspan="4" class="td-table text-center">
+								<td colspan="4" class="td-table table-success text-center">
 									<div class="row">
 										<a class="button col-12 centerVertical" th:href="@{/races/gp/__${id}__/new}">
 											<button type="button" class="btn btn-success btn-primary pull-right"

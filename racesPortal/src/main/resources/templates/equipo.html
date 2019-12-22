@@ -13,15 +13,15 @@
 				<div class="panel panel-default panel-body centerElement">
 					<div class="container row col-md-12 well well-sm">
 						<form id="formularioEquipos" th:action="@{/races/equipos}"
-							class="form-horizontal inputForm formAlign" action="#" method="post">
+							class="form-horizontal formAlign" action="#" method="post">
 							<fieldset>
-								<legend th:if="${equipo.id == null}" class="text-center header">Nuevo Equipo
+								<legend th:if="${equipo.id == null}" class="header" align="center">Nuevo Equipo
 								</legend>
-								<legend th:if="${equipo.id != null}" class="text-center header">Editar Equipo
+								<legend th:if="${equipo.id != null}" class="header" align="center">Editar Equipo
 									[[${equipo}]]</legend>
 								<input type="hidden" th:field="*{equipo.id}" th:value="${equipo.id}"></input>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
 											src="/icons/equipo.png" class="icons" alt="Nombre" title="Nombre">
 										Nombre</span>
 									<div class="col-12 col-md-12 col-xs-12">
@@ -31,7 +31,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<span class="col-2 col-md-2 col-xs-2 text-center text-white"><img
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
 											src="/icons/equipo.png" class="icons" alt="Alias" title="Alias del Equipo">
 										Alias</span>
 									<div class="col-12 col-md-12 col-xs-12">

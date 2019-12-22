@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.FileUploadDto;
+import com.races.dto.GranPremioSesionesDto;
 import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
@@ -33,6 +34,7 @@ import com.races.entity.Sesion;
 import com.races.entity.TipoSesion;
 import com.races.entity.Vuelta;
 import com.races.repository.ResultadoRepository;
+import com.races.services.GranPremioService;
 import com.races.services.InscripcionService;
 import com.races.services.PilotoService;
 import com.races.services.ResultadoService;
@@ -62,6 +64,9 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	@Autowired
 	VueltaService vueltas;
+
+	@Autowired
+	GranPremioService gpService;
 
 	@Autowired
 	Environment env;
@@ -122,11 +127,13 @@ public class ResultadoServiceImpl implements ResultadoService {
 		if (lista.isEmpty()) {
 			return response;
 		}
-		TipoSesion tipo = lista.get(0).getSesion().getTipoSesion();
 		for (Resultado resultado : lista) {
-			Vuelta vRapida = vueltas.buscarVueltaRapida(resultado);
-			response.add(new ResultadoResponseDto(resultado, vRapida));
+			if (resultado.getnVueltas() > 0) {
+				Vuelta vRapida = vueltas.buscarVueltaRapida(resultado);
+				response.add(new ResultadoResponseDto(resultado, vRapida));
+			}
 		}
+		TipoSesion tipo = lista.get(0).getSesion().getTipoSesion();
 		if (tipo.getDescripcion().equals("Carrera")) {
 			return response;
 		} else {
@@ -210,7 +217,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 			while ((line = bufferReader.readLine()) != null) {
 				String[] parts = line.split(";");
 				if (parts.length == 3) {
-					listLines.add(new FileUploadDto(parts[0].replaceAll("[^a-zA-Z]", ""), Integer.parseInt(parts[1]), parts[2]));
+					listLines.add(new FileUploadDto(parts[0].replaceAll("[^a-zA-Z]", ""), Integer.parseInt(parts[1]),
+							parts[2]));
 				}
 			}
 			LOGGER.info("Fichero procesado");
@@ -264,6 +272,19 @@ public class ResultadoServiceImpl implements ResultadoService {
 		Resultado resultado = sancion.getResultado();
 		resultado.setTiempo(resultado.getTiempo() - sancion.getTiempo());
 		resultadoRepo.save(resultado);
+	}
+
+	@Override
+	public void crearResultados(Inscripcion newInscripcion) {
+		List<Resultado> resultados = new ArrayList<>();
+		List<GranPremioSesionesDto> listaGp = gpService.buscarGrandesPremios(null, null,
+				newInscripcion.getCampeonato().getId());
+		for (GranPremioSesionesDto gp : listaGp) {
+			for (Sesion sesion : gp.getSesiones()) {
+				resultados.add(new Resultado(newInscripcion, sesion));
+			}
+		}
+		resultadoRepo.saveAll(resultados);
 	}
 
 }

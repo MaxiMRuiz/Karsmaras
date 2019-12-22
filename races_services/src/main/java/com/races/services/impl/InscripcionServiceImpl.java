@@ -22,6 +22,7 @@ import com.races.services.CampeonatoService;
 import com.races.services.EquipoService;
 import com.races.services.InscripcionService;
 import com.races.services.PilotoService;
+import com.races.services.ResultadoService;
 
 /**
  * Implementacion de la interfaz InscripcionService
@@ -40,6 +41,9 @@ public class InscripcionServiceImpl implements InscripcionService {
 
 	@Autowired
 	CampeonatoService campeonatoService;
+	
+	@Autowired
+	ResultadoService resultadoService;
 
 	@Autowired
 	EquipoService equipoService;
@@ -62,7 +66,9 @@ public class InscripcionServiceImpl implements InscripcionService {
 					.countDisctinctEquipoByCampeonato(campeonato).equals(campeonato.getReglamento().getnEquipos())) {
 				throw new RacesException("Máximo de equipos por reglamento alcanzado");
 			}
-			return inscriptionRepo.save(newInscripcion);
+			newInscripcion = inscriptionRepo.save(newInscripcion);
+			resultadoService.crearResultados(newInscripcion);
+			return newInscripcion;
 		} else {
 			throw new RacesException("Máximo de inscripciones por reglamento alcanzado");
 		}

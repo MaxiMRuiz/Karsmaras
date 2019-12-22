@@ -8,6 +8,7 @@ import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Campeonato;
+import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.Sancion;
 import com.races.entity.Sesion;
@@ -126,5 +127,11 @@ public interface ResultadoService {
 	 * @return
 	 */
 	List<ResultadoResponseDto> buscarResultadosValidos(Long idSesion);
+
+	/**
+	 * Crea los resultados para las inscricpciones de un campeonato
+	 * @param newInscripcion
+	 */
+	void crearResultados(Inscripcion newInscripcion);
 
 }

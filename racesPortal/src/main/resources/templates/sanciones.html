@@ -14,17 +14,17 @@
 					<h2 class="text-center racesTitle" id="title">Sanciones del piloto [[${piloto}]] en la sesion
 						[[${nombre}]]
 					</h2>
-					<table class="table table-bordered centerTable racesTable" id="table" onload="searchFilter()">
-						<thead align="center" id="thead">
-							<tr class="bg-danger text-white">
-								<th width="70%">Motivo</th>
-								<th width="10%">Puntos</th>
-								<th width="10%">Tiempo (seg.)</th>
-								<th width="5%">Editar</th>
-								<th width="5%">Borrar</th>
+					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th width="70%" class="thead-dark-th">Motivo</th>
+								<th width="10%" class="thead-dark-th">Puntos</th>
+								<th width="10%" class="thead-dark-th">Tiempo (seg.)</th>
+								<th width="5%" class="thead-dark-th">Editar</th>
+								<th width="5%" class="thead-dark-th">Borrar</th>
 							</tr>
 						</thead>
-						<tbody class="bg-white text-black" th:each="sancion : ${listaSanciones}">
+						<tbody class="table-warning" th:each="sancion : ${listaSanciones}">
 							<td class="td-table" th:text="${sancion.descripcion}"></td>
 							<td class="td-table">
 								<img class="icons" src="/icons/puntos.png" alt="Puntos"
@@ -54,7 +54,7 @@
 						</tbody>
 						<tfoot id="tfoot">
 							<tr>
-								<td colspan="5" class="td-table text-center">
+								<td colspan="5" class="td-table text-center table-success">
 									<div class="row">
 										<a class="button col-12 centerVertical"
 											th:href="@{/races/sancion/__${id}__/__${idSesion}__/__${idResultado}__/new}">

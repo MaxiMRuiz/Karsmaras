@@ -8,6 +8,32 @@ html {
     height: 100%;
 }
 
+.table-dark {
+    color: #fff;
+    background-color: #212529;
+    border-color: #32383e;
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    border-bottom-width: 2px;
+    padding: .5rem;
+}
+
+.thead-dark {
+    color: #fff;
+    background-color: #212529;
+    border-color: #32383e;
+}
+
+.thead-dark-th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+    border-bottom-width: 2px;
+    padding-top: 0.75rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.75rem;
+    padding-left: 0.75rem;
+}
+
 .centerElement {
     margin-left: 5%;
     margin-right: 5%;
@@ -31,38 +57,35 @@ html {
 
 .formAlign {
     margin-left: 20%;
-    width: initial;
+    width: 100%;
     margin-right: 20%;
     margin-top: 0;
 }
 
-.timeInput {    
+.timeInput {
     width: 3em;
 }
 
 .inputForm {
     width: 100%;
+    background: black;
+    color: ghostwhite;
 }
 
-.columnaentera{
+.columnaentera {
     height: 100%;
 }
 
-.menu{
+.menu {
     background: linear-gradient(90deg, black, transparent 80px);
 }
 
-.menuoption {
-    color: maroon;
-    font-size: larger;
-    font-weight: bold;
-    vertical-align: text-top;
-}
-
 .header {
-    color: #36A0FF;
-    font-size: 27px;
-    padding: 10px;
+    color: darkorange;
+    font-size: x-large;
+    padding: 0px;
+    font-weight: bold;
+    font-family: cursive;
 }
 
 .body {
@@ -76,12 +99,12 @@ html {
     color: #333;
     background-color: cadetblue;
     background-image: url('../images/background.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-attachment: fixed;
 }
 
-.main-page{
+.main-page {
     max-width: -webkit-fill-available;
     width: 100%;
     position: absolute;
@@ -103,19 +126,33 @@ html {
     background-color: darkgoldenrod;
 }
 
+.text-center {
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: x-large;
+    font-family: cursive;
+    color: darkorange;
+}
+
 .icons {
     height: 30px;
     width: 30px;
 }
 
 .iconsmenu {
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
+    position: relative;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 60px;
 }
 
 .nav-link[data-toggle].collapsed:after {
     content: "▾";
 }
+
 .nav-link[data-toggle]:not(.collapsed):after {
     content: "▴";
 }
@@ -125,7 +162,6 @@ html {
     content: "";
     clear: both;
 }
-
 
 h1, h2, h3, h4, h5, h6 {
     margin-top: 20px;
@@ -144,12 +180,12 @@ ul {
     display: flex;
     flex-direction: column;
 }
-  
-ul > :last-child {
+
+ul> :last-child {
     margin-top: auto;
 }
 
-  button {
+button {
     box-shadow: none;
     border: 1px solid transparent;
     font-size: 14px;
@@ -168,6 +204,11 @@ button.primary {
     background-color: #128ff2;
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
     color: #fff;
+}
+
+.paginate-btn {
+    font-weight: bold;
+    color: gold;
 }
 
 input {
@@ -196,22 +237,27 @@ input[type="file"] {
     vertical-align: middle;
 }
 
-.td-table{
+.td-table {
     padding: 0.25rem;
     vertical-align: middle;
     text-align: center;
     font-weight: bold;
+    color: black;
 }
 
 .racesTitle {
-    color: snow;
+    vertical-align: middle;
+    font-weight: bold;
+    font-size: x-large;
+    font-family: cursive;
+    color: darkorange;
+    font-style: italic;
 }
 
 @media screen and (min-width: 500px) {
     .file-input {
         width: calc(100% - 115px);
     }
-
     .submit-btn {
         display: inline-block;
         margin-top: 0;
@@ -219,26 +265,26 @@ input[type="file"] {
     }
 }
 
-@media (max-width: 1850px){
+@media (max-width: 1850px) {
     .d-sm-inline {
         display: none!important;
     }
     .iconsmenu {
-        height: 45px;
-        width: 45px;
+        height: 60px;
+        width: 60px;
     }
 }
 
-@media (min-width: 1850px){
+@media (min-width: 1850px) {
     .d-sm-inline {
         display: inline!important;
     }
-   
 }
 
 @media screen and (max-width: 1026px) {
     table {
-        width:100%;
+        width: 100%;
+        vertical-align: middle;
     }
     thead {
         display: none;
@@ -251,39 +297,38 @@ input[type="file"] {
     }
     tr td:first-child {
         background: #f0f0f0;
-        font-weight:bold;
-        font-size:1.3em;
+        font-weight: bold;
+        font-size: 1.3em;
     }
     tbody td {
         display: block;
-        text-align:center;
+        text-align: center;
     }
     tbody td:before {
         content: attr(data-th);
         display: block;
-        text-align:center;
+        text-align: center;
     }
     .icons {
         height: 15px;
         width: 15px;
     }
-
     .iconsmenu {
-        height: 30px;
-        width: 30px;
+        height: 60px;
+        width: 60px;
     }
 }
 
 .upload-container {
-      max-width: 750px;
-      margin-left: auto;
-      margin-right: auto;
-      background-color: #fff;
-      box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
-      margin-top: 60px;
-      min-height: 400px;
-      position: relative;
-      padding: 20px;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    box-shadow: 0 1px 11px rgba(0, 0, 0, 0.27);
+    margin-top: 60px;
+    min-height: 400px;
+    position: relative;
+    padding: 20px;
 }
 
 .upload-header {
@@ -303,4 +348,132 @@ input[type="file"] {
 .upload-response {
     overflow-x: hidden;
     word-break: break-all;
+}
+
+.img-2x {
+    font-size: 2em;
+}
+
+.main-menu:hover, nav.main-menu.expanded {
+    width: 250px;
+    overflow: visible;
+}
+
+.main-menu {
+    background: #212121;
+    border-right: 1px solid #e5e5e5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    width: 60px;
+    overflow: hidden;
+    -webkit-transition: width .05s linear;
+    transition: width .05s linear;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    z-index: 1000;
+}
+
+.main-menu>ul {
+    margin: 7px 0;
+}
+
+.main-menu li {
+    position: relative;
+    display: block;
+    width: 250px;
+}
+
+.main-menu li>a {
+    position: relative;
+    display: table;
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #999;
+    font-family: arial;
+    font-size: 14px;
+    text-decoration: none;
+    -webkit-transform: translateZ(0) scale(1, 1);
+    -webkit-transition: all .1s linear;
+    transition: all .1s linear;
+}
+
+.main-menu .nav-icon {
+    position: relative;
+    display: table-cell;
+    width: 60px;
+    height: 36px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 18px;
+}
+
+.main-menu .nav-text {
+    position: inherit;
+    display: table-cell;
+    font-family: cursive;
+    color: orange;
+    font-weight: bold;
+    vertical-align: middle;
+    font-size: large;
+    width: 100%;
+}
+
+.main-menu>ul.logout {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.main-menu>ul.ul-menu {
+    position: absolute;
+    left: auto;
+    bottom: auto;
+}
+
+.no-touch .scrollable.hover {
+    overflow-y: hidden;
+}
+
+.no-touch .scrollable.hover:hover {
+    overflow-y: auto;
+    overflow: visible;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+
+nav {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+nav ul, nav li {
+    outline: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.main-menu li:hover>a, nav.main-menu li.active>a, .dropdown-menu>li>a:hover, .dropdown-menu>li>a:focus, .dropdown-menu>.active>a, .dropdown-menu>.active>a:hover, .dropdown-menu>.active>a:focus, .no-touch .dashboard-page nav.dashboard-menu ul li:hover a, .dashboard-page nav.dashboard-menu ul li.active a {
+    color: #fff;
+    background-color: #5fa2db;
+}
+
+.area {
+    float: left;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+}
+
+@font-face {
+    font-family: 'Titillium Web';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
 }

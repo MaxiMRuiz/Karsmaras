@@ -16,7 +16,7 @@ import com.races.dto.ResultadoResponseDto;
 import com.races.entity.Inscripcion;
 import com.races.entity.Puntuacion;
 import com.races.entity.Sancion;
-import com.races.entity.Sesion;
+import com.races.entity.SesionGP;
 import com.races.entity.TipoSesion;
 import com.races.services.CampeonatoService;
 import com.races.services.ClasificacionService;
@@ -75,9 +75,9 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 			List<Puntuacion> puntuaciones) {
 		List<ClasificacionDto> clasificaciones = new ArrayList<>();
 		List<ResultadoResponseDto> resultados;
-		for (Sesion sesion : granPremio.getSesiones()) {
-			LOGGER.info("Calculando resultados de la sesion " + sesion);
-			resultados = resultadoService.buscarResultadosValidos(sesion.getId());
+		for (SesionGP sesionGP : granPremio.getSesiones()) {
+			LOGGER.info("Calculando resultados de la sesion " + sesionGP);
+			resultados = resultadoService.buscarResultadosValidos(sesionGP);
 			LOGGER.info("Encontrados " + resultados.size() + " resultados válidos.");
 			int j = 1;
 			for (ResultadoResponseDto resultado : resultados) {
@@ -86,8 +86,9 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 					LOGGER.info(Constants.ENCONTRADAS + sanciones.size() + " sanciones");
 					LOGGER.info("Actualizando el resultado del piloto " + resultado.getInscripcion().getPiloto());
 					actualizarClasificacion(clasificaciones, resultado.getInscripcion(),
-							getPuntuacion(puntuaciones, j, sanciones, sesion.getTipoSesion()), resultados.size(),
-							(j - 1), resultado.getSesion().getTipoSesion().getDescripcion().equals(Constants.CARRERA));
+							getPuntuacion(puntuaciones, j, sanciones, sesionGP.getSesion().getTipoSesion()),
+							resultados.size(), (j - 1),
+							resultado.getSesionGP().getSesion().getTipoSesion().getId().equals(Constants.CARRERA_ID));
 					j++;
 				}
 
@@ -124,7 +125,8 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 			puntos = puntos + sancion.getPuntos();
 		}
 		for (Puntuacion puntuacion : puntuaciones) {
-			if (puntuacion.getTipoSesion().getId().equals(tipoSesion.getId()) && puntuacion.getPosicion() == j) {
+			if (puntuacion.getSesion().getTipoSesion().getId().equals(tipoSesion.getId())
+					&& puntuacion.getPosicion() == j) {
 				LOGGER.info("Aplicando puntuacion: " + puntos + " -> " + (puntos + puntuacion.getPuntos()));
 				return puntos + puntuacion.getPuntos();
 			}

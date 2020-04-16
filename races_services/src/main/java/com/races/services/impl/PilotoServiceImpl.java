@@ -23,6 +23,7 @@ import com.races.services.PilotoService;
 @Service("PilotoService")
 public class PilotoServiceImpl implements PilotoService {
 
+	private static final String NOT_FOUND_DRIVER = "Piloto no encontrado";
 	@Autowired
 	@Qualifier("PilotoRepository")
 	PilotoRepository pilotoRepo;
@@ -44,9 +45,10 @@ public class PilotoServiceImpl implements PilotoService {
 			piloto.setNombre(pilotoDto.getNombre());
 			piloto.setApellido(pilotoDto.getApellido());
 			piloto.setApodo(pilotoDto.getApodo());
+			piloto.setPassword(pilotoDto.getPassword());
 			return pilotoRepo.save(piloto);
 		} else {
-			throw new RacesException("Piloto no encontrado");
+			throw new RacesException(NOT_FOUND_DRIVER);
 		}
 	}
 
@@ -63,7 +65,7 @@ public class PilotoServiceImpl implements PilotoService {
 		if (opPiloto.isPresent()) {
 			return opPiloto.get();
 		} else {
-			throw new RacesException("Piloto no encontrado");
+			throw new RacesException(NOT_FOUND_DRIVER);
 		}
 	}
 
@@ -73,14 +75,14 @@ public class PilotoServiceImpl implements PilotoService {
 		if (opPiloto.isPresent()) {
 			return opPiloto.get();
 		} else {
-			throw new RacesException("Piloto no encontrado");
+			throw new RacesException(NOT_FOUND_DRIVER);
 		}
 	}
 	
 	@Override
 	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo) {
 
-		Example<Piloto> example = Example.of(new Piloto(id, nombre, apellido, apodo));
+		Example<Piloto> example = Example.of(new Piloto(id, nombre, apellido, apodo, null));
 		return pilotoRepo.findAll(example);
 
 	}

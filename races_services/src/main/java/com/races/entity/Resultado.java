@@ -26,8 +26,8 @@ public class Resultado {
 	private Inscripcion inscripcion;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_sesion")
-	private Sesion sesion;
+	@JoinColumn(name = "id_sesion_gp")
+	private SesionGP sesionGP;
 
 	private Integer nVueltas;
 
@@ -49,19 +49,19 @@ public class Resultado {
 	 * @param nVueltas
 	 * @param tiempo
 	 */
-	public Resultado(Long id, Inscripcion inscripcion, Sesion sesion, Integer nVueltas, Integer tiempo) {
+	public Resultado(Long id, Inscripcion inscripcion, SesionGP sesionGp, Integer nVueltas, Integer tiempo) {
 		super();
 		this.id = id;
 		this.inscripcion = inscripcion;
-		this.sesion = sesion;
+		this.sesionGP = sesionGp;
 		this.nVueltas = nVueltas;
 		this.tiempo = tiempo;
 	}
 
-	public Resultado(Inscripcion inscripcion, Sesion sesion) {
+	public Resultado(Inscripcion inscripcion, SesionGP sesionGp) {
 		super();
 		this.inscripcion = inscripcion;
-		this.sesion = sesion;
+		this.sesionGP = sesionGp;
 		this.nVueltas = 0;
 		this.tiempo = 0;
 	}
@@ -82,12 +82,12 @@ public class Resultado {
 		this.inscripcion = inscripcion;
 	}
 
-	public Sesion getSesion() {
-		return sesion;
+	public SesionGP getSesionGP() {
+		return sesionGP;
 	}
 
-	public void setSesion(Sesion sesion) {
-		this.sesion = sesion;
+	public void setSesionGP(SesionGP sesionGp) {
+		this.sesionGP = sesionGp;
 	}
 
 	public Integer getnVueltas() {
@@ -109,7 +109,7 @@ public class Resultado {
 	@Override
 	public String toString() {
 		return "#" + id + " - I[" + (inscripcion == null ? "null" : inscripcion) + "] S["
-				+ (sesion == null ? "null" : sesion) + "] " + nVueltas + "v. " + tiempo + "ms";
+				+ (sesionGP == null ? "null" : sesionGP) + "] " + nVueltas + "v. " + tiempo + "ms";
 	}
 
 }

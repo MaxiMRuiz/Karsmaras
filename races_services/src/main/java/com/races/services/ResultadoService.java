@@ -11,7 +11,7 @@ import com.races.entity.Campeonato;
 import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.Sancion;
-import com.races.entity.Sesion;
+import com.races.entity.SesionGP;
 
 /**
  * Interfaz de servicios para Resultado
@@ -76,7 +76,7 @@ public interface ResultadoService {
 	 * @param listSesion
 	 * @param campeonato
 	 */
-	void crearResultados(List<Sesion> listSesion, Campeonato campeonato);
+	void crearResultados(List<SesionGP> listSesion, Campeonato campeonato);
 
 	/**
 	 * Servicio de actualizacion de un resultado
@@ -126,7 +126,7 @@ public interface ResultadoService {
 	 * @param idSesion
 	 * @return
 	 */
-	List<ResultadoResponseDto> buscarResultadosValidos(Long idSesion);
+	List<ResultadoResponseDto> buscarResultadosValidos(SesionGP sesion);
 
 	/**
 	 * Crea los resultados para las inscricpciones de un campeonato

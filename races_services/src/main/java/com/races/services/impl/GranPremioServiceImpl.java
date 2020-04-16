@@ -18,7 +18,7 @@ import com.races.entity.GranPremio;
 import com.races.repository.GranPremioRepository;
 import com.races.services.CampeonatoService;
 import com.races.services.GranPremioService;
-import com.races.services.SesionService;
+import com.races.services.SesionGpService;
 
 /**
  * Implementacion de la interfaz GranPremioService
@@ -35,7 +35,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 	GranPremioRepository gpRepo;
 
 	@Autowired
-	SesionService sesiones;
+	SesionGpService sesionesGP;
 
 	@Autowired
 	CampeonatoService campeonatoService;
@@ -53,7 +53,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 			}
 
 			newGp = gpRepo.save(newGp);
-			sesiones.crearSesionesGranPremio(newGp, gpDto.getFecha());
+			sesionesGP.crearSesionesGranPremio(newGp, gpDto.getFecha());
 			return newGp;
 		} else {
 			throw new RacesException("El campeonato asociado no existe");
@@ -70,7 +70,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 					idCampeonato == null ? null : campeonatoService.buscarCampeonato(idCampeonato),
 					StringUtils.isBlank(ubicacion) ? null : ubicacion)));
 			for (GranPremio gp : listaGp) {
-				lista.add(new GranPremioSesionesDto(gp, sesiones.buscarSesiones(null, gp.getId(), null, null)));
+				lista.add(new GranPremioSesionesDto(gp, sesionesGP.buscarSesiones(null, gp.getId(), null, null)));
 			}
 
 		} catch (RacesException e) {

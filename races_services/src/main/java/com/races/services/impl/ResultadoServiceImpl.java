@@ -30,7 +30,7 @@ import com.races.entity.Campeonato;
 import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.Sancion;
-import com.races.entity.Sesion;
+import com.races.entity.SesionGP;
 import com.races.entity.TipoSesion;
 import com.races.entity.Vuelta;
 import com.races.repository.ResultadoRepository;
@@ -38,7 +38,7 @@ import com.races.services.GranPremioService;
 import com.races.services.InscripcionService;
 import com.races.services.PilotoService;
 import com.races.services.ResultadoService;
-import com.races.services.SesionService;
+import com.races.services.SesionGpService;
 import com.races.services.VueltaService;
 
 /**
@@ -57,7 +57,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 	PilotoService pilotoService;
 
 	@Autowired
-	SesionService sesionService;
+	SesionGpService sesionGpService;
 
 	@Autowired
 	InscripcionService inscripciones;
@@ -78,7 +78,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 		Resultado newResultado = new Resultado();
 		newResultado.setnVueltas(resultadoDto.getnVueltas());
 		newResultado.setInscripcion(inscripciones.buscarInscripcion(resultadoDto.getIdInscripcion()));
-		newResultado.setSesion(sesionService.buscarSesion(resultadoDto.getIdSesion()));
+		newResultado.setSesionGP(sesionGpService.buscarSesion(resultadoDto.getIdSesion()));
 		newResultado.setTiempo(resultadoDto.getTiempo());
 		if (resultadoRepo.findOne(Example.of(newResultado)).isPresent()) {
 			throw new RacesException("Resultado duplicado");
@@ -93,8 +93,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 	}
 
 	@Override
-	public List<ResultadoResponseDto> buscarResultadosValidos(Long idSesion) {
-		List<Resultado> lista = resultadoRepo.findBySesionIdAndNVueltasGreaterThan(idSesion, 0,
+	public List<ResultadoResponseDto> buscarResultadosValidos(SesionGP sesion) {
+		List<Resultado> lista = resultadoRepo.findBySesionGPAndNVueltasGreaterThan(sesion, 0,
 				new Sort(Sort.Direction.DESC, "nVueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
 		return resultado2Response(lista);
 	}
@@ -104,8 +104,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 		try {
 			Resultado probe = new Resultado(id == null ? null : id,
 					idInscripcion == null ? null : inscripciones.buscarInscripcion(idInscripcion),
-					idSesion == null ? null : sesionService.buscarSesion(idSesion), nVueltas == null ? null : nVueltas,
-					tiempo == null ? null : tiempo);
+					idSesion == null ? null : sesionGpService.buscarSesion(idSesion),
+					nVueltas == null ? null : nVueltas, tiempo == null ? null : tiempo);
 			return resultadoRepo.findAll(Example.of(probe),
 					new Sort(Sort.Direction.DESC, "nVueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
 		} catch (RacesException e) {
@@ -133,7 +133,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 				response.add(new ResultadoResponseDto(resultado, vRapida));
 			}
 		}
-		TipoSesion tipo = lista.get(0).getSesion().getTipoSesion();
+		TipoSesion tipo = lista.get(0).getSesionGP().getSesion().getTipoSesion();
 		if (tipo.getDescripcion().equals("Carrera")) {
 			return response;
 		} else {
@@ -174,12 +174,12 @@ public class ResultadoServiceImpl implements ResultadoService {
 	}
 
 	@Override
-	public void crearResultados(List<Sesion> listSesion, Campeonato campeonato) {
+	public void crearResultados(List<SesionGP> listSesionGp, Campeonato campeonato) {
 		List<Inscripcion> listInscripciones = inscripciones.buscarInscripciones(campeonato.getId(), null, null);
 		List<Resultado> resultados = new ArrayList<>();
-		for (Sesion sesion : listSesion) {
+		for (SesionGP sesionGp : listSesionGp) {
 			for (Inscripcion inscripcion : listInscripciones) {
-				resultados.add(new Resultado(null, inscripcion, sesion, 0, 0));
+				resultados.add(new Resultado(null, inscripcion, sesionGp, 0, 0));
 			}
 		}
 		resultadoRepo.saveAll(resultados);
@@ -227,9 +227,9 @@ public class ResultadoServiceImpl implements ResultadoService {
 		}
 
 		try {
-			Sesion sesion = sesionService.buscarSesion(idSesion);
-			vueltas.cargarVueltas(listLines, sesion);
-			actualizarResultados(sesion);
+			SesionGP sesionGp = sesionGpService.buscarSesion(idSesion);
+			vueltas.cargarVueltas(listLines, sesionGp);
+			actualizarResultados(sesionGp);
 		} catch (RacesException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -242,8 +242,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 	 * 
 	 * @param sesion
 	 */
-	private void actualizarResultados(Sesion sesion) {
-		List<Resultado> resultados = buscarListaResultados(null, null, sesion.getId(), null, null);
+	private void actualizarResultados(SesionGP sesionGp) {
+		List<Resultado> resultados = buscarListaResultados(null, null, sesionGp.getId(), null, null);
 		Integer nVueltas;
 		Integer tiempo;
 		for (Resultado resultado : resultados) {
@@ -280,7 +280,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 		List<GranPremioSesionesDto> listaGp = gpService.buscarGrandesPremios(null, null,
 				newInscripcion.getCampeonato().getId());
 		for (GranPremioSesionesDto gp : listaGp) {
-			for (Sesion sesion : gp.getSesiones()) {
+			for (SesionGP sesion : gp.getSesiones()) {
 				resultados.add(new Resultado(newInscripcion, sesion));
 			}
 		}

@@ -32,8 +32,18 @@ public class Constants {
 
 	public static final String FORMATO_INCORRECTO = "Formato Incorrecto";
 
+	public static final String ENCONTRADAS = "Encontradas ";
+
+	public static final Long ENTRENAMIENTO_ID = 1L;
+
+	public static final String ENTRENAMIENTO = "Entrenamiento";
+
+	public static final String CLASIFICACION = "Clasificacion";
+
 	public static final String CARRERA = "Carrera";
 
-	public static final String ENCONTRADAS = "Encontradas ";
+	public static final Long CLASIFICACION_ID = 2L;
+
+	public static final Long CARRERA_ID = 3L;
 
 }

@@ -1,7 +1,5 @@
 package com.races.services.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +10,13 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
-import com.races.dto.SesionDto;
-import com.races.entity.GranPremio;
+import com.races.constants.Constants;
+import com.races.entity.Reglamento;
 import com.races.entity.Sesion;
 import com.races.entity.TipoSesion;
 import com.races.repository.SesionRepository;
-import com.races.services.GranPremioService;
+import com.races.services.PuntuacionService;
+import com.races.services.ReglamentoService;
 import com.races.services.ResultadoService;
 import com.races.services.SesionService;
 import com.races.services.TipoSesionService;
@@ -35,52 +34,31 @@ public class SesionServiceImpl implements SesionService {
 	SesionRepository sesionRepo;
 
 	@Autowired
-	GranPremioService gpService;
+	ReglamentoService reglamentoService;
 
 	@Autowired
 	TipoSesionService tipoSesionService;
-	
+
 	@Autowired
 	ResultadoService resultados;
+
+	@Autowired
+	PuntuacionService puntuaciones;
 
 	private static final Log LOGGER = LogFactory.getLog(SancionServiceImpl.class);
 
 	@Override
-	public Sesion crearSesion(SesionDto sesionDto) throws RacesException {
-		Sesion newSesion = new Sesion();
-		newSesion.setFecha(sesionDto.getFecha());
-		newSesion.setGranPremio(gpService.buscarGranPremio(sesionDto.getIdGranPremio()));
-		newSesion.setTipoSesion(tipoSesionService.buscarTipoSesion(sesionDto.getIdTipoSesion()));
-		if (sesionRepo.findOne(Example.of(newSesion)).isPresent()) {
-			throw new RacesException("Sesion duplicada");
-		}
-		return sesionRepo.save(newSesion);
-	}
+	public List<Sesion> buscarSesiones(Long id, Long idReglamento, String descripcion, Long idTipoSesion) {
 
-	@Override
-	public List<Sesion> buscarSesiones(Long id, Long idGp, Date fecha, Long idTipoSesion) {
-
-		List<Sesion> list;
 		try {
 			Sesion probe = new Sesion();
 			probe.setId(id == null ? null : id);
-			probe.setGranPremio(idGp == null ? null : gpService.buscarGranPremio(idGp));
+			probe.setReglamento(idReglamento == null ? null : reglamentoService.buscarReglamento(idReglamento));
 			probe.setTipoSesion(idTipoSesion == null ? null : tipoSesionService.buscarTipoSesion(idTipoSesion));
-			list = sesionRepo.findAll(Example.of(probe));
+			return sesionRepo.findAll(Example.of(probe));
 		} catch (RacesException e) {
 			LOGGER.error(e);
-			list = sesionRepo.findAll();
-		}
-		if (fecha == null) {
-			return list;
-		} else {
-			List<Sesion> filterList = new ArrayList<>();
-			for (Sesion sesion : list) {
-				if (sesion.getFecha().after(fecha)) {
-					filterList.add(sesion);
-				}
-			}
-			return filterList;
+			return sesionRepo.findAll();
 		}
 
 	}
@@ -101,46 +79,38 @@ public class SesionServiceImpl implements SesionService {
 	}
 
 	@Override
-	public boolean borrarSesion(Long id) throws RacesException {
-		sesionRepo.delete(buscarSesion(id));
-		return true;
-	}
-
-	@Override
-	public void crearSesionesGranPremio(GranPremio newGp, Date fecha) {
-		if (newGp.getCampeonato().getReglamento().getnEntrenamientos() > 0) {
-			crearSesionesGp(newGp, newGp.getCampeonato().getReglamento().getnEntrenamientos(),
-					tipoSesionService.buscarTipoSesiones(null, "Entrenamiento").get(0), fecha);
-		}
-		if (newGp.getCampeonato().getReglamento().getnClasificaciones() > 0) {
-			crearSesionesGp(newGp, newGp.getCampeonato().getReglamento().getnClasificaciones(),
-					tipoSesionService.buscarTipoSesiones(null, "Clasificacion").get(0), fecha);
-		}
-		if (newGp.getCampeonato().getReglamento().getnCarreras() > 0) {
-			crearSesionesGp(newGp, newGp.getCampeonato().getReglamento().getnCarreras(),
-					tipoSesionService.buscarTipoSesiones(null, "Carrera").get(0), fecha);
-		}
-	}
-
-	/**
-	 * Crea todas las sesiones de un Gran premio en base al reglamento asociado al
-	 * campeonato
-	 * 
-	 * @param newGp
-	 * @param nSesiones
-	 * @param tipoSesion
-	 */
-	private void crearSesionesGp(GranPremio newGp, Integer nSesiones, TipoSesion tipoSesion, Date fecha) {
-		List<Sesion> listSesion = new ArrayList<>();
-		for (int i = 0; i < nSesiones; i++) {
+	public void crearSesionesReglamento(Reglamento reglamento) throws RacesException {
+		for (int i = 0; i < reglamento.getnEntrenamientos(); i++) {
 			Sesion sesion = new Sesion();
-			sesion.setFecha(new java.sql.Date(fecha.getTime()));
-			sesion.setGranPremio(newGp);
+			TipoSesion tipoSesion = tipoSesionService.buscarTipoSesion(Constants.ENTRENAMIENTO_ID);
+			sesion.setDescripcion(
+					tipoSesion.getDescripcion() + (reglamento.getnEntrenamientos() > 1 ? " " + (i + 1) : ""));
+			sesion.setReglamento(reglamento);
 			sesion.setTipoSesion(tipoSesion);
-			listSesion.add(sesion);
+			crearSesion(sesion, reglamento);
 		}
-		listSesion = sesionRepo.saveAll(listSesion);
-		resultados.crearResultados(listSesion, newGp.getCampeonato());
+		for (int i = 0; i < reglamento.getnClasificaciones(); i++) {
+			Sesion sesion = new Sesion();
+			TipoSesion tipoSesion = tipoSesionService.buscarTipoSesion(Constants.CLASIFICACION_ID);
+			sesion.setDescripcion(
+					tipoSesion.getDescripcion() + (reglamento.getnClasificaciones() > 1 ? " " + (i + 1) : ""));
+			sesion.setReglamento(reglamento);
+			sesion.setTipoSesion(tipoSesion);
+			crearSesion(sesion, reglamento);
+		}
+		for (int i = 0; i < reglamento.getnCarreras(); i++) {
+			Sesion sesion = new Sesion();
+			TipoSesion tipoSesion = tipoSesionService.buscarTipoSesion(Constants.CARRERA_ID);
+			sesion.setDescripcion(tipoSesion.getDescripcion() + (reglamento.getnCarreras() > 1 ? " " + (i + 1) : ""));
+			sesion.setReglamento(reglamento);
+			sesion.setTipoSesion(tipoSesion);
+			crearSesion(sesion, reglamento);
+		}
+	}
+
+	private void crearSesion(Sesion sesion, Reglamento reglamento) {
+		Sesion savedSesion = sesionRepo.save(sesion);
+		puntuaciones.crearPuntuacionesSesion(savedSesion);
 	}
 
 }

@@ -1,18 +1,16 @@
 package com.races.dto;
 
-import java.sql.Date;
-
 /**
- * Dto para Sesiones
+ * Dto para Puntuaciones
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
 public class SesionDto {
 
-	private Date fecha;
+	private Long idReglamento;
 
-	private Long idGranPremio;
+	private String descripcion;
 
 	private Long idTipoSesion;
 
@@ -26,31 +24,24 @@ public class SesionDto {
 	/**
 	 * Constructor por parametros
 	 * 
-	 * @param fecha
-	 * @param idGranPremio
+	 * @param idReglamento
+	 * @param posicion
+	 * @param puntos
 	 * @param idTipoSesion
 	 */
-	public SesionDto(Date fecha, Long idGranPremio, Long idTipoSesion) {
+	public SesionDto(Long idReglamento, String descripcion, Long idTipoSesion) {
 		super();
-		this.fecha = fecha;
-		this.idGranPremio = idGranPremio;
+		this.idReglamento = idReglamento;
+		this.descripcion = descripcion;
 		this.idTipoSesion = idTipoSesion;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public Long getIdReglamento() {
+		return idReglamento;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-
-	public Long getIdGranPremio() {
-		return idGranPremio;
-	}
-
-	public void setIdGranPremio(Long idGranPremio) {
-		this.idGranPremio = idGranPremio;
+	public void setIdReglamento(Long idReglamento) {
+		this.idReglamento = idReglamento;
 	}
 
 	public Long getIdTipoSesion() {
@@ -59,6 +50,14 @@ public class SesionDto {
 
 	public void setIdTipoSesion(Long idTipoSesion) {
 		this.idTipoSesion = idTipoSesion;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 }

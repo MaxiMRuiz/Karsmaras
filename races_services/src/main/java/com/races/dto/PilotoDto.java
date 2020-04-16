@@ -14,6 +14,8 @@ public class PilotoDto {
 
 	private String apodo;
 
+	private String password;
+
 	/**
 	 * Constructor por defecto
 	 */
@@ -28,11 +30,26 @@ public class PilotoDto {
 	 * @param apellido
 	 * @param apodo
 	 */
-	public PilotoDto(String nombre, String apellido, String apodo) {
+	public PilotoDto(String nombre, String apellido, String apodo, String password) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.apodo = apodo;
+		this.password = password;
+	}
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getNombre() {

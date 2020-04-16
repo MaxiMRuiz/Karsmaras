@@ -8,13 +8,11 @@ package com.races.dto;
  */
 public class PuntuacionDto {
 
-	private Long idReglamento;
+	private Long idSesion;
 
 	private Integer posicion;
 
 	private Integer puntos;
-
-	private Long idTipoSesion;
 
 	/**
 	 * Constructor por defecto
@@ -31,20 +29,11 @@ public class PuntuacionDto {
 	 * @param puntos
 	 * @param idTipoSesion
 	 */
-	public PuntuacionDto(Long idReglamento, Integer posicion, Integer puntos, Long idTipoSesion) {
+	public PuntuacionDto(Long idSesion, Integer posicion, Integer puntos, Long idTipoSesion) {
 		super();
-		this.idReglamento = idReglamento;
+		this.idSesion = idSesion;
 		this.posicion = posicion;
 		this.puntos = puntos;
-		this.idTipoSesion = idTipoSesion;
-	}
-
-	public Long getIdReglamento() {
-		return idReglamento;
-	}
-
-	public void setIdReglamento(Long idReglamento) {
-		this.idReglamento = idReglamento;
 	}
 
 	public Integer getPosicion() {
@@ -63,12 +52,12 @@ public class PuntuacionDto {
 		this.puntos = puntos;
 	}
 
-	public Long getIdTipoSesion() {
-		return idTipoSesion;
+	public Long getIdSesion() {
+		return idSesion;
 	}
 
-	public void setIdTipoSesion(Long idTipoSesion) {
-		this.idTipoSesion = idTipoSesion;
+	public void setIdSesion(Long idSesion) {
+		this.idSesion = idSesion;
 	}
 
 }

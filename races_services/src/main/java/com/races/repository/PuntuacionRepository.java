@@ -23,6 +23,6 @@ public interface PuntuacionRepository extends JpaRepository<Puntuacion, Serializ
 	 * @param i
 	 * @return
 	 */
-	List<Puntuacion> findByReglamentoIdAndPuntosGreaterThan(Long id, int i);
+	List<Puntuacion> findBySesionIdAndPuntosGreaterThan(Long id, int i);
 
 }

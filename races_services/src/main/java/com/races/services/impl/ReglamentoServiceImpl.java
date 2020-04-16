@@ -13,8 +13,8 @@ import com.races.constants.Constants;
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
 import com.races.repository.ReglamentoRepository;
-import com.races.services.PuntuacionService;
 import com.races.services.ReglamentoService;
+import com.races.services.SesionService;
 
 /**
  * Servicio para operativas sobre reglamentos.
@@ -29,7 +29,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	ReglamentoRepository reglaRepo;
 	
 	@Autowired
-	PuntuacionService puntuaciones;
+	SesionService sesiones;
 
 	public Reglamento crearReglamento(@NonNull ReglamentoDto reglamentoDto) throws RacesException {
 		Reglamento reglamento = new Reglamento();
@@ -43,7 +43,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 			throw new RacesException("La combinacion del reglamento ya existe.");
 		}
 		reglamento = reglaRepo.save(reglamento);
-		puntuaciones.crearPuntuacionesReglamento(reglamento);
+		sesiones.crearSesionesReglamento(reglamento);
 		return reglamento;
 	}
 

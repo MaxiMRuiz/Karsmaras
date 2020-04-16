@@ -50,6 +50,8 @@ public class InscripcionServiceImpl implements InscripcionService {
 
 	private static final Log LOGGER = LogFactory.getLog(InscripcionServiceImpl.class);
 
+	private static final String INSCRIPCION_NOT_FOUND = "Inscripcion no encontrada";
+
 	public Inscripcion crearInscripcion(InscripcionDto inscripcion) throws RacesException {
 
 		Campeonato campeonato = campeonatoService.buscarCampeonato(inscripcion.getIdCampeonato());
@@ -82,7 +84,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 			inscriptionRepo.delete(op.get());
 			return true;
 		} else {
-			throw new RacesException("Inscripcion no encontrada");
+			throw new RacesException(INSCRIPCION_NOT_FOUND);
 		}
 	}
 
@@ -111,7 +113,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 		if (op.isPresent()) {
 			return op.get();
 		} else {
-			throw new RacesException("Inscripcion no encontrada");
+			throw new RacesException(INSCRIPCION_NOT_FOUND);
 		}
 	}
 
@@ -144,7 +146,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 		if (op.isPresent()) {
 			return op.get();
 		} else {
-			throw new RacesException("Inscripcion no encontrada");
+			throw new RacesException(INSCRIPCION_NOT_FOUND);
 		}
 	}
 

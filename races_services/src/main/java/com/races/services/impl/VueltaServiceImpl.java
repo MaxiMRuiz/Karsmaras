@@ -17,7 +17,7 @@ import com.races.dto.FileUploadDto;
 import com.races.dto.VueltaDto;
 import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
-import com.races.entity.Sesion;
+import com.races.entity.SesionGP;
 import com.races.entity.Vuelta;
 import com.races.repository.VueltaRepository;
 import com.races.services.InscripcionService;
@@ -103,14 +103,14 @@ public class VueltaServiceImpl implements VueltaService {
 	}
 
 	@Override
-	public void cargarVueltas(List<FileUploadDto> listLines, Sesion sesion) throws RacesException {
+	public void cargarVueltas(List<FileUploadDto> listLines, SesionGP sesionGp) throws RacesException {
 		List<Vuelta> listaVueltas = new ArrayList<>();
 		for (FileUploadDto registro : listLines) {
 			try {
-				List<Inscripcion> inscritos = inscripciones.buscarInscripciones(sesion.getGranPremio().getCampeonato().getId(),pilotoService.buscarPiloto(registro.getPiloto()).getId(),null);
+				List<Inscripcion> inscritos = inscripciones.buscarInscripciones(sesionGp.getGranPremio().getCampeonato().getId(),pilotoService.buscarPiloto(registro.getPiloto()).getId(),null);
 				if (!inscritos.isEmpty()) {
 					List<Resultado> resultado = resultadoService.buscarListaResultados(null, inscritos.get(0).getId(),
-							sesion.getId(), null, null);
+							sesionGp.getId(), null, null);
 					vueltaRepo.deleteAll(vueltaRepo.findByResultadoOrderByTiempoAsc(resultado.get(0)));
 					listaVueltas
 							.add(new Vuelta(parseTiempo(registro.getTiempo()), registro.getVuelta(), resultado.get(0)));

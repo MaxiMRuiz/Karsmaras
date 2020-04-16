@@ -1,7 +1,5 @@
 package com.races.entity;
 
-import java.sql.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,11 +21,11 @@ public class Sesion {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Date fecha;
+	private String descripcion;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_gp")
-	private GranPremio granPremio;
+	@JoinColumn(name = "id_reglamento")
+	private Reglamento reglamento;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_tipo_sesion")
@@ -41,56 +39,78 @@ public class Sesion {
 	}
 
 	/**
-	 * Constructor por parametros
-	 * 
 	 * @param id
-	 * @param fecha
-	 * @param granPremio
+	 * @param descripcion
+	 * @param reglamento
 	 * @param tipoSesion
 	 */
-	public Sesion(Long id, Date fecha, GranPremio granPremio, TipoSesion tipoSesion) {
+	public Sesion(Long id, String descripcion, Reglamento reglamento, TipoSesion tipoSesion) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
-		this.granPremio = granPremio;
+		this.descripcion = descripcion;
+		this.reglamento = reglamento;
 		this.tipoSesion = tipoSesion;
 	}
 
+	/**
+	 * @return the id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	/**
+	 * @return the descripcion
+	 */
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	/**
+	 * @param descripcion the descripcion to set
+	 */
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public GranPremio getGranPremio() {
-		return granPremio;
+	/**
+	 * @return the reglamento
+	 */
+	public Reglamento getReglamento() {
+		return reglamento;
 	}
 
-	public void setGranPremio(GranPremio granPremio) {
-		this.granPremio = granPremio;
+	/**
+	 * @param reglamento the reglamento to set
+	 */
+	public void setReglamento(Reglamento reglamento) {
+		this.reglamento = reglamento;
 	}
 
+	/**
+	 * @return the tipoSesion
+	 */
 	public TipoSesion getTipoSesion() {
 		return tipoSesion;
 	}
 
+	/**
+	 * @param tipoSesion the tipoSesion to set
+	 */
 	public void setTipoSesion(TipoSesion tipoSesion) {
 		this.tipoSesion = tipoSesion;
 	}
 
 	@Override
 	public String toString() {
-		return "#" + id + " - " + fecha + " - GP[" + (granPremio == null ? "null" : granPremio) + "] TS["
+		return "#" + id + " - " + descripcion + " - Reglamento[" + (reglamento == null ? "null" : reglamento) + "] TS["
 				+ (tipoSesion == null ? "null" : tipoSesion) + "]";
 	}
 

@@ -22,16 +22,12 @@ public class Puntuacion {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_reglamento")
-	private Reglamento reglamento;
+	@JoinColumn(name = "id_sesion")
+	private Sesion sesion;
 
 	private Integer posicion;
 
 	private Integer puntos;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_tipo_sesion")
-	private TipoSesion tipoSesion;
 
 	/**
 	 * Constructor por defecto
@@ -49,13 +45,12 @@ public class Puntuacion {
 	 * @param puntos
 	 * @param tipoSesion
 	 */
-	public Puntuacion(Long id, Reglamento reglamento, Integer posicion, Integer puntos, TipoSesion tipoSesion) {
+	public Puntuacion(Long id, Sesion sesion, Integer posicion, Integer puntos) {
 		super();
 		this.id = id;
-		this.reglamento = reglamento;
+		this.sesion = sesion;
 		this.posicion = posicion;
 		this.puntos = puntos;
-		this.tipoSesion = tipoSesion;
 	}
 
 	/**
@@ -66,12 +61,11 @@ public class Puntuacion {
 	 * @param puntos
 	 * @param tipoSesion
 	 */
-	public Puntuacion(Reglamento reglamento, Integer posicion, Integer puntos, TipoSesion tipoSesion) {
+	public Puntuacion(Sesion sesion, Integer posicion, Integer puntos) {
 		super();
-		this.reglamento = reglamento;
 		this.posicion = posicion;
 		this.puntos = puntos;
-		this.tipoSesion = tipoSesion;
+		this.sesion = sesion;
 	}
 
 	public Long getId() {
@@ -80,14 +74,6 @@ public class Puntuacion {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Reglamento getReglamento() {
-		return reglamento;
-	}
-
-	public void setReglamento(Reglamento reglamento) {
-		this.reglamento = reglamento;
 	}
 
 	public Integer getPosicion() {
@@ -106,18 +92,23 @@ public class Puntuacion {
 		this.puntos = puntos;
 	}
 
-	public TipoSesion getTipoSesion() {
-		return tipoSesion;
-	}
-
-	public void setTipoSesion(TipoSesion tipoSesion) {
-		this.tipoSesion = tipoSesion;
-	}
-
 	@Override
 	public String toString() {
-		return "#" + id + " - R[" + (reglamento == null ? "null" : reglamento) + "] - TS["
-				+ (tipoSesion == null ? "null" : tipoSesion) + "]" + posicion + "º -> " + puntos;
+		return "#" + id + " - S[" + (sesion == null ? "null" : sesion) + "] " + posicion + "º -> " + puntos;
+	}
+
+	/**
+	 * @return the sesion
+	 */
+	public Sesion getSesion() {
+		return sesion;
+	}
+
+	/**
+	 * @param sesion the sesion to set
+	 */
+	public void setSesion(Sesion sesion) {
+		this.sesion = sesion;
 	}
 
 }

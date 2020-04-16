@@ -2,14 +2,14 @@ package com.races.dto;
 
 import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
-import com.races.entity.Sesion;
+import com.races.entity.SesionGP;
 import com.races.entity.Vuelta;
 
 public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 
 	private Long id;
 	private Inscripcion inscripcion;
-	private Sesion sesion;
+	private SesionGP sesionGp;
 	private Integer nVueltas;
 	private Integer tiempo;
 	private Integer vRapida;
@@ -29,12 +29,12 @@ public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 	 * @param tiempo
 	 * @param vRapida
 	 */
-	public ResultadoResponseDto(Long id, Inscripcion inscripcion, Sesion sesion, Integer nVueltas, Integer tiempo,
+	public ResultadoResponseDto(Long id, Inscripcion inscripcion, SesionGP sesionGp, Integer nVueltas, Integer tiempo,
 			Integer vRapida) {
 		super();
 		this.id = id;
 		this.inscripcion = inscripcion;
-		this.sesion = sesion;
+		this.sesionGp = sesionGp;
 		this.nVueltas = nVueltas;
 		this.tiempo = tiempo;
 		this.vRapida = vRapida;
@@ -49,7 +49,7 @@ public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 	public ResultadoResponseDto(Resultado resultado, Vuelta vRapida) {
 		this.id = resultado.getId();
 		this.inscripcion = resultado.getInscripcion();
-		this.sesion = resultado.getSesion();
+		this.sesionGp = resultado.getSesionGP();
 		this.nVueltas = resultado.getnVueltas();
 		this.tiempo = resultado.getTiempo();
 		this.vRapida = vRapida == null ? null : vRapida.getTiempo();
@@ -86,15 +86,15 @@ public class ResultadoResponseDto implements Comparable<ResultadoResponseDto> {
 	/**
 	 * @return the sesion
 	 */
-	public Sesion getSesion() {
-		return sesion;
+	public SesionGP getSesionGP() {
+		return sesionGp;
 	}
 
 	/**
 	 * @param sesion the sesion to set
 	 */
-	public void setSesion(Sesion sesion) {
-		this.sesion = sesion;
+	public void setSesionGP(SesionGP sesionGp) {
+		this.sesionGp = sesionGp;
 	}
 
 	/**

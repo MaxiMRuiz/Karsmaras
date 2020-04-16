@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.races.dto.PilotoDto;
 
 /**
@@ -25,6 +26,9 @@ public class Piloto {
 	private String apellido;
 
 	private String apodo;
+	
+	@JsonIgnore
+	private String password;
 
 	/**
 	 * Constructor por parametros
@@ -34,12 +38,13 @@ public class Piloto {
 	 * @param apellido
 	 * @param apodo
 	 */
-	public Piloto(Long id, String nombre, String apellido, String apodo) {
+	public Piloto(Long id, String nombre, String apellido, String apodo, String password) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.apodo = apodo;
+		this.password = password;
 	}
 
 	/**
@@ -59,6 +64,7 @@ public class Piloto {
 		this.nombre = pilotoDto.getNombre();
 		this.apellido = pilotoDto.getApellido();
 		this.apodo = pilotoDto.getApodo();
+		this.password = pilotoDto.getPassword();
 	}
 
 	public Long getId() {
@@ -91,6 +97,14 @@ public class Piloto {
 
 	public void setApodo(String apodo) {
 		this.apodo = apodo;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override

@@ -17,15 +17,6 @@ import com.races.entity.SesionGP;
 public interface SesionGpService {
 
 	/**
-	 * Servicio de creacion de una Sesion en base a un dto
-	 * 
-	 * @param sesionGpDto
-	 * @return
-	 * @throws RacesException
-	 */
-	SesionGP crearSesion(SesionGpDto sesionGpDto) throws RacesException;
-
-	/**
 	 * Servicio de busqueda de Sesiones con filtros por id, idGp, fecha e
 	 * idTipoSesion
 	 * 
@@ -51,19 +42,20 @@ public interface SesionGpService {
 	boolean existeSesion(Long id);
 
 	/**
-	 * Servicio de borrado de una Sesion en base a su id
-	 * 
-	 * @param id
-	 * @return
-	 * @throws RacesException
-	 */
-	boolean borrarSesion(Long id) throws RacesException;
-
-	/**
 	 * Crea automaticamente las sesiones de un Gran Premio
+	 * 
 	 * @param newGp
-	 * @param date 
+	 * @param date
 	 */
 	void crearSesionesGranPremio(GranPremio newGp, Date date);
+
+	/**
+	 * Servicio de actualizacion de la fecha de una sesion de GP
+	 * @param id 
+	 * 
+	 * @param sesionGpDto
+	 * @return
+	 */
+	SesionGP updateSesionGp(Long id, SesionGpDto sesionGpDto) throws RacesException;
 
 }

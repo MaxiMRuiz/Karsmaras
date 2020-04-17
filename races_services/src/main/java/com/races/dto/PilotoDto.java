@@ -15,6 +15,8 @@ public class PilotoDto {
 	private String apodo;
 
 	private String password;
+	
+	private Boolean admin;
 
 	/**
 	 * Constructor por defecto
@@ -30,12 +32,13 @@ public class PilotoDto {
 	 * @param apellido
 	 * @param apodo
 	 */
-	public PilotoDto(String nombre, String apellido, String apodo, String password) {
+	public PilotoDto(String nombre, String apellido, String apodo, String password, Boolean admin) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.apodo = apodo;
 		this.password = password;
+		this.admin = admin;
 	}
 
 	/**
@@ -74,6 +77,14 @@ public class PilotoDto {
 
 	public void setApodo(String apodo) {
 		this.apodo = apodo;
+	}
+
+	public Boolean getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
 	}
 
 }

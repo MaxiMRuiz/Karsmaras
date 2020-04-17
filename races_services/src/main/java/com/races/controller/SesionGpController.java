@@ -8,10 +8,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,15 +40,16 @@ public class SesionGpController {
 	 * @param reglamentoDto
 	 * @return
 	 */
-	@PostMapping("/sesionGP")
-	public ResponseEntity<SesionGP> crearSesion(@RequestBody SesionGpDto sesionGpDto) {
+	@PutMapping("/sesionGP/{id}")
+	public ResponseEntity<SesionGP> crearSesion(@PathVariable(name = "id") Long id,
+			@RequestBody SesionGpDto sesionGpDto) {
 
 		try {
-			LOGGER.info("Creando nueva Sesion de GP: GP[" + sesionGpDto.getIdGranPremio() + "] - S["
-					+ sesionGpDto.getIdSesion() + "]");
-			return new ResponseEntity<>(sesionGpService.crearSesion(sesionGpDto), HttpStatus.OK);
+			LOGGER.info("Cambiando fecha de la Sesion de GP[" + id + "] - F["
+					+ sesionGpDto.getFecha() + "]");
+			return new ResponseEntity<>(sesionGpService.updateSesionGp(id, sesionGpDto), HttpStatus.OK);
 		} catch (RacesException ex) {
-			LOGGER.error("Error creando Sesion de GP: " + ex.getMessage());
+			LOGGER.error("Error modificando fecha de Sesion de GP: " + ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 	}
@@ -68,24 +68,6 @@ public class SesionGpController {
 		LOGGER.info("Buscando Sesiones de GPs");
 		return new ResponseEntity<>(sesionGpService.buscarSesiones(id, idGp, fecha, idSesion), HttpStatus.OK);
 
-	}
-
-	/**
-	 * Servicio para el borrado de una sesion
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping("/sesionGP/{id}")
-	public ResponseEntity<Boolean> borrarSesion(@PathVariable(name = "id") Long id) {
-
-		try {
-			LOGGER.info("Eliminando sesion de GP " + id);
-			return new ResponseEntity<>(sesionGpService.borrarSesion(id), HttpStatus.OK);
-		} catch (RacesException e) {
-			LOGGER.error("Error borrando la sesion de GP " + id + ": " + e.getMessage());
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
 	}
 
 }

@@ -26,6 +26,7 @@ import com.races.dto.FileUploadDto;
 import com.races.dto.GranPremioSesionesDto;
 import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
+import com.races.dto.VueltaDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
@@ -73,19 +74,6 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	private static final Log LOGGER = LogFactory.getLog(ResultadoServiceImpl.class);
 
-	@Override
-	public Resultado crearResultado(ResultadoDto resultadoDto) throws RacesException {
-		Resultado newResultado = new Resultado();
-		newResultado.setnVueltas(resultadoDto.getnVueltas());
-		newResultado.setInscripcion(inscripciones.buscarInscripcion(resultadoDto.getIdInscripcion()));
-		newResultado.setSesionGP(sesionGpService.buscarSesion(resultadoDto.getIdSesion()));
-		newResultado.setTiempo(resultadoDto.getTiempo());
-		if (resultadoRepo.findOne(Example.of(newResultado)).isPresent()) {
-			throw new RacesException("Resultado duplicado");
-		}
-		return resultadoRepo.save(newResultado);
-	}
-
 	public List<ResultadoResponseDto> buscarResultados(Long id, Long idInscripcion, Long idSesion, Integer nVueltas,
 			Integer tiempo) {
 		List<Resultado> lista = buscarListaResultados(id, idInscripcion, idSesion, nVueltas, tiempo);
@@ -94,8 +82,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 
 	@Override
 	public List<ResultadoResponseDto> buscarResultadosValidos(SesionGP sesion) {
-		List<Resultado> lista = resultadoRepo.findBySesionGPAndNVueltasGreaterThan(sesion, 0,
-				new Sort(Sort.Direction.DESC, "nVueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
+		List<Resultado> lista = resultadoRepo.findBySesionGPAndVueltasGreaterThan(sesion, 0,
+				new Sort(Sort.Direction.DESC, "vueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
 		return resultado2Response(lista);
 	}
 
@@ -107,7 +95,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 					idSesion == null ? null : sesionGpService.buscarSesion(idSesion),
 					nVueltas == null ? null : nVueltas, tiempo == null ? null : tiempo);
 			return resultadoRepo.findAll(Example.of(probe),
-					new Sort(Sort.Direction.DESC, "nVueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
+					new Sort(Sort.Direction.DESC, "vueltas").and(new Sort(Sort.Direction.ASC, "tiempo")));
 		} catch (RacesException e) {
 			LOGGER.error(e);
 			return resultadoRepo.findAll();
@@ -168,12 +156,6 @@ public class ResultadoServiceImpl implements ResultadoService {
 	}
 
 	@Override
-	public boolean borrarResultado(Long id) throws RacesException {
-		resultadoRepo.delete(buscarResultado(id));
-		return true;
-	}
-
-	@Override
 	public void crearResultados(List<SesionGP> listSesionGp, Campeonato campeonato) {
 		List<Inscripcion> listInscripciones = inscripciones.buscarInscripciones(campeonato.getId(), null, null);
 		List<Resultado> resultados = new ArrayList<>();
@@ -215,10 +197,13 @@ public class ResultadoServiceImpl implements ResultadoService {
 		try (InputStream inputStream = file.getInputStream();
 				BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));) {
 			while ((line = bufferReader.readLine()) != null) {
+				List<VueltaDto> listaVueltas = new ArrayList<>();
 				String[] parts = line.split(";");
-				if (parts.length == 3) {
-					listLines.add(new FileUploadDto(parts[0].replaceAll("[^a-zA-Z]", ""), Integer.parseInt(parts[1]),
-							parts[2]));
+				if (parts.length > 1) {
+					for(int i = 1; i< parts.length;i++) {
+						listaVueltas.add(new VueltaDto(parts[i],i));
+					}
+					listLines.add(new FileUploadDto(parts[0].replaceAll("[^a-zA-Z]", ""), listaVueltas));
 				}
 			}
 			LOGGER.info("Fichero procesado");

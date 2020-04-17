@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.races.component.RacesException;
 import com.races.dto.FileUploadDto;
-import com.races.dto.VueltaDto;
 import com.races.entity.Resultado;
 import com.races.entity.SesionGP;
 import com.races.entity.Vuelta;
@@ -16,15 +15,6 @@ import com.races.entity.Vuelta;
  *
  */
 public interface VueltaService {
-
-	/**
-	 * Servicio de creacion de una vuelta en base a un DTO
-	 * 
-	 * @param vueltaDto
-	 * @return
-	 * @throws RacesException
-	 */
-	Vuelta crearVuelta(VueltaDto vueltaDto) throws RacesException;
 
 	/**
 	 * Servicio de busqueda de un listado de vueltas con filtros por id,
@@ -46,15 +36,6 @@ public interface VueltaService {
 	 * @throws RacesException
 	 */
 	Vuelta buscarVuelta(Long id) throws RacesException;
-
-	/**
-	 * Servicio de borrado de una vuelta en base a su id
-	 * 
-	 * @param id
-	 * @return
-	 * @throws RacesException
-	 */
-	boolean borrarVuelta(Long id) throws RacesException;
 
 	/**
 	 * Servicio de comprobacion de existencia de una vuelta en base a su id

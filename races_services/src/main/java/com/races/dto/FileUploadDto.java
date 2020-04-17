@@ -1,10 +1,12 @@
 package com.races.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FileUploadDto {
 
 	private String piloto;
-	private Integer vuelta;
-	private String tiempo;
+	private List<VueltaDto> tiempos;
 
 	/**
 	 * 
@@ -18,11 +20,14 @@ public class FileUploadDto {
 	 * @param vuelta
 	 * @param tiempo
 	 */
-	public FileUploadDto(String piloto, Integer vuelta, String tiempo) {
+	public FileUploadDto(String piloto, List<VueltaDto> tiempos) {
 		super();
 		this.piloto = piloto;
-		this.vuelta = vuelta;
-		this.tiempo = tiempo;
+		if (tiempos == null) {
+			this.tiempos = new ArrayList<>();
+		} else {
+			this.tiempos = new ArrayList<>(tiempos);
+		}
 	}
 
 	/**
@@ -40,31 +45,27 @@ public class FileUploadDto {
 	}
 
 	/**
-	 * @return the vuelta
+	 * 
+	 * @return
 	 */
-	public Integer getVuelta() {
-		return vuelta;
+	public List<VueltaDto> getTiempos() {
+		if (tiempos == null) {
+			return new ArrayList<>();
+		} else {
+			return new ArrayList<>(tiempos);
+		}
 	}
 
 	/**
-	 * @param vuelta the vuelta to set
+	 * 
+	 * @param tiempos
 	 */
-	public void setVuelta(Integer vuelta) {
-		this.vuelta = vuelta;
-	}
-
-	/**
-	 * @return the tiempo
-	 */
-	public String getTiempo() {
-		return tiempo;
-	}
-
-	/**
-	 * @param tiempo the tiempo to set
-	 */
-	public void setTiempo(String tiempo) {
-		this.tiempo = tiempo;
+	public void setTiempos(List<VueltaDto> tiempos) {
+		if (tiempos == null) {
+			this.tiempos = new ArrayList<>();
+		} else {
+			this.tiempos = new ArrayList<>(tiempos);
+		}
 	}
 
 }

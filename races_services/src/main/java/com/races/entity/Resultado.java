@@ -1,5 +1,6 @@
 package com.races.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,8 @@ public class Resultado {
 	@JoinColumn(name = "id_sesion_gp")
 	private SesionGP sesionGP;
 
-	private Integer nVueltas;
+	@Column(name = "n_vueltas")
+	private Integer vueltas;
 
 	private Integer tiempo;
 
@@ -49,12 +51,12 @@ public class Resultado {
 	 * @param nVueltas
 	 * @param tiempo
 	 */
-	public Resultado(Long id, Inscripcion inscripcion, SesionGP sesionGp, Integer nVueltas, Integer tiempo) {
+	public Resultado(Long id, Inscripcion inscripcion, SesionGP sesionGp, Integer vueltas, Integer tiempo) {
 		super();
 		this.id = id;
 		this.inscripcion = inscripcion;
 		this.sesionGP = sesionGp;
-		this.nVueltas = nVueltas;
+		this.vueltas = vueltas;
 		this.tiempo = tiempo;
 	}
 
@@ -62,7 +64,7 @@ public class Resultado {
 		super();
 		this.inscripcion = inscripcion;
 		this.sesionGP = sesionGp;
-		this.nVueltas = 0;
+		this.vueltas = 0;
 		this.tiempo = 0;
 	}
 
@@ -91,11 +93,11 @@ public class Resultado {
 	}
 
 	public Integer getnVueltas() {
-		return nVueltas;
+		return vueltas;
 	}
 
-	public void setnVueltas(Integer nVueltas) {
-		this.nVueltas = nVueltas;
+	public void setnVueltas(Integer vueltas) {
+		this.vueltas = vueltas;
 	}
 
 	public Integer getTiempo() {
@@ -109,7 +111,7 @@ public class Resultado {
 	@Override
 	public String toString() {
 		return "#" + id + " - I[" + (inscripcion == null ? "null" : inscripcion) + "] S["
-				+ (sesionGP == null ? "null" : sesionGP) + "] " + nVueltas + "v. " + tiempo + "ms";
+				+ (sesionGP == null ? "null" : sesionGP) + "] " + vueltas + "v. " + tiempo + "ms";
 	}
 
 }

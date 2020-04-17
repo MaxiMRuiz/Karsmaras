@@ -3,6 +3,7 @@ package com.races.services;
 import java.util.List;
 
 import com.races.component.RacesException;
+import com.races.dto.LoginResponse;
 import com.races.dto.PilotoDto;
 import com.races.entity.Piloto;
 
@@ -72,8 +73,17 @@ public interface PilotoService {
 	 * 
 	 * @param piloto
 	 * @return
-	 * @throws RacesException 
+	 * @throws RacesException
 	 */
 	Piloto buscarPiloto(String apodo) throws RacesException;
+
+	/**
+	 * Valia un usuario y retorna un jwt
+	 * 
+	 * @param alias
+	 * @param password
+	 * @return
+	 */
+	LoginResponse authenticarUsuario(String alias, char[] password) throws RacesException;
 
 }

@@ -8,55 +8,41 @@ package com.races.dto;
  */
 public class VueltaDto {
 
-	private Integer tiempo;
+	private String tiempo;
 
-	private Integer nVuelta;
-
-	private Long idResultado;
+	private Integer vuelta;
 
 	/**
-	 * Constructor por parametros
+	 * 
 	 */
 	public VueltaDto() {
 		super();
 	}
 
 	/**
-	 * Constructor por parametros
-	 * 
 	 * @param tiempo
-	 * @param nVuelta
-	 * @param idResultado
+	 * @param vuelta
 	 */
-	public VueltaDto(Integer tiempo, Integer nVuelta, Long idResultado) {
+	public VueltaDto(String tiempo, Integer vuelta) {
 		super();
 		this.tiempo = tiempo;
-		this.nVuelta = nVuelta;
-		this.idResultado = idResultado;
+		this.vuelta = vuelta;
 	}
 
-	public Integer getTiempo() {
+	public String getTiempo() {
 		return tiempo;
 	}
 
-	public void setTiempo(Integer tiempo) {
+	public void setTiempo(String tiempo) {
 		this.tiempo = tiempo;
 	}
 
-	public Integer getnVuelta() {
-		return nVuelta;
+	public Integer getVuelta() {
+		return vuelta;
 	}
 
-	public void setnVuelta(Integer nVuelta) {
-		this.nVuelta = nVuelta;
-	}
-
-	public Long getIdResultado() {
-		return idResultado;
-	}
-
-	public void setIdResultado(Long idResultado) {
-		this.idResultado = idResultado;
+	public void setVuelta(Integer vuelta) {
+		this.vuelta = vuelta;
 	}
 
 }

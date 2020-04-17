@@ -22,15 +22,6 @@ import com.races.entity.SesionGP;
 public interface ResultadoService {
 
 	/**
-	 * Servicio de creacion de un resultado en base a un dto
-	 * 
-	 * @param resultadoDto
-	 * @return
-	 * @throws RacesException
-	 */
-	Resultado crearResultado(ResultadoDto resultadoDto) throws RacesException;
-
-	/**
 	 * Servicio de busqueda de un listado de resultados con filtros por id,
 	 * idPiloto, idSesion, numero de vueltas y tiempo
 	 * 
@@ -52,15 +43,6 @@ public interface ResultadoService {
 	 * @throws RacesException
 	 */
 	Resultado buscarResultado(Long id) throws RacesException;
-
-	/**
-	 * Servicio de borrado de un resultado por id
-	 * 
-	 * @param id
-	 * @return
-	 * @throws RacesException
-	 */
-	boolean borrarResultado(Long id) throws RacesException;
 
 	/**
 	 * Servicio de comprobacion de existencia de un resultado por id

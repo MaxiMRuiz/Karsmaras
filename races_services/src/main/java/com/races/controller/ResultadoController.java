@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
-import com.races.entity.Resultado;
 import com.races.services.ResultadoService;
 
 /**
@@ -39,25 +37,6 @@ public class ResultadoController {
 	ResultadoService resultadoService;
 
 	/**
-	 * Servicio de creacion de un nuevo resultado
-	 * 
-	 * @param reglamentoDto
-	 * @return
-	 */
-	@PostMapping("/resultado")
-	public ResponseEntity<Resultado> crearResultado(@RequestBody ResultadoDto resultadoDto) {
-
-		try {
-			LOGGER.info("Creando nuevo Resultado: I[" + resultadoDto.getIdInscripcion() + "] - S["
-					+ resultadoDto.getIdSesion() + "]");
-			return new ResponseEntity<>(resultadoService.crearResultado(resultadoDto), HttpStatus.OK);
-		} catch (RacesException ex) {
-			LOGGER.error("Error creando Resultado: " + ex.getMessage());
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
-	}
-
-	/**
 	 * Servicio de busqueda de Resultados con filtro por Id
 	 * 
 	 * @return
@@ -73,24 +52,6 @@ public class ResultadoController {
 		LOGGER.info("Buscando resultados - id [" + id + "]");
 		return new ResponseEntity<>(resultadoService.buscarResultados(id, idInscripcion, idSesion, nVueltas, tiempo),
 				HttpStatus.OK);
-
-	}
-
-	/**
-	 * Servicio para el borrado de un resultado
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@DeleteMapping("/resultado/{id}")
-	public ResponseEntity<Boolean> borrarResultado(@PathVariable(name = "id") Long id) {
-		try {
-			LOGGER.info("Eliminando Puntuacion " + id);
-			return new ResponseEntity<>(resultadoService.borrarResultado(id), HttpStatus.OK);
-		} catch (RacesException e) {
-			LOGGER.error("Error borrando la Puntuacion " + id + ": " + e.getMessage());
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
 
 	}
 

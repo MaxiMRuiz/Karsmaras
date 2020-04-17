@@ -26,9 +26,11 @@ public class Piloto {
 	private String apellido;
 
 	private String apodo;
-	
+
 	@JsonIgnore
 	private String password;
+
+	private Boolean admin;
 
 	/**
 	 * Constructor por parametros
@@ -38,13 +40,14 @@ public class Piloto {
 	 * @param apellido
 	 * @param apodo
 	 */
-	public Piloto(Long id, String nombre, String apellido, String apodo, String password) {
+	public Piloto(Long id, String nombre, String apellido, String apodo, String password, Boolean admin) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.apodo = apodo;
 		this.password = password;
+		this.admin = admin;
 	}
 
 	/**
@@ -65,6 +68,7 @@ public class Piloto {
 		this.apellido = pilotoDto.getApellido();
 		this.apodo = pilotoDto.getApodo();
 		this.password = pilotoDto.getPassword();
+		this.admin = pilotoDto.getAdmin();
 	}
 
 	public Long getId() {
@@ -110,6 +114,14 @@ public class Piloto {
 	@Override
 	public String toString() {
 		return "#" + id + " - " + nombre + " " + apellido + " (" + apodo + ")";
+	}
+
+	public Boolean getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
 	}
 
 }

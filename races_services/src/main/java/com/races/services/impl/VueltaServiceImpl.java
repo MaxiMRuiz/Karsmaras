@@ -53,19 +53,6 @@ public class VueltaServiceImpl implements VueltaService {
 	private static final Log LOGGER = LogFactory.getLog(VueltaServiceImpl.class);
 
 	@Override
-	public Vuelta crearVuelta(VueltaDto vueltaDto) throws RacesException {
-
-		Vuelta newVuelta = new Vuelta();
-		newVuelta.setnVuelta(vueltaDto.getnVuelta());
-		newVuelta.setTiempo(vueltaDto.getTiempo());
-		newVuelta.setResultado(resultadoService.buscarResultado(vueltaDto.getIdResultado()));
-		if (vueltaRepo.findOne(Example.of(newVuelta)).isPresent()) {
-			throw new RacesException("Vuelta duplicada");
-		}
-		return vueltaRepo.save(newVuelta);
-	}
-
-	@Override
 	public List<Vuelta> buscarVueltas(Long id, Long idResultado, Integer nVuelta, Integer tiempo) {
 		if (id == null && idResultado == null && nVuelta == null && tiempo == null) {
 			return vueltaRepo.findAll();
@@ -95,13 +82,6 @@ public class VueltaServiceImpl implements VueltaService {
 	public boolean existeVuelta(Long id) {
 		return vueltaRepo.findById(id).isPresent();
 	}
-
-	@Override
-	public boolean borrarVuelta(Long id) throws RacesException {
-		vueltaRepo.delete(buscarVuelta(id));
-		return true;
-	}
-
 	@Override
 	public void cargarVueltas(List<FileUploadDto> listLines, SesionGP sesionGp) throws RacesException {
 		List<Vuelta> listaVueltas = new ArrayList<>();
@@ -112,8 +92,10 @@ public class VueltaServiceImpl implements VueltaService {
 					List<Resultado> resultado = resultadoService.buscarListaResultados(null, inscritos.get(0).getId(),
 							sesionGp.getId(), null, null);
 					vueltaRepo.deleteAll(vueltaRepo.findByResultadoOrderByTiempoAsc(resultado.get(0)));
-					listaVueltas
-							.add(new Vuelta(parseTiempo(registro.getTiempo()), registro.getVuelta(), resultado.get(0)));
+					for(VueltaDto vuelta:registro.getTiempos()) {
+						listaVueltas.add(new Vuelta(parseTiempo(vuelta.getTiempo()), vuelta.getVuelta(), resultado.get(0)));
+					}
+					
 				}
 			} catch (RacesException e) {
 				LOGGER.warn(e.getMessage());

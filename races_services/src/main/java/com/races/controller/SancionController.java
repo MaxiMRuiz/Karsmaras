@@ -98,10 +98,10 @@ public class SancionController {
 			@RequestBody SancionDto sancionDto) {
 
 		try {
-			LOGGER.info("Eliminando Sancion " + id);
+			LOGGER.info("Actualizando Sancion " + id);
 			return new ResponseEntity<>(sancionService.editarSancion(id, sancionDto), HttpStatus.OK);
 		} catch (RacesException e) {
-			LOGGER.error("Error borrando la Sancion " + id + ": " + e.getMessage());
+			LOGGER.error("Error actualizando la Sancion " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}

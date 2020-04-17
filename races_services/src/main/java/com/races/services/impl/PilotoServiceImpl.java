@@ -9,6 +9,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.races.component.RacesException;
+import com.races.dto.LoginResponse;
 import com.races.dto.PilotoDto;
 import com.races.entity.Piloto;
 import com.races.repository.PilotoRepository;
@@ -78,11 +79,11 @@ public class PilotoServiceImpl implements PilotoService {
 			throw new RacesException(NOT_FOUND_DRIVER);
 		}
 	}
-	
+
 	@Override
 	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo) {
 
-		Example<Piloto> example = Example.of(new Piloto(id, nombre, apellido, apodo, null));
+		Example<Piloto> example = Example.of(new Piloto(id, nombre, apellido, apodo, null, null));
 		return pilotoRepo.findAll(example);
 
 	}
@@ -90,6 +91,37 @@ public class PilotoServiceImpl implements PilotoService {
 	@Override
 	public boolean existePiloto(Long id) {
 		return pilotoRepo.findById(id).isPresent();
+	}
+
+	@Override
+	public LoginResponse authenticarUsuario(String alias, char[] password) throws RacesException {
+		Piloto piloto = buscarPiloto(alias);
+		if (piloto.getPassword().equals(new String(password))) {
+			return generateRespose(piloto);
+		} else {
+			throw new RacesException("Usuario/Contraseña no válido");
+		}
+	}
+
+	/**
+	 * 
+	 * @param piloto
+	 * @return
+	 */
+	private LoginResponse generateRespose(Piloto piloto) {
+		LoginResponse response = new LoginResponse();
+		response.setJwt(generateJWT(piloto.getApodo()));
+		response.setAdmin(piloto.getAdmin());
+		return response;
+	}
+
+	/**
+	 * 
+	 * @param apodo
+	 * @return
+	 */
+	private String generateJWT(String apodo) {
+		return "token";
 	}
 
 }

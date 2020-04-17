@@ -39,23 +39,11 @@ public class SesionGpServiceImpl implements SesionGpService {
 
 	@Autowired
 	SesionService sesionService;
-	
+
 	@Autowired
 	ResultadoService resultados;
 
 	private static final Log LOGGER = LogFactory.getLog(SancionServiceImpl.class);
-
-	@Override
-	public SesionGP crearSesion(SesionGpDto sesionGpDto) throws RacesException {
-		SesionGP newSesion = new SesionGP();
-		newSesion.setFecha(sesionGpDto.getFecha());
-		newSesion.setGranPremio(gpService.buscarGranPremio(sesionGpDto.getIdGranPremio()));
-		newSesion.setSesion(sesionService.buscarSesion(sesionGpDto.getIdSesion()));
-		if (sesionGpRepo.findOne(Example.of(newSesion)).isPresent()) {
-			throw new RacesException("Sesion duplicada");
-		}
-		return sesionGpRepo.save(newSesion);
-	}
 
 	@Override
 	public List<SesionGP> buscarSesiones(Long id, Long idGp, Date fecha, Long idSesion) {
@@ -101,15 +89,10 @@ public class SesionGpServiceImpl implements SesionGpService {
 	}
 
 	@Override
-	public boolean borrarSesion(Long id) throws RacesException {
-		sesionGpRepo.delete(buscarSesion(id));
-		return true;
-	}
-
-	@Override
 	public void crearSesionesGranPremio(GranPremio newGp, Date fecha) {
 		List<SesionGP> listSesionGp = new ArrayList<>();
-		List<Sesion> listSesiones = sesionService.buscarSesiones(null, newGp.getCampeonato().getReglamento().getId(), null, null);
+		List<Sesion> listSesiones = sesionService.buscarSesiones(null, newGp.getCampeonato().getReglamento().getId(),
+				null, null);
 		for (Sesion sesion : listSesiones) {
 			SesionGP sesionGp = new SesionGP();
 			sesionGp.setFecha(new java.sql.Date(fecha.getTime()));
@@ -119,7 +102,14 @@ public class SesionGpServiceImpl implements SesionGpService {
 		}
 		listSesionGp = sesionGpRepo.saveAll(listSesionGp);
 		resultados.crearResultados(listSesionGp, newGp.getCampeonato());
-		
+
+	}
+
+	@Override
+	public SesionGP updateSesionGp(Long id, SesionGpDto sesionGpDto) throws RacesException {
+		SesionGP sesionGp = buscarSesion(id);
+		sesionGp.setFecha(sesionGpDto.getFecha());
+		return sesionGpRepo.save(sesionGp);
 	}
 
 }

@@ -19,6 +19,6 @@ import com.races.entity.SesionGP;
 @Repository("ResultadoRepository")
 public interface ResultadoRepository extends JpaRepository<Resultado, Serializable>{
 
-	List<Resultado> findBySesionGPAndNVueltasGreaterThan(SesionGP sesionGP, int i, Sort sort);
-
+	List<Resultado> findBySesionGPAndVueltasGreaterThan(SesionGP sesionGP, Integer nvueltas, Sort sort);
+	
 }

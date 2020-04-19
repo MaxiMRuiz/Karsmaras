@@ -31,6 +31,9 @@ public class Piloto {
 	private String password;
 
 	private Boolean admin;
+	
+	@JsonIgnore
+	private String jwk;
 
 	/**
 	 * Constructor por parametros
@@ -40,7 +43,7 @@ public class Piloto {
 	 * @param apellido
 	 * @param apodo
 	 */
-	public Piloto(Long id, String nombre, String apellido, String apodo, String password, Boolean admin) {
+	public Piloto(Long id, String nombre, String apellido, String apodo, String password, Boolean admin, String jwk) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -48,6 +51,7 @@ public class Piloto {
 		this.apodo = apodo;
 		this.password = password;
 		this.admin = admin;
+		this.jwk = jwk;
 	}
 
 	/**
@@ -122,6 +126,20 @@ public class Piloto {
 
 	public void setAdmin(Boolean admin) {
 		this.admin = admin;
+	}
+
+	/**
+	 * @return the jwk
+	 */
+	public String getJwk() {
+		return jwk;
+	}
+
+	/**
+	 * @param jwk the jwk to set
+	 */
+	public void setJwk(String jwk) {
+		this.jwk = jwk;
 	}
 
 }

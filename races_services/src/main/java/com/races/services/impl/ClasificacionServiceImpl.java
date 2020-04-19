@@ -58,41 +58,48 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 
 		LOGGER.info("Calculando la clasificacion del GP " + idGp);
 		List<GranPremioSesionesDto> granPremio = gpService.buscarGrandesPremios(idGp, null, null);
+		int count = 0;
+		List<ClasificacionDto> clasificacionGp;
+		List<ClasificacionDto> clasificaciones = new ArrayList<>();
 		if (granPremio.isEmpty()) {
 			LOGGER.info("GP no encontrado");
 			return new ArrayList<>();
 		} else {
-			LOGGER.info("Obteniendo las puntuaciones del Reglamento "
-					+ granPremio.get(0).getGp().getCampeonato().getReglamento());
-			List<Puntuacion> puntuaciones = puntuacionService
-					.buscarPuntuacionesValidas(granPremio.get(0).getGp().getCampeonato().getReglamento().getId());
-			LOGGER.info(Constants.ENCONTRADAS + puntuaciones.size() + " posiciones.");
-			return calcularClasificacionGranPremio(granPremio.get(0), puntuaciones);
+			for (SesionGP sesion : granPremio.get(0).getSesiones()) {
+				LOGGER.info("Obteniendo las puntuaciones de la Sesion " + sesion.getSesion().getDescripcion());
+				List<Puntuacion> puntuaciones = puntuacionService.buscarPuntuacionesValidas(sesion.getSesion().getId());
+				LOGGER.info(Constants.ENCONTRADAS + puntuaciones.size() + " posiciones.");
+				clasificacionGp = calcularClasificacionSesion(sesion, puntuaciones);
+				if (count == 0) {
+					clasificaciones.addAll(clasificacionGp);
+				} else {
+					actualizarClasificacionGeneral(clasificaciones, clasificacionGp);
+				}
+				count++;
+			}
+			return clasificaciones;
 		}
 	}
 
-	private List<ClasificacionDto> calcularClasificacionGranPremio(GranPremioSesionesDto granPremio,
-			List<Puntuacion> puntuaciones) {
+	private List<ClasificacionDto> calcularClasificacionSesion(SesionGP sesionGP, List<Puntuacion> puntuaciones) {
 		List<ClasificacionDto> clasificaciones = new ArrayList<>();
 		List<ResultadoResponseDto> resultados;
-		for (SesionGP sesionGP : granPremio.getSesiones()) {
-			LOGGER.info("Calculando resultados de la sesion " + sesionGP);
-			resultados = resultadoService.buscarResultadosValidos(sesionGP);
-			LOGGER.info("Encontrados " + resultados.size() + " resultados válidos.");
-			int j = 1;
-			for (ResultadoResponseDto resultado : resultados) {
-				if (resultado.getnVueltas() > 0) {
-					List<Sancion> sanciones = sancionService.buscarSanciones(null, resultado.getId(), null, null);
-					LOGGER.info(Constants.ENCONTRADAS + sanciones.size() + " sanciones");
-					LOGGER.info("Actualizando el resultado del piloto " + resultado.getInscripcion().getPiloto());
-					actualizarClasificacion(clasificaciones, resultado.getInscripcion(),
-							getPuntuacion(puntuaciones, j, sanciones, sesionGP.getSesion().getTipoSesion()),
-							resultados.size(), (j - 1),
-							resultado.getSesionGP().getSesion().getTipoSesion().getId().equals(Constants.CARRERA_ID));
-					j++;
-				}
-
+		LOGGER.info("Calculando resultados de la sesion " + sesionGP);
+		resultados = resultadoService.buscarResultadosValidos(sesionGP);
+		LOGGER.info("Encontrados " + resultados.size() + " resultados válidos.");
+		int j = 1;
+		for (ResultadoResponseDto resultado : resultados) {
+			if (resultado.getnVueltas() > 0) {
+				List<Sancion> sanciones = sancionService.buscarSanciones(null, resultado.getId(), null, null);
+				LOGGER.info(Constants.ENCONTRADAS + sanciones.size() + " sanciones");
+				LOGGER.info("Actualizando el resultado del piloto " + resultado.getInscripcion().getPiloto());
+				actualizarClasificacion(clasificaciones, resultado.getInscripcion(),
+						getPuntuacion(puntuaciones, j, sanciones, sesionGP.getSesion().getTipoSesion()),
+						resultados.size(), (j - 1),
+						resultado.getSesionGP().getSesion().getTipoSesion().getId().equals(Constants.CARRERA_ID));
+				j++;
 			}
+
 		}
 		Collections.sort(clasificaciones);
 		return clasificaciones;
@@ -140,19 +147,20 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 		List<GranPremioSesionesDto> listaGp = gpService.buscarGrandesPremios(null, null, id);
 		int count = 0;
 		List<ClasificacionDto> clasificacionGp;
-		LOGGER.info(
-				"Obteniendo las puntuaciones del Reglamento " + listaGp.get(0).getGp().getCampeonato().getReglamento());
-		List<Puntuacion> puntuaciones = puntuacionService
-				.buscarPuntuacionesValidas(listaGp.get(0).getGp().getCampeonato().getReglamento().getId());
-		LOGGER.info(Constants.ENCONTRADAS + puntuaciones.size() + " posiciones.");
+
 		for (GranPremioSesionesDto granPremio : listaGp) {
-			clasificacionGp = calcularClasificacionGranPremio(granPremio, puntuaciones);
-			if (count == 0) {
-				clasificaciones.addAll(clasificacionGp);
-			} else {
-				actualizarClasificacionGeneral(clasificaciones, clasificacionGp);
+			for (SesionGP sesion : granPremio.getSesiones()) {
+				LOGGER.info("Obteniendo las puntuaciones de la Sesion " + sesion.getSesion().getDescripcion());
+				List<Puntuacion> puntuaciones = puntuacionService.buscarPuntuacionesValidas(sesion.getSesion().getId());
+				LOGGER.info(Constants.ENCONTRADAS + puntuaciones.size() + " posiciones.");
+				clasificacionGp = calcularClasificacionSesion(sesion, puntuaciones);
+				if (count == 0) {
+					clasificaciones.addAll(clasificacionGp);
+				} else {
+					actualizarClasificacionGeneral(clasificaciones, clasificacionGp);
+				}
+				count++;
 			}
-			count++;
 		}
 		Collections.sort(clasificaciones);
 		return clasificaciones;

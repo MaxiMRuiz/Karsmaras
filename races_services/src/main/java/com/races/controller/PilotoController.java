@@ -126,7 +126,7 @@ public class PilotoController {
 			Arrays.fill(password, '0');
 			return new ResponseEntity<>(loginResponse, HttpStatus.OK);
 		} catch (RacesException ex) {
-			LOGGER.error(ex.getMessage());
+			LOGGER.error(ex.getMessage(), ex);
 			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 	}

@@ -46,4 +46,16 @@ public class Constants {
 
 	public static final Long CARRERA_ID = 3L;
 
+	public static final float PARAM_EXPIRATION_TIME = 60;
+
+	public static final String JWT_CLAIMS_KEY_KID = "kid";
+
+	public static final String JWT_KEY_TYPE = "typ";
+
+	public static final String JWT_PARAM_KEY_TYPE = "JWT";
+
+	public static final int RSA_GENERATION_BITS = 2048;
+
+	public static final String PARAM_USE_SIG = "sig";
+
 }

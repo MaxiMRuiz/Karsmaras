@@ -4,21 +4,25 @@
 @host={{protocol}}://{{hostname}}:{{port}}
 @idReglamento=1
 @idPuntuacion=81
-@idPiloto=2
+@idPiloto=4
 @idEquipo=3
 @idCampeonato=2
 @idInscripcion=2
 @idGp=4
-@idSesionGP=6
+@idSesionGP=1
 @idResultado=6
 @idSancion=1
 ### 1 - REGLAMENTOS
 # @name buscarReglamentos
 GET {{host}}/reglamento HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name crearReglamento
 POST {{host}}/reglamento HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"descripcion": "Reglamento oficial de F1 2021",
@@ -32,6 +36,8 @@ Content-Type: application/json
 # @name modificarReglamento
 PUT {{host}}/reglamento/{{idReglamento}} HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"descripcion": "Reglamento oficial de F1 2020",
@@ -45,22 +51,36 @@ Content-Type: application/json
 ###
 # @name eliminarReglamento
 DELETE {{host}}/reglamento/{{idReglamento}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
+
 ###
 ### 2 - Sesiones
 # @name buscarSesiones
 GET {{host}}/sesion HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMzEwMTgsImV4cCI6MTU4NzIzNDYxOCwianRpIjoiLUJsLWtuVzFVTVUydGlMNnFwNXcydyIsImtpZCI6Ik1NUiJ9.UUwF9b1B6UyT5htu9Yyk-glaprlGG2x9PgOBZJXxzIliXYRKZzajdeBCsC-3wPdl8duA5dbTCDEESFo-JAed5FQE417bBq3pXv0NzBmP7YBSYrCfSSg1B4Z87TWLQGR7z8nRd1iwM0yPj07z8EtOPXofntLFGcGDaqKKGhOINvzWV_r12mPcuBbac9KoqiJ9Zj4bW_CwBANXYk6cO7v3M5k073pG0pisE2V5ecS8HY6IOF4SgUN4TTNzL4DWtSEMSnfQOQX_qNyb6s14TK8RITD1jubQyZvOm-flhb1bstOB5_cn3fvsretDY58WJbgUvoYwmAZesiqsG1VXzyWTnA
+
 ###
 ### 3 - Tipo Sesion
 # @name buscarTipoSesiones
 GET {{host}}/tsesion HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
+
 ###
 ### 4 - Puntuaciones
 # @name buscarPuntuaciones
 GET {{host}}/puntuacion HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
+
 ###
 # @name modificarPuntuaciones
 PUT {{host}}/puntuacion/{{idPuntuacion}} HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
     "idSesion": "5",
@@ -71,6 +91,9 @@ Content-Type: application/json
 ### 5 - Pilotos
 # @name buscarPilotos
 GET {{host}}/piloto
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
+
 ###
 # @name crearPiloto
 POST {{host}}/piloto HTTP/1.1
@@ -86,6 +109,9 @@ Content-Type: application/json
 ###
 # @name eliminarPiloto
 DELETE {{host}}/piloto/{{idPiloto}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
+
 ###
 # @name validarPiloto
 POST {{host}}/login HTTP/1.1
@@ -95,6 +121,8 @@ Authorization: Basic TU1SOnRlbXBvcmFs
 # @name crearEquipo
 POST {{host}}/equipo HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"nombre":"Scuderia Ferrari F1 Team",
@@ -103,10 +131,14 @@ Content-Type: application/json
 ###
 # @name buscarEquipo
 GET {{host}}/equipo HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name modificarEquipo
 PUT {{host}}/equipo/{{idEquipo}} HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"nombre":"Scuderia Ferrari F1",
@@ -116,14 +148,20 @@ Content-Type: application/json
 ###
 # @name eliminarEquipo
 DELETE {{host}}/equipo/{{idEquipo}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 ### 7 - Campeonatos
 # @name buscarCampeonato
 GET {{host}}/campeonato HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name crearCampeonato
 POST {{host}}/campeonato HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"nombre":"F1",
@@ -135,6 +173,8 @@ Content-Type: application/json
 # @name modificarCampeonato
 PUT {{host}}/campeonato/{{idCampeonato}} HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"nombre":"F1",
@@ -144,14 +184,20 @@ Content-Type: application/json
 ###
 # @name eliminarCampeonato
 DELETE {{host}}/campeonato/{{idCampeonato}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 ### 8 - Inscripciones
 # @name buscarInscripcion
 GET {{host}}/inscripcion HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name crearInscripcion
 POST {{host}}/inscripcion HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"idCampeonato": {{idCampeonato}},
@@ -161,14 +207,20 @@ Content-Type: application/json
 ###
 # @name eliminarInscripcion
 DELETE {{host}}/inscripcion/{{idInscripcion}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 ### 9 - Grandes Premios
 # @name buscarGP
 GET {{host}}/gp HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMzY4NDIsImV4cCI6MTU4NzI0MDQ0MiwianRpIjoicDlheHpBZTlpZWxsZnljM3FlMWs0ZyIsImtpZCI6Ik1NUiJ9.F4NbHVRkPsZtetQXYdGoelm_3uC8ZBJN2OICrKqVLBmen7RHPeX68fWrkVNqlQOWJjvA_RdJ_NfQEF265tnpk8WxgRo2pA7ByRJbwMbbSAhDm_UO4LZp5ou19dC13EgEJM-5FgrF3iv5Qh1RMxjpJe8wdamNKhXE3VFW256OD0fZPP1xPpVlZ3kWY0EbHst2MnyTwDZP-AuSyoSqq9kBkH2rxoUMBfj2XqM92UhLM_HuMsDFR6f2pcNv1GqIhSpqN72YOieNeRyTGTU3wNiv_3ZaN_iIlG8eoFUwAc4UZqZAkn7D5bSOM0s5wA-nE6FqbHeYbuS4JyOl4Vm_BOf1GQ
 ###
 # @name crearGP
 POST {{host}}/gp HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"idCampeonato":{{idCampeonato}},
@@ -178,14 +230,20 @@ Content-Type: application/json
 ###
 # @name eliminarGP
 DELETE {{host}}/gp/{{idGp}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 ### 10 - Sesiones Grandes Premios
 # @name buscarSesionesGP
 GET {{host}}/sesionGP HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name modificarSesionGP
 PUT {{host}}/sesionGP/{{idSesionGP}} HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"fecha":"2021-05-03"
@@ -194,9 +252,13 @@ Content-Type: application/json
 ### 11 - Resultados
 # @name buscarResultados
 GET {{host}}/resultado HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMzY4NDIsImV4cCI6MTU4NzI0MDQ0MiwianRpIjoicDlheHpBZTlpZWxsZnljM3FlMWs0ZyIsImtpZCI6Ik1NUiJ9.F4NbHVRkPsZtetQXYdGoelm_3uC8ZBJN2OICrKqVLBmen7RHPeX68fWrkVNqlQOWJjvA_RdJ_NfQEF265tnpk8WxgRo2pA7ByRJbwMbbSAhDm_UO4LZp5ou19dC13EgEJM-5FgrF3iv5Qh1RMxjpJe8wdamNKhXE3VFW256OD0fZPP1xPpVlZ3kWY0EbHst2MnyTwDZP-AuSyoSqq9kBkH2rxoUMBfj2XqM92UhLM_HuMsDFR6f2pcNv1GqIhSpqN72YOieNeRyTGTU3wNiv_3ZaN_iIlG8eoFUwAc4UZqZAkn7D5bSOM0s5wA-nE6FqbHeYbuS4JyOl4Vm_BOf1GQ
 ###
 # @name uploadResultados
 POST {{host}}/resultado/load/{{idSesionGP}}
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
@@ -213,14 +275,20 @@ MMR;1:20.000;1:21.401;1:20.002;1:20.003;1:20.004;1:20.005;1:20.006;1:20.007;1:20
 ### 12 - Vueltas
 # @name buscarVueltas
 GET {{host}}/vuelta HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 ### 13 - Sanciones
 # @name buscarSancion
 GET {{host}}/sancion HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name crearSancion
 POST {{host}}/sancion HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"idResultado": {{idResultado}},
@@ -232,6 +300,8 @@ Content-Type: application/json
 # @name modificarSancion
 PUT {{host}}/sancion/{{idSancion}} HTTP/1.1
 Content-Type: application/json
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 
 {
 	"descripcion": "Test Sancion Mod",
@@ -241,11 +311,17 @@ Content-Type: application/json
 ###
 # @name eliminarSancion
 DELETE {{host}}/sancion/{{idSancion}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 ### 14 - Clasificaciones
 # @name obtenerClasificacionGP
 GET {{host}}/clasificacion/gp/{{idGp}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###
 # @name obtenerClasificacionCampeonato
 GET {{host}}/clasificacion/campeonato/{{idCampeonato}} HTTP/1.1
+X-Races-User: MMR
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
 ###

@@ -44,7 +44,8 @@ public class InscripcionServiceImpl implements InscripcionService {
 	Environment env;
 
 	@Override
-	public List<Inscripcion> buscarInscripciones(String idCampeonato, String idPiloto, String idEquipo) {
+	public List<Inscripcion> buscarInscripciones(String idCampeonato, String idPiloto, String idEquipo, String jwt,
+			String user) {
 		List<Inscripcion> listReglamentos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.inscripciones.buscar");
@@ -60,7 +61,10 @@ public class InscripcionServiceImpl implements InscripcionService {
 		}
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -78,7 +82,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 	}
 
 	@Override
-	public void crearInscripcion(Inscripcion inscripcion) {
+	public void crearInscripcion(Inscripcion inscripcion, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.inscripciones.crear");
 
 		Map<String, Object> body = new HashMap<>();
@@ -87,6 +91,8 @@ public class InscripcionServiceImpl implements InscripcionService {
 		body.put(Constants.PARAM_ID_PILOTO, inscripcion.getPiloto().getId());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -100,12 +106,15 @@ public class InscripcionServiceImpl implements InscripcionService {
 	}
 
 	@Override
-	public Boolean borrarInscripcion(Long id) {
+	public Boolean borrarInscripcion(Long id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.inscripciones.borrar")
 				+ id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {

@@ -1,7 +1,9 @@
 package com.races.portal.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,15 +40,19 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 
 	@Autowired
 	Environment env;
-	
+
 	@Override
-	public List<Clasificacion> clasificacionGp(Long id) {
+	public List<Clasificacion> clasificacionGp(Long id, String jwt, String user) {
 		List<Clasificacion> listaClasificaciones = new ArrayList<>();
 
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.clasificacion.gp.buscar") + id;
+		String url = env.getProperty(Constants.SERVICES_HOST)
+				+ env.getProperty("races.services.clasificacion.gp.buscar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -64,13 +70,17 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 	}
 
 	@Override
-	public List<Clasificacion> clasificacionCampeonato(Long id) {
+	public List<Clasificacion> clasificacionCampeonato(Long id, String jwt, String user) {
 		List<Clasificacion> listaClasificaciones = new ArrayList<>();
 
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.clasificacion.campeonato.buscar") + id;
+		String url = env.getProperty(Constants.SERVICES_HOST)
+				+ env.getProperty("races.services.clasificacion.campeonato.buscar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {

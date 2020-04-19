@@ -3,7 +3,7 @@ package com.races.portal.dto;
 public class Sesion {
 
 	private Long id;
-	private String fecha;
+	private String descripcion;
 	private TipoSesion tipoSesion;
 
 	/**
@@ -18,10 +18,10 @@ public class Sesion {
 	 * @param fecha
 	 * @param tipoSesion
 	 */
-	public Sesion(Long id, String fecha, TipoSesion tipoSesion) {
+	public Sesion(Long id, String descripcion, TipoSesion tipoSesion) {
 		super();
 		this.id = id;
-		this.fecha = fecha;
+		this.descripcion = descripcion;
 		this.tipoSesion = tipoSesion;
 	}
 
@@ -42,15 +42,15 @@ public class Sesion {
 	/**
 	 * @return the fecha
 	 */
-	public String getFecha() {
-		return fecha;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
 	/**
 	 * @param fecha the fecha to set
 	 */
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class Sesion {
 
 	@Override
 	public String toString() {
-		return (tipoSesion==null? "":tipoSesion.getDescripcion()) + " - " + fecha;
+		return this.descripcion;
 	}
 
 }

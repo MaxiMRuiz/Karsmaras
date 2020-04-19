@@ -2,6 +2,10 @@ package com.races.portal.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +56,13 @@ public class ReglamentoController {
 	@GetMapping
 	public ModelAndView listaReglamentos(Model model,
 			@RequestParam(required = false, value = "filterId") String filterId,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
-		List<Reglamento> listaReglamentos = reglamentos.buscarReglamentos();
+		List<Reglamento> listaReglamentos = reglamentos.buscarReglamentos(jwt, user);
 		model.addAttribute("listaReglamentos", listaReglamentos);
 		model.addAttribute("urlServices", "/races/reglamentos/");
 		model.addAttribute("filterId", filterId);
@@ -62,38 +70,48 @@ public class ReglamentoController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView formularioReglamentos(Model model, @PathVariable String id) {
-
+	public ModelAndView formularioReglamentos(Model model, @PathVariable String id, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		Reglamento reglamento;
 		if ("new".equals(id)) {
 			reglamento = new Reglamento();
 		} else if (id.startsWith("clone")) {
 			String subId = id.substring(5);
-			reglamento = reglamentos.buscarReglamento(subId);
+			reglamento = reglamentos.buscarReglamento(subId, jwt, user);
 			reglamento.setId(null);
 		} else {
-			reglamento = reglamentos.buscarReglamento(id);
+			reglamento = reglamentos.buscarReglamento(id, jwt, user);
 		}
 		model.addAttribute("reglamento", reglamento);
 		return new ModelAndView("reglamento");
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Boolean> borrarPiloto(Model model, @PathVariable String id) {
-
+	public ResponseEntity<Boolean> borrarPiloto(Model model, @PathVariable String id, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(reglamentos.borrarReglamento(id), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(reglamentos.borrarReglamento(id, jwt, user), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping()
-	public ModelAndView postFormularioPilotos(Model model, @ModelAttribute Reglamento reglamento) {
+	public ModelAndView postFormularioPilotos(Model model, @ModelAttribute Reglamento reglamento,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (reglamento.getId() != null) {
-			reglamentos.editarReglamento(reglamento);
+			reglamentos.editarReglamento(reglamento, jwt, user);
 		} else {
-			reglamentos.crearReglamento(reglamento);
+			reglamentos.crearReglamento(reglamento, jwt, user);
 		}
 		return new ModelAndView("redirect:/races/reglamentos");
 	}

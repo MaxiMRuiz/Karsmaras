@@ -44,13 +44,16 @@ public class EquipoServiceImpl implements EquipoService {
 	Environment env;
 
 	@Override
-	public List<Equipo> buscarEquipos(Long id, String nombre, String apodo) {
+	public List<Equipo> buscarEquipos(Long id, String nombre, String apodo, String jwt, String user) {
 		List<Equipo> listaPilotos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.equipos.buscar");
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -68,14 +71,17 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public Equipo buscarEquipos(String id) {
+	public Equipo buscarEquipos(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.equipos.buscar");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -93,11 +99,14 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public Boolean borrarEquipo(String id) {
+	public Boolean borrarEquipo(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.equipos.borrar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -112,7 +121,7 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public Boolean editarEquipo(Equipo equipo) {
+	public Boolean editarEquipo(Equipo equipo, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.equipos.actualizar")
 				+ equipo.getId();
 
@@ -121,6 +130,8 @@ public class EquipoServiceImpl implements EquipoService {
 		body.put(Constants.PARAM_ALIAS, equipo.getAlias());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -140,7 +151,7 @@ public class EquipoServiceImpl implements EquipoService {
 	}
 
 	@Override
-	public Boolean crearEquipo(Equipo equipo) {
+	public Boolean crearEquipo(Equipo equipo, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.equipos.crear");
 
 		Map<String, Object> body = new HashMap<>();
@@ -148,6 +159,8 @@ public class EquipoServiceImpl implements EquipoService {
 		body.put(Constants.PARAM_ALIAS, equipo.getAlias());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {

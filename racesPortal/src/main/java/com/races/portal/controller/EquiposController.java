@@ -2,6 +2,10 @@ package com.races.portal.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +54,13 @@ public class EquiposController {
 
 	@GetMapping
 	public ModelAndView viewEquipos(Model model,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
-		List<Equipo> listaEquipos = equipos.buscarEquipos(null, null, null);
+		List<Equipo> listaEquipos = equipos.buscarEquipos(null, null, null, jwt, user);
 		model.addAttribute("listaEquipos", listaEquipos);
 		model.addAttribute("urlServices", "/races/equipos/");
 		return new ModelAndView("equipos");
@@ -60,39 +68,49 @@ public class EquiposController {
 
 	@GetMapping(value = "/{id}")
 	public ModelAndView formularioEquipos(Model model, @PathVariable String id,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		Equipo equipo;
 		if ("new".equals(id)) {
 			equipo = new Equipo();
 		} else if (id.startsWith("clone")) {
 			String subId = id.substring(5);
-			equipo = equipos.buscarEquipos(subId);
+			equipo = equipos.buscarEquipos(subId, jwt, user);
 			equipo.setId(null);
 		} else {
-			equipo = equipos.buscarEquipos(id);
+			equipo = equipos.buscarEquipos(id, jwt, user);
 		}
 		model.addAttribute("equipo", equipo);
 		return new ModelAndView("equipo");
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Boolean> borrarEquipo(Model model, @PathVariable String id) {
-
+	public ResponseEntity<Boolean> borrarEquipo(Model model, @PathVariable String id,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(equipos.borrarEquipo(id), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(equipos.borrarEquipo(id, jwt, user), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping()
-	public ModelAndView postFormularioEquipos(Model model, @ModelAttribute Equipo equipo) {
-
+	public ModelAndView postFormularioEquipos(Model model, @ModelAttribute Equipo equipo,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (equipo.getId() != null) {
-			equipos.editarEquipo(equipo);
+			equipos.editarEquipo(equipo, jwt, user);
 		} else {
-			equipos.crearEquipo(equipo);
+			equipos.crearEquipo(equipo, jwt, user);
 		}
 		return new ModelAndView("redirect:/races/equipos");
 	}

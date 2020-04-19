@@ -22,7 +22,7 @@ public interface PilotoService {
 	 * @param apodo
 	 * @return
 	 */
-	List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo);
+	List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo, String jwt, String user);
 
 	/**
 	 * Servicio de busqueda de un piloto
@@ -30,7 +30,7 @@ public interface PilotoService {
 	 * @param id
 	 * @return
 	 */
-	Piloto buscarPilotos(String id);
+	Piloto buscarPilotos(String id, String jwt, String user);
 
 	/**
 	 * Servicio de borrado de un piloto
@@ -38,7 +38,7 @@ public interface PilotoService {
 	 * @param id
 	 * @return
 	 */
-	Boolean borrarPiloto(String id);
+	Boolean borrarPiloto(String id, String jwt, String user);
 
 	/**
 	 * Servicio de creacion de un piloto

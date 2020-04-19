@@ -6,6 +6,6 @@ import com.races.portal.dto.TipoSesion;
 
 public interface TipoSesionService {
 
-	public List<TipoSesion> buscarTiposSesiones();
+	public List<TipoSesion> buscarTiposSesiones(String jwt, String user);
 
 }

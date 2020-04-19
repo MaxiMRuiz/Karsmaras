@@ -2,6 +2,10 @@ package com.races.portal.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
@@ -52,53 +55,64 @@ public class PuntuacionController {
 		LOGGER.warn("Returning HTTP 400 Bad Request", exception);
 	}
 
-	@GetMapping(value = "/{id}")
-	public ModelAndView listaPuntuaciones(Model model, @PathVariable String id,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
-		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
-		List<Puntuacion> listaPuntuaciones = puntuaciones.buscarPuntuaciones(id);
+	@GetMapping(value = "/{idSesion}")
+	public ModelAndView listaPuntuaciones(Model model, @PathVariable String idSesion,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		List<Puntuacion> listaPuntuaciones = puntuaciones.buscarPuntuaciones(idSesion, jwt, user);
 		model.addAttribute("listaPuntuaciones", listaPuntuaciones);
-		model.addAttribute(Constants.PARAM_ID, id);
-		model.addAttribute("urlServices", "/races/puntuaciones/" + id);
+		model.addAttribute(Constants.PARAM_ID, idSesion);
 		return new ModelAndView("puntuaciones");
 	}
 
 	@GetMapping(value = "/{id}/{obj}")
-	public ModelAndView formularioPuntuaciones(Model model, @PathVariable String id, @PathVariable String obj) {
-
+	public ModelAndView formularioPuntuaciones(Model model, @PathVariable String id, @PathVariable String obj,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		Puntuacion puntuacion;
 		if ("new".equals(obj)) {
 			puntuacion = new Puntuacion();
 		} else if (obj.startsWith("clone")) {
 			String subId = obj.substring(5);
-			puntuacion = puntuaciones.buscarPuntuacion(id, subId);
+			puntuacion = puntuaciones.buscarPuntuacion(id, subId, jwt, user);
 			puntuacion.setId(null);
 		} else {
-			puntuacion = puntuaciones.buscarPuntuacion(id, obj);
+			puntuacion = puntuaciones.buscarPuntuacion(id, obj, jwt, user);
 		}
-		model.addAttribute("tipoSesiones", tipoSesiones.buscarTiposSesiones());
+		model.addAttribute("tipoSesiones", tipoSesiones.buscarTiposSesiones(jwt, user));
 		model.addAttribute(Constants.PARAM_ID, id);
 		model.addAttribute("puntuacion", puntuacion);
 		return new ModelAndView("puntuacion");
 	}
 
 	@DeleteMapping(value = "/{id}/{obj}")
-	public ResponseEntity<Boolean> borrarPuntuacion(Model model, @PathVariable String id, @PathVariable String obj) {
-
+	public ResponseEntity<Boolean> borrarPuntuacion(Model model, @PathVariable String id, @PathVariable String obj,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(puntuaciones.borrarPuntuacion(obj), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(puntuaciones.borrarPuntuacion(obj, jwt, user), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping(value = "/{reglamento}")
 	public ModelAndView postFormularioPuntuacion(Model model, @PathVariable Long reglamento,
-			@ModelAttribute Puntuacion puntuacion) {
+			@ModelAttribute Puntuacion puntuacion,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (puntuacion.getId() != null) {
-			puntuaciones.editarPuntuacion(reglamento, puntuacion);
+			puntuaciones.editarPuntuacion(reglamento, puntuacion, jwt, user);
 		} else {
-			puntuaciones.crearPuntuacion(reglamento, puntuacion);
+			puntuaciones.crearPuntuacion(reglamento, puntuacion, jwt, user);
 		}
 		return new ModelAndView("redirect:/races/puntuaciones/" + reglamento);
 	}

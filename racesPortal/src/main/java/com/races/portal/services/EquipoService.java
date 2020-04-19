@@ -20,7 +20,7 @@ public interface EquipoService {
 	 * @param apodo
 	 * @return
 	 */
-	List<Equipo> buscarEquipos(Long id, String nombre, String apodo);
+	List<Equipo> buscarEquipos(Long id, String nombre, String apodo, String jwt, String user);
 
 	/**
 	 * Servicio de busqueda de un Equipo
@@ -28,7 +28,7 @@ public interface EquipoService {
 	 * @param id
 	 * @return
 	 */
-	Equipo buscarEquipos(String id);
+	Equipo buscarEquipos(String id, String jwt, String user);
 
 	/**
 	 * Servicio de borrado de un Equipo
@@ -36,20 +36,20 @@ public interface EquipoService {
 	 * @param id
 	 * @return
 	 */
-	Boolean borrarEquipo(String id);
+	Boolean borrarEquipo(String id, String jwt, String user);
 
 	/**
 	 * Servicio de edicion de un Equipo
 	 * 
 	 * @param Equipo
 	 */
-	Boolean editarEquipo(Equipo equipo);
+	Boolean editarEquipo(Equipo equipo, String jwt, String user);
 
 	/**
 	 * Servicio de creacion de un Equipo
 	 * 
 	 * @param Equipo
 	 */
-	Boolean crearEquipo(Equipo equipo);
+	Boolean crearEquipo(Equipo equipo, String jwt, String user);
 
 }

@@ -11,14 +11,14 @@ import com.races.portal.dto.Reglamento;
  */
 public interface ReglamentoService {
 
-	List<Reglamento> buscarReglamentos();
+	List<Reglamento> buscarReglamentos(String jwt, String user);
 
-	Reglamento buscarReglamento(String id);
+	Reglamento buscarReglamento(String id, String jwt, String user);
 
-	Boolean borrarReglamento(String id);
+	Boolean borrarReglamento(String id, String jwt, String user);
 
-	Boolean crearReglamento(Reglamento reglamento);
+	Boolean crearReglamento(Reglamento reglamento, String jwt, String user);
 
-	Boolean editarReglamento(Reglamento reglamento);
+	Boolean editarReglamento(Reglamento reglamento, String jwt, String user);
 	
 }

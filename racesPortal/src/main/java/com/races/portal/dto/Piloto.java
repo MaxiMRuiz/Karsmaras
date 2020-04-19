@@ -16,6 +16,38 @@ public class Piloto {
 
 	private String apodo;
 
+	private String password;
+
+	private Boolean admin;
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	/**
+	 * @return the admin
+	 */
+	public Boolean getAdmin() {
+		return admin;
+	}
+
+	/**
+	 * @param admin the admin to set
+	 */
+	public void setAdmin(Boolean admin) {
+		this.admin = admin;
+	}
+
 	/**
 	 * Default constructor
 	 */
@@ -31,12 +63,14 @@ public class Piloto {
 	 * @param apellido
 	 * @param apodo
 	 */
-	public Piloto(Long id, String nombre, String apellido, String apodo) {
+	public Piloto(Long id, String nombre, String apellido, String apodo, String password, Boolean admin) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.apodo = apodo;
+		this.password = password;
+		this.admin = admin;
 	}
 
 	/**
@@ -94,7 +128,7 @@ public class Piloto {
 	public void setApodo(String apodo) {
 		this.apodo = apodo;
 	}
-	
+
 	@Override
 	public String toString() {
 		return nombre + " " + apellido + " (" + apodo + ")";

@@ -44,7 +44,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 	Environment env;
 
 	@Override
-	public List<Resultado> buscarResultados(Long idSesion) {
+	public List<Resultado> buscarResultados(Long idSesion, String jwt, String user) {
 		List<Resultado> listResultados = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.resultados.buscar");
@@ -52,7 +52,10 @@ public class ResultadoServiceImpl implements ResultadoService {
 		params.put(Constants.PARAM_ID_SESION, idSesion);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -71,14 +74,17 @@ public class ResultadoServiceImpl implements ResultadoService {
 	}
 
 	@Override
-	public Resultado buscarResultado(Long id) {
+	public Resultado buscarResultado(Long id, String jwt, String user) {
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.resultados.buscar");
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -96,7 +102,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 	}
 
 	@Override
-	public void editarResultado(Resultado resultado) {
+	public void editarResultado(Resultado resultado, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.resultados.actualizar")
 				+ resultado.getId();
 		Map<String, Object> body = new HashMap<>();
@@ -104,6 +110,8 @@ public class ResultadoServiceImpl implements ResultadoService {
 		body.put(Constants.PARAM_TIEMPO, resultado.getTiempo());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -119,12 +127,14 @@ public class ResultadoServiceImpl implements ResultadoService {
 	}
 
 	@Override
-	public void sendFile(File fileResultados, Long idSesion, Long idGp) {
+	public void sendFile(File fileResultados, Long idSesion, Long idGp, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.resultados.load")
 				+ idSesion;
 		try {
-
-			HttpResponse<?> response = Unirest.post(url).field("file", fileResultados).asEmpty();
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<?> response = Unirest.post(url).field("file", fileResultados).headers(headers).asEmpty();
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			}

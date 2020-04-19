@@ -1,7 +1,9 @@
 package com.races.portal.services.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -36,13 +38,16 @@ public class TipoSesionServiceImpl implements TipoSesionService{
 	Environment env;
 	
 	@Override
-	public List<TipoSesion> buscarTiposSesiones() {
+	public List<TipoSesion> buscarTiposSesiones(String jwt, String user) {
 		List<TipoSesion> listReglamentos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.tiposesion.buscar");
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
 			} else {

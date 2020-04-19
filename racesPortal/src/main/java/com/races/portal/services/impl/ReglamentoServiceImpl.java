@@ -38,14 +38,17 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	Environment env;
 
 	@Override
-	public List<Reglamento> buscarReglamentos() {
+	public List<Reglamento> buscarReglamentos(String jwt, String user) {
 
 		List<Reglamento> listReglamentos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.buscar");
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -64,14 +67,17 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	}
 
 	@Override
-	public Reglamento buscarReglamento(String id) {
+	public Reglamento buscarReglamento(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.buscar");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -89,12 +95,15 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	}
 
 	@Override
-	public Boolean borrarReglamento(String id) {
+	public Boolean borrarReglamento(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.borrar")
 				+ id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -109,7 +118,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	}
 
 	@Override
-	public Boolean crearReglamento(Reglamento reglamento) {
+	public Boolean crearReglamento(Reglamento reglamento, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.crear");
 
 		Map<String, Object> body = new HashMap<>();
@@ -121,6 +130,8 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 		body.put(Constants.PARAM_N_PILOTOS, reglamento.getnPilotos());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -139,7 +150,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	}
 
 	@Override
-	public Boolean editarReglamento(Reglamento reglamento) {
+	public Boolean editarReglamento(Reglamento reglamento, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.reglamentos.actualizar")
 				+ reglamento.getId();
 
@@ -152,6 +163,8 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 		body.put(Constants.PARAM_N_PILOTOS, reglamento.getnPilotos());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {

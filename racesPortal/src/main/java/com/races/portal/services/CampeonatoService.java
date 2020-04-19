@@ -19,7 +19,7 @@ public interface CampeonatoService {
 	 * 
 	 * @return
 	 */
-	List<Campeonato> buscarCampeonatos(Long id, String nombre, String descripcion, String temporada);
+	List<Campeonato> buscarCampeonatos(Long id, String nombre, String descripcion, String temporada, String jwt, String user);
 
 	/**
 	 * Servicio de busqueda de un Campeonato
@@ -27,7 +27,7 @@ public interface CampeonatoService {
 	 * @param id
 	 * @return
 	 */
-	Campeonato buscarCampeonato(String id);
+	Campeonato buscarCampeonato(String id, String jwt, String user);
 
 	/**
 	 * Servicio para editar un Campeonato
@@ -35,7 +35,7 @@ public interface CampeonatoService {
 	 * @param campeonato
 	 * @return
 	 */
-	Boolean editarCampeonato(Campeonato campeonato);
+	Boolean editarCampeonato(Campeonato campeonato, String jwt, String user);
 
 	/**
 	 * Servicio para crear un campeonato
@@ -43,7 +43,7 @@ public interface CampeonatoService {
 	 * @param campeonato
 	 * @return
 	 */
-	Boolean crearCampeonato(Campeonato campeonato);
+	Boolean crearCampeonato(Campeonato campeonato, String jwt, String user);
 
 	/**
 	 * Servicio para borrar un campeonato
@@ -51,5 +51,5 @@ public interface CampeonatoService {
 	 * @param id
 	 * @return
 	 */
-	Boolean borrarCampeonato(String id);
+	Boolean borrarCampeonato(String id, String jwt, String user);
 }

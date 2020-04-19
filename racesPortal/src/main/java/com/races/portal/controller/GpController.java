@@ -2,6 +2,10 @@ package com.races.portal.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,19 +58,27 @@ public class GpController {
 
 	@GetMapping(value = "/{id}")
 	public ModelAndView listaGrandesPremios(Model model, @PathVariable String id,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
-		List<GranPremio> listaGrandesPremios = gpService.buscarGrandesPremios(id);
+		List<GranPremio> listaGrandesPremios = gpService.buscarGrandesPremios(id, jwt, user);
 		model.addAttribute("listaGrandesPremios", listaGrandesPremios);
-		model.addAttribute("nombre", campeonatos.buscarCampeonato(id).toString());
+		model.addAttribute("nombre", campeonatos.buscarCampeonato(id, jwt, user).toString());
 		model.addAttribute(Constants.PARAM_ID, id);
 		model.addAttribute("urlServices", "/races/gp/" + id);
 		return new ModelAndView("gps");
 	}
 
 	@GetMapping(value = "/{id}/new")
-	public ModelAndView formularioGrandesPremios(Model model, @PathVariable String id) {
-		model.addAttribute("nombre", campeonatos.buscarCampeonato(id).toString());
+	public ModelAndView formularioGrandesPremios(Model model, @PathVariable String id, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		model.addAttribute("nombre", campeonatos.buscarCampeonato(id, jwt, user).toString());
 		model.addAttribute("gp", new GranPremio());
 		model.addAttribute(Constants.PARAM_ID, id);
 		model.addAttribute("urlServices", "/races/gp/" + id);
@@ -74,16 +86,22 @@ public class GpController {
 	}
 
 	@PostMapping(value = "/{id}")
-	public ModelAndView crearGrandesPremios(Model model, @PathVariable String id, @ModelAttribute GranPremio gp) {
-
-		gpService.crearGranPremio(id, gp);
+	public ModelAndView crearGrandesPremios(Model model, @PathVariable String id, @ModelAttribute GranPremio gp,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		gpService.crearGranPremio(id, gp, jwt, user);
 		return new ModelAndView("redirect:/races/gp/" + id);
 	}
 
 	@DeleteMapping(value = "/{campeonato}/{id}")
 	public ResponseEntity<Boolean> borrarGrandesPremios(Model model, @PathVariable String campeonato,
-			@PathVariable String id) {
-		return new ResponseEntity<>(gpService.borrarGP(id), HttpStatus.OK);
+			@PathVariable String id, final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		return new ResponseEntity<>(gpService.borrarGP(id, jwt, user), HttpStatus.OK);
 	}
 
 }

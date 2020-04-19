@@ -1,5 +1,9 @@
 package com.races.portal.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,13 +56,16 @@ public class SancionController {
 
 	@GetMapping(value = "/{idGp}/{idSesion}/{idResultado}")
 	public ModelAndView listaSanciones(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long idResultado) {
-		model.addAttribute("listaSanciones", sanciones.buscarSanciones(idResultado));
+			@PathVariable Long idResultado, final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		model.addAttribute("listaSanciones", sanciones.buscarSanciones(idResultado, jwt, user));
 		model.addAttribute(Constants.PARAM_ID, idGp);
 		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
 		model.addAttribute(Constants.PARAM_ID_RESULTADO, idResultado);
-		Resultado resultado = resultados.buscarResultado(idResultado);
-		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesion().toString());
+		Resultado resultado = resultados.buscarResultado(idResultado, jwt, user);
+		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesionGP().toString());
 		model.addAttribute(Constants.PARAM_PILOTO, resultado.getInscripcion().getPiloto().toString());
 		model.addAttribute("urlServices", "/races/sancion/" + idGp + "/" + idSesion + "/" + idResultado);
 		return new ModelAndView("sanciones");
@@ -66,39 +73,49 @@ public class SancionController {
 
 	@GetMapping(value = "/{idGp}/{idSesion}/{idResultado}/{id}")
 	public ModelAndView formularioSancion(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long idResultado, @PathVariable String id) {
-
+			@PathVariable Long idResultado, @PathVariable String id, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		Sancion sancion;
-		Resultado resultado = resultados.buscarResultado(idResultado);
+		Resultado resultado = resultados.buscarResultado(idResultado, jwt, user);
 		if ("new".equals(id)) {
 			sancion = new Sancion();
 			sancion.setResultado(resultado);
 		} else {
-			sancion = sanciones.buscarSancion(id);
+			sancion = sanciones.buscarSancion(id, jwt, user);
 		}
 		model.addAttribute("sancion", sancion);
 		model.addAttribute(Constants.PARAM_ID, idGp);
 		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
 		model.addAttribute(Constants.PARAM_ID_RESULTADO, idResultado);
-		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesion().toString());
+		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesionGP().toString());
 		model.addAttribute(Constants.PARAM_PILOTO, resultado.getInscripcion().getPiloto().toString());
 		return new ModelAndView("sancion");
 	}
 
 	@DeleteMapping(value = "/{idGp}/{idSesion}/{idResultado}/{id}")
 	public ResponseEntity<Boolean> borrarSancion(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long idResultado, @PathVariable Long id) {
-		return new ResponseEntity<>(sanciones.borrarSancion(id), HttpStatus.OK);
+			@PathVariable Long idResultado, @PathVariable Long id, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		return new ResponseEntity<>(sanciones.borrarSancion(id, jwt, user), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/{idGp}/{idSesion}/{idResultado}")
 	public ModelAndView postFormularioSancion(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long idResultado, @ModelAttribute Sancion sancion) {
-
+			@PathVariable Long idResultado, @ModelAttribute Sancion sancion, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (sancion.getId() != null) {
-			sanciones.editarSancion(sancion);
+			sanciones.editarSancion(sancion, jwt, user);
 		} else {
-			sanciones.crearSancion(sancion);
+			sanciones.crearSancion(sancion, jwt, user);
 		}
 		return new ModelAndView("redirect:/races/sancion/" + idGp + "/" + idSesion + "/" + idResultado);
 	}

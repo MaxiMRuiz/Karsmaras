@@ -7,12 +7,12 @@ import com.races.portal.dto.Resultado;
 
 public interface ResultadoService {
 
-	List<Resultado> buscarResultados(Long idSesion);
+	List<Resultado> buscarResultados(Long idSesion, String jwt, String user);
 
-	Resultado buscarResultado(Long id);
+	Resultado buscarResultado(Long id, String jwt, String user);
 
-	void editarResultado(Resultado resultado);
+	void editarResultado(Resultado resultado, String jwt, String user);
 
-	void sendFile(File serverFile, Long idSesion, Long idGp);
+	void sendFile(File serverFile, Long idSesion, Long idGp, String jwt, String user);
 
 }

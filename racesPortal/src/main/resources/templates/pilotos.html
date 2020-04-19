@@ -19,8 +19,7 @@
 								<th width="80%" class="thead-dark-th">Piloto <input type="text" id="nombre" onkeyup="searchFilter()"
 										placeholder="Buscar" class="col-10"></input></th>
 								<th width="10%" class="thead-dark-th">Inscripciones</th>
-								<th width="5%" class="thead-dark-th">Clonar</th>
-								<th width="5%" class="thead-dark-th">Borrar</th>
+								<th width="10%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="piloto : ${listaPilotos}">
@@ -31,15 +30,7 @@
 										title="Ver Inscripciones">
 								</a>
 							</td>
-							<td class="td-table">
-								<div class="col-12 col-xs-12"><a class="button" href="#"
-										th:href="@{/races/pilotos/clone__${piloto.id}__}">
-										<img class="icons" src="/icons/copiar.png" alt="Clonar"
-											title="Clonar Piloto"></img>
-									</a>
-								</div>
-							</td>
-							<td class="td-table">
+							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#" th:onclick="'borrarpiloto('+ ${piloto.id} +');'">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
@@ -48,7 +39,7 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot id="tfoot">
+						<tfoot id="tfoot" th:if="${session.admin == true}">
 							<tr>
 								<td colspan="4" class="text-center table-success ">
 									<div class="row">

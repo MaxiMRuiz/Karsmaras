@@ -42,15 +42,18 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	Environment env;
 
 	@Override
-	public List<Puntuacion> buscarPuntuaciones(String id) {
+	public List<Puntuacion> buscarPuntuaciones(String id, String jwt, String user) {
 		List<Puntuacion> listReglamentos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.buscar");
 		Map<String, Object> params = new HashMap<>();
-		params.put(Constants.PARAM_ID_REGLAMENTO, id);
+		params.put(Constants.PARAM_ID_SESION, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -68,7 +71,7 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	}
 
 	@Override
-	public Puntuacion buscarPuntuacion(String id, String subId) {
+	public Puntuacion buscarPuntuacion(String id, String subId, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.buscar");
 
 		Map<String, Object> params = new HashMap<>();
@@ -76,7 +79,10 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 		params.put(Constants.PARAM_ID_REGLAMENTO, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -94,7 +100,7 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	}
 
 	@Override
-	public Boolean editarPuntuacion(Long reglamento,Puntuacion puntuacion) {
+	public Boolean editarPuntuacion(Long reglamento, Puntuacion puntuacion, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST)
 				+ env.getProperty("races.services.puntuaciones.actualizar") + puntuacion.getId();
 
@@ -104,6 +110,8 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 		body.put(Constants.PARAM_ID_TIPO_SESION, puntuacion.getTipoSesion().getId());
 		body.put(Constants.PARAM_ID_REGLAMENTO, reglamento);
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -122,7 +130,7 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	}
 
 	@Override
-	public Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion) {
+	public Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.crear");
 
 		Map<String, Object> body = new HashMap<>();
@@ -132,6 +140,8 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 		body.put(Constants.PARAM_ID_REGLAMENTO, reglamento);
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -150,12 +160,15 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	}
 
 	@Override
-	public Boolean borrarPuntuacion(String id) {
+	public Boolean borrarPuntuacion(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.borrar")
 				+ id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {

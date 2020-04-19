@@ -6,14 +6,14 @@ import com.races.portal.dto.Puntuacion;
 
 public interface PuntuacionService {
 
-	List<Puntuacion> buscarPuntuaciones(String id);
+	List<Puntuacion> buscarPuntuaciones(String id, String jwt, String user);
 
-	Puntuacion buscarPuntuacion(String id, String subId);
+	Puntuacion buscarPuntuacion(String id, String subId, String jwt, String user);
 
-	Boolean editarPuntuacion(Long reglamento, Puntuacion puntuacion);
+	Boolean editarPuntuacion(Long reglamento, Puntuacion puntuacion, String jwt, String user);
 
-	Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion);
+	Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion, String jwt, String user);
 
-	Boolean borrarPuntuacion(String id);
+	Boolean borrarPuntuacion(String id, String jwt, String user);
 
 }

@@ -6,8 +6,8 @@ import com.races.portal.dto.Clasificacion;
 
 public interface ClasificacionService {
 
-	List<Clasificacion> clasificacionGp(Long id);
+	List<Clasificacion> clasificacionGp(Long id, String jwt, String user);
 
-	List<Clasificacion> clasificacionCampeonato(Long id);
+	List<Clasificacion> clasificacionCampeonato(Long id, String jwt, String user);
 
 }

@@ -62,5 +62,14 @@ public class Constants {
 	public static final String CLASIFICACION = "clasificacion";
 	public static final String PARAM_INSCRIPCION = "inscripcion";
 	public static final String LISTA_EQUIPOS = "listaEquipos";
+	public static final String PARAM_PASS = "password";
+	public static final String PARAM_ADMIN = "admin";
+	public static final String AUTHORIZATION_HEADER = "Authorization";
+	public static final String BASIC_PREFIX = "Basic ";
+	public static final String BEARER_PREFIX = "Bearer ";
+	public static final String USER_HEADER = "X-Races-User";
+	public static final String JWT_ATTR = "jwt";
+	public static final String USER_ATTR = "user";
+	public static final String JWT_EXPIRED = "expired";
 
 }

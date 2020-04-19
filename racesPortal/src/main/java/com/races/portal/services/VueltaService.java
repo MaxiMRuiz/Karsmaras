@@ -6,6 +6,6 @@ import com.races.portal.dto.Vuelta;
 
 public interface VueltaService {
 
-	List<Vuelta> buscarVueltas(Long idResultado);
+	List<Vuelta> buscarVueltas(Long idResultado, String jwt, String user);
 
 }

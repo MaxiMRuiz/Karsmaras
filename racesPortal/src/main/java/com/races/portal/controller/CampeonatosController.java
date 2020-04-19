@@ -2,6 +2,10 @@ package com.races.portal.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,18 +59,25 @@ public class CampeonatosController {
 
 	@GetMapping
 	public ModelAndView listaCampeonatos(Model model,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		LOGGER.info("Accediendo a la pantalla de Campeonatos");
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
-		List<Campeonato> listCampeonatos = campeonatos.buscarCampeonatos(null, null, null, null);
+		List<Campeonato> listCampeonatos = campeonatos.buscarCampeonatos(null, null, null, null, jwt, user);
 		model.addAttribute("listCampeonatos", listCampeonatos);
 		model.addAttribute("urlServices", "/races/campeonatos/");
 		return new ModelAndView("campeonatos");
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView formularioCampeonatos(Model model, @PathVariable String id) {
-
+	public ModelAndView formularioCampeonatos(Model model, @PathVariable String id, final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		Campeonato campeonato;
 		if ("new".equals(id)) {
 			LOGGER.info("Accediendo a la pantalla de Creacion de Campeonatos");
@@ -75,35 +86,43 @@ public class CampeonatosController {
 		} else if (id.startsWith("clone")) {
 			LOGGER.info("Accediendo a la pantalla de Creacion de Campeonatos");
 			String subId = id.substring(5);
-			campeonato = campeonatos.buscarCampeonato(subId);
+			campeonato = campeonatos.buscarCampeonato(subId, jwt, user);
 			campeonato.setId(null);
 		} else {
 			LOGGER.info("Accediendo a la pantalla de Edicion de Campeonatos [" + id + "]");
-			campeonato = campeonatos.buscarCampeonato(id);
+			campeonato = campeonatos.buscarCampeonato(id, jwt, user);
 		}
-		model.addAttribute("reglamentos", reglamentos.buscarReglamentos());
+		model.addAttribute("reglamentos", reglamentos.buscarReglamentos(jwt, user));
 		model.addAttribute("campeonato", campeonato);
 		return new ModelAndView("campeonato");
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Boolean> borrarCampeonato(Model model, @PathVariable String id) {
+	public ResponseEntity<Boolean> borrarCampeonato(Model model, @PathVariable String id,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		LOGGER.info("Borrando el campeonato [" + id + "]");
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(campeonatos.borrarCampeonato(id), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(campeonatos.borrarCampeonato(id, jwt, user), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping
-	public ModelAndView postFormularioCampeonatos(Model model, @ModelAttribute Campeonato campeonato) {
+	public ModelAndView postFormularioCampeonatos(Model model, @ModelAttribute Campeonato campeonato,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (campeonato.getId() != null) {
 			LOGGER.info("Editando el campeonato [" + campeonato.getId() + "]");
-			campeonatos.editarCampeonato(campeonato);
+			campeonatos.editarCampeonato(campeonato, jwt, user);
 		} else {
 			LOGGER.info("Creando un nuevo campeonato [" + campeonato + "]");
-			campeonatos.crearCampeonato(campeonato);
+			campeonatos.crearCampeonato(campeonato, jwt, user);
 		}
 		return new ModelAndView("redirect:/races/campeonatos");
 	}

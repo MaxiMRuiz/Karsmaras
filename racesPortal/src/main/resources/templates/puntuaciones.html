@@ -11,25 +11,17 @@
 			</div>
 			<div class="col-xs-10 col-10">
 				<div class="table-responsive centerElement" id="content">
-					<h2 class="text-center racesTitle" id="title">SISTEMA DE PUNTUACION DEL REGLAMENTO [[${id}]]</h2>
+					<h2 class="text-center racesTitle" id="title">SISTEMA DE PUNTUACION DE LA SESION [[${id}]]</h2>
 					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
 						<thead class="thead-dark" align="center" id="thead">
 							<tr>
-								<th class="thead-dark-th" width="10%"><select class="custom-select d-block w-100"
-										id="sesion" name="sesion" onchange="searchFilter()">
-										<option value="">Todas</option>
-										<option value="Entrenamiento">Entrenamiento</option>
-										<option value="Clasificacion">Clasificacion</option>
-										<option value="Carrera">Carrera</option>
-									</select></th>
 								<th width="90%" class="thead-dark-th">Puntuacion</th>
-								<th width="10%" class="thead-dark-th">Editar</th>
+								<th width="10%" class="thead-dark-th" th:if="${session.admin == true}">Editar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="puntuacion : ${listaPuntuaciones}">
-							<td class="td-table" th:text="${puntuacion.tipoSesion.descripcion}"></td>
 							<td class="td-table" th:text="${puntuacion.toString()}"></td>
-							<td class="td-table">
+							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12"><a class="button" href="#"
 										th:href="@{/races/puntuaciones/__${id}__/__${puntuacion.id}__}">
 										<img class="icons" src="/icons/editar.png" alt="Modificar"
@@ -47,14 +39,14 @@
 <script>
 	$('#table').paginate({
 		limit: getNumberOfElements(),
-		filter: true
+		filter: false
 	});
 	function searchFilter() {
 		this.filter();
 		$('.page-navigation').remove();
 		$('#table').paginate({
 			limit: getNumberOfElements(),
-			filter: true
+			filter: false
 		})
 	}
 
@@ -68,45 +60,5 @@
 		return (heightContent - (heightTitle * 2) - (heightHead * 4) - (tam * 2)) / tam;
 	}
 
-	function filter() {
-		var select, table, tbody, tr, td, i, j;
-		select = document.getElementById("sesion");
-		table = document.getElementById("table");
-		tbody = table.getElementsByTagName("tbody");
-		i = 0;
-		while (tbody.length > i) {
-			tr = tbody[i].getElementsByTagName("tr")[0];
-			j = 0;
-			while (tbody.length > j) {
-				td = tr.children[0];
-				checkStatus(tr, td, select.options[select.selectedIndex].value, true);
-				j++;
-			}
-			i++;
-		}
-	}
-
-	function checkColumn(tr, td, filter, display) {
-		if (td && display) {
-			if (td.innerHTML.indexOf(filter) > -1) {
-				tr.style.display = "table-row";
-			} else {
-				tr.style.display = "none";
-			}
-		}
-	}
-
-	function checkStatus(tr, td, filter, display) {
-		if (td && display) {
-			if (td.childNodes[0].nodeValue == filter
-				|| filter == '') {
-				tr.style.display = "table-row";
-			} else {
-				tr.style.display = "none";
-			}
-		}
-	}
-
 </script>
-
 </html>

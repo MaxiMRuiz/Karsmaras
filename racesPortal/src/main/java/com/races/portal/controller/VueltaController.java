@@ -1,5 +1,9 @@
 package com.races.portal.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,15 +52,18 @@ public class VueltaController {
 
 	@GetMapping(value = "/{idGp}/{idSesion}/{idResultado}")
 	public ModelAndView listaVueltas(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long idResultado,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@PathVariable Long idResultado, @RequestHeader(value = "referer", required = false) final String urlPrevia,
+			final HttpServletRequest request, final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
-		model.addAttribute("listaVueltas", vueltas.buscarVueltas(idResultado));
+		model.addAttribute("listaVueltas", vueltas.buscarVueltas(idResultado, jwt, user));
 		model.addAttribute(Constants.PARAM_ID, idGp);
 		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
 		model.addAttribute(Constants.PARAM_ID_RESULTADO, idSesion);
-		Resultado resultado = resultados.buscarResultado(idResultado);
-		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesion().toString());
+		Resultado resultado = resultados.buscarResultado(idResultado, jwt, user);
+		model.addAttribute(Constants.PARAM_NOMBRE, resultado.getSesionGP().toString());
 		model.addAttribute(Constants.PARAM_PILOTO, resultado.getInscripcion().getPiloto().toString());
 		model.addAttribute("urlServices", "/races/sancion/" + idGp + "/" + idSesion + "/" + idResultado);
 		return new ModelAndView("vueltas");

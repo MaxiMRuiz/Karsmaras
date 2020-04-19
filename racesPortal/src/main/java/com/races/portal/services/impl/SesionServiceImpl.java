@@ -1,6 +1,8 @@
 package com.races.portal.services.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -34,21 +36,24 @@ public class SesionServiceImpl implements SesionService {
 
 	@Autowired
 	Environment env;
-	
-	@Override
-	public Sesion buscarSesion(Long idSesion) {
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sesiones.buscar");
-		Map<String, Object> params = new HashMap<>();
-		params.put(Constants.PARAM_ID, idSesion);
 
+	@Override
+	public List<Sesion> buscarSesiones(String idReglamento, String jwt, String user) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sesiones.buscar");
+		List<Sesion> listSesiones = new ArrayList<>();
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			Map<String, Object> params = new HashMap<>();
+			params.put(Constants.PARAM_ID_REGLAMENTO, idReglamento);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
-				if (jsonArray.length() > 0) {
-					return converter.json2Sesion(jsonArray.getJSONObject(0));
+				for (int i = 0; i < jsonArray.length(); i++) {
+					listSesiones.add(converter.json2Sesion(jsonArray.getJSONObject(i)));
 				}
 			}
 
@@ -56,7 +61,7 @@ public class SesionServiceImpl implements SesionService {
 			LOGGER.error(e);
 		}
 
-		return new Sesion();
+		return listSesiones;
 	}
 
 }

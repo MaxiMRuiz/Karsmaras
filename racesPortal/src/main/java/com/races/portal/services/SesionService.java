@@ -1,9 +1,11 @@
 package com.races.portal.services;
 
+import java.util.List;
+
 import com.races.portal.dto.Sesion;
 
 public interface SesionService {
 
-	Sesion buscarSesion(Long idSesion);
+	List<Sesion> buscarSesiones(String idReglamento, String jwt, String user);
 
 }

@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -41,8 +42,11 @@ public class SancionServiceImpl implements SancionService {
 	@Autowired
 	Environment env;
 
+	@Value(value = "${races.services.host}")
+	String serviceHost;
+
 	@Override
-	public List<Sancion> buscarSanciones(Long idResultado) {
+	public List<Sancion> buscarSanciones(Long idResultado, String jwt, String user) {
 		List<Sancion> listaSanciones = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sancion.buscar");
@@ -50,7 +54,10 @@ public class SancionServiceImpl implements SancionService {
 		params.put(Constants.PARAM_ID_RESULTADO, idResultado);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -68,11 +75,14 @@ public class SancionServiceImpl implements SancionService {
 	}
 
 	@Override
-	public Boolean borrarSancion(Long id) {
+	public Boolean borrarSancion(Long id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sancion.borrar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -87,14 +97,17 @@ public class SancionServiceImpl implements SancionService {
 	}
 
 	@Override
-	public Sancion buscarSancion(String id) {
+	public Sancion buscarSancion(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sancion.buscar");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -112,16 +125,18 @@ public class SancionServiceImpl implements SancionService {
 	}
 
 	@Override
-	public Boolean editarSancion(Sancion sancion) {
+	public Boolean editarSancion(Sancion sancion, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sancion.actualizar")
 				+ sancion.getId();
 
 		Map<String, Object> body = new HashMap<>();
 		body.put(Constants.PARAM_DESCRIPCION, sancion.getDescripcion());
 		body.put(Constants.PARAM_PUNTOS, sancion.getPuntos());
-		body.put(Constants.PARAM_TIEMPO, Long.getLong(sancion.getTiempo()) * 1000);
+		body.put(Constants.PARAM_TIEMPO, Double.parseDouble(sancion.getTiempo()) * 1000);
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -140,7 +155,7 @@ public class SancionServiceImpl implements SancionService {
 	}
 
 	@Override
-	public Boolean crearSancion(Sancion sancion) {
+	public Boolean crearSancion(Sancion sancion, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.sancion.crear");
 
 		Map<String, Object> body = new HashMap<>();
@@ -150,6 +165,8 @@ public class SancionServiceImpl implements SancionService {
 		body.put(Constants.PARAM_ID_RESULTADO, sancion.getResultado().getId());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {

@@ -2,6 +2,10 @@ package com.races.portal.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,10 +60,14 @@ public class PilotosController {
 
 	@GetMapping
 	public ModelAndView listaPilotos(Model model,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 
-		List<Piloto> listaPilotos = pilotos.buscarPilotos(null, null, null, null);
+		List<Piloto> listaPilotos = pilotos.buscarPilotos(null, null, null, null, jwt, user);
 		model.addAttribute("listaPilotos", listaPilotos);
 		model.addAttribute("urlServices", "/races/pilotos/");
 		return new ModelAndView("pilotos");
@@ -67,34 +75,42 @@ public class PilotosController {
 
 	@GetMapping(value = "/{id}")
 	public ModelAndView formularioPilotos(Model model, @PathVariable String id,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		Piloto piloto;
 		if ("new".equals(id)) {
 			piloto = new Piloto();
 		} else if (id.startsWith("clone")) {
 			String subId = id.substring(5);
-			piloto = pilotos.buscarPilotos(subId);
+			piloto = pilotos.buscarPilotos(subId, jwt, user);
 			piloto.setId(null);
 		} else {
-			piloto = pilotos.buscarPilotos(id);
+			piloto = pilotos.buscarPilotos(id, jwt, user);
 		}
 		model.addAttribute("piloto", piloto);
 		return new ModelAndView("piloto");
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Boolean> borrarPiloto(Model model, @PathVariable String id) {
-
+	public ResponseEntity<Boolean> borrarPiloto(Model model, @PathVariable String id,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(pilotos.borrarPiloto(id), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(pilotos.borrarPiloto(id, jwt, user), HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@PostMapping()
-	public ModelAndView postFormularioPilotos(Model model, @ModelAttribute Piloto piloto) {
+	public ModelAndView postFormularioPilotos(Model model, @ModelAttribute Piloto piloto,final HttpServletRequest request,
+			final HttpServletResponse response) {
 
 		pilotos.crearPiloto(piloto);
 		return new ModelAndView("redirect:/races/pilotos");

@@ -22,7 +22,7 @@
 										onkeyup="searchFilter()" placeholder="Buscar" class="col-10 col-xs-10"></input>
 								</th>
 								<th width="10%" class="thead-dark-th">Clasificacion</th>
-								<th width="5%" class="thead-dark-th">Borrar</th>
+								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="gp : ${listaGrandesPremios}">
@@ -43,7 +43,7 @@
 									</a>
 								</div>
 							</td>
-							<td class="td-table">
+							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#" th:onclick="'borrarGP('+ ${gp.id} +');'">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
@@ -52,7 +52,7 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot id="tfoot">
+						<tfoot id="tfoot" th:if="${session.admin == true}">
 							<tr>
 								<td colspan="4" class="td-table table-success text-center">
 									<div class="row">

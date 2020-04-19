@@ -46,6 +46,24 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
+											src="/icons/piloto.png" class="icons" alt="Apodo" title="Password del Piloto">
+										Password</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<input type="password" class="inputForm" th:field="*{piloto.password}"
+											th:value="${piloto.password}" required="required" placeholder="Password"></input>
+									</div>
+								</div>
+								<div class="form-group">
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img
+											src="/icons/piloto.png" class="icons" alt="Apodo" title="Piloto Administrador">
+										Admin</span>
+									<div class="col-10 col-md-10 col-xs-10">
+										<input type="checkbox" th:field="*{piloto.admin}"
+											th:value="${piloto.admin}" placeholder="Admin"></input>
+									</div>
+								</div>
+								<div class="form-group">
 									<div class="col-md-12 text-center">
 										<button type="submit" class="btn btn-primary pull-center">Aceptar</button>
 									</div>

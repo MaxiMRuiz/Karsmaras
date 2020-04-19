@@ -4,7 +4,7 @@ public class Resultado {
 
 	private Long id;
 	private Inscripcion inscripcion;
-	private Sesion sesion;
+	private SesionGP sesion;
 	private Integer tiempo;
 	private Integer vueltas;
 	private Integer vRapida;
@@ -23,7 +23,7 @@ public class Resultado {
 	 * @param tiempo
 	 * @param vueltas
 	 */
-	public Resultado(Long id, Inscripcion inscripcion, Sesion sesion, Integer tiempo, Integer vueltas, Integer vRapida) {
+	public Resultado(Long id, Inscripcion inscripcion, SesionGP sesion, Integer tiempo, Integer vueltas, Integer vRapida) {
 		super();
 		this.id = id;
 		this.inscripcion = inscripcion;
@@ -64,14 +64,14 @@ public class Resultado {
 	/**
 	 * @return the sesion
 	 */
-	public Sesion getSesion() {
+	public SesionGP getSesionGP() {
 		return sesion;
 	}
 
 	/**
 	 * @param sesion the sesion to set
 	 */
-	public void setSesion(Sesion sesion) {
+	public void setSesionGP(SesionGP sesion) {
 		this.sesion = sesion;
 	}
 

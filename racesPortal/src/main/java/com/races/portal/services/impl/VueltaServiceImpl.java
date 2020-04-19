@@ -38,14 +38,17 @@ public class VueltaServiceImpl implements VueltaService {
 	Environment env;
 
 	@Override
-	public List<Vuelta> buscarVueltas(Long idResultado) {
+	public List<Vuelta> buscarVueltas(Long idResultado, String jwt, String user) {
 		List<Vuelta> listaVueltas = new ArrayList<>();
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.vuelta.buscar");
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID_RESULTADO, idResultado);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn("Response " + (response == null ? "null" : response.getStatus()));
 			} else {

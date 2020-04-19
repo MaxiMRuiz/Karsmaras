@@ -20,8 +20,8 @@
 								<th width="70%" class="thead-dark-th">Motivo</th>
 								<th width="10%" class="thead-dark-th">Puntos</th>
 								<th width="10%" class="thead-dark-th">Tiempo (seg.)</th>
-								<th width="5%" class="thead-dark-th">Editar</th>
-								<th width="5%" class="thead-dark-th">Borrar</th>
+								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Editar</th>
+								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="sancion : ${listaSanciones}">
@@ -34,7 +34,7 @@
 								<img class="icons" src="/icons/vuelta.png" alt="Tiempo"
 									title="Tiempo"></img>[[${sancion.tiempo}]]
 							</td>
-							<td class="td-table">
+							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#"
 										th:href="@{/races/sancion/__${id}__/__${idSesion}__/__${idResultado}__/__${sancion.id}__}">
@@ -43,7 +43,7 @@
 									</a>
 								</div>
 							</td>
-							<td class="td-table">
+							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#" th:onclick="'borrarSancion('+ ${sancion.id} +');'">
 										<img class="icons" src="/icons/borrar.png" alt="Eliminar"
@@ -52,7 +52,7 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot id="tfoot">
+						<tfoot id="tfoot" th:if="${session.admin == true}">
 							<tr>
 								<td colspan="5" class="td-table text-center table-success">
 									<div class="row">

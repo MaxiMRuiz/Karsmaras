@@ -38,7 +38,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 	Environment env;
 
 	@Override
-	public List<GranPremio> buscarGrandesPremios(String id) {
+	public List<GranPremio> buscarGrandesPremios(String id, String jwt, String user) {
 		List<GranPremio> listReglamentos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.gp.buscar");
@@ -46,7 +46,10 @@ public class GranPremioServiceImpl implements GranPremioService {
 		params.put(Constants.PARAM_ID_CAMPEONATO, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -64,14 +67,17 @@ public class GranPremioServiceImpl implements GranPremioService {
 	}
 
 	@Override
-	public GranPremio buscarGranPremio(Long id) {
+	public GranPremio buscarGranPremio(Long id, String jwt, String user) {
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.gp.buscar");
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -89,7 +95,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 	}
 
 	@Override
-	public void crearGranPremio(String id, GranPremio gp) {
+	public void crearGranPremio(String id, GranPremio gp, String jwt, String user) {
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.gp.crear");
 		Map<String, Object> body = new HashMap<>();
@@ -98,6 +104,8 @@ public class GranPremioServiceImpl implements GranPremioService {
 		body.put(Constants.PARAM_FECHA, gp.getFecha());
 
 		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
 
 		try {
@@ -112,11 +120,14 @@ public class GranPremioServiceImpl implements GranPremioService {
 	}
 
 	@Override
-	public Boolean borrarGP(String id) {
+	public Boolean borrarGP(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.gp.borrar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {

@@ -44,13 +44,16 @@ public class PilotoServiceImpl implements PilotoService {
 	Environment env;
 
 	@Override
-	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo) {
+	public List<Piloto> buscarPilotos(Long id, String nombre, String apellido, String apodo, String jwt, String user) {
 		List<Piloto> listaPilotos = new ArrayList<>();
 
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.buscar");
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -68,14 +71,17 @@ public class PilotoServiceImpl implements PilotoService {
 	}
 
 	@Override
-	public Piloto buscarPilotos(String id) {
+	public Piloto buscarPilotos(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.buscar");
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Constants.PARAM_ID, id);
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, null, HttpMethod.GET);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -93,11 +99,14 @@ public class PilotoServiceImpl implements PilotoService {
 	}
 
 	@Override
-	public Boolean borrarPiloto(String id) {
+	public Boolean borrarPiloto(String id, String jwt, String user) {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.borrar") + id;
 
 		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, null, HttpMethod.DELETE);
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.DELETE);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -119,6 +128,8 @@ public class PilotoServiceImpl implements PilotoService {
 		body.put(Constants.PARAM_NOMBRE, piloto.getNombre());
 		body.put(Constants.PARAM_APELLIDO, piloto.getApellido());
 		body.put(Constants.PARAM_APODO, piloto.getApodo());
+		body.put(Constants.PARAM_PASS, piloto.getPassword());
+		body.put(Constants.PARAM_ADMIN, piloto.getAdmin());
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);

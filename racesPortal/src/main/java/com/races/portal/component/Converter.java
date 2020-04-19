@@ -11,12 +11,14 @@ import com.races.portal.dto.Clasificacion;
 import com.races.portal.dto.Equipo;
 import com.races.portal.dto.GranPremio;
 import com.races.portal.dto.Inscripcion;
+import com.races.portal.dto.LoginResponse;
 import com.races.portal.dto.Piloto;
 import com.races.portal.dto.Puntuacion;
 import com.races.portal.dto.Reglamento;
 import com.races.portal.dto.Resultado;
 import com.races.portal.dto.Sancion;
 import com.races.portal.dto.Sesion;
+import com.races.portal.dto.SesionGP;
 import com.races.portal.dto.TipoSesion;
 import com.races.portal.dto.Vuelta;
 
@@ -144,9 +146,9 @@ public class Converter {
 		gp.setUbicacion(jsonGp.isNull(Constants.PARAM_UBICACION) ? "N/A" : jsonGp.getString(Constants.PARAM_UBICACION));
 		JSONArray array = json.isNull(Constants.PARAM_SESIONES) ? new JSONArray()
 				: json.getJSONArray(Constants.PARAM_SESIONES);
-		List<Sesion> listaSesiones = new ArrayList<>();
+		List<SesionGP> listaSesiones = new ArrayList<>();
 		for (int i = 0; i < array.length(); i++) {
-			listaSesiones.add(json2Sesion(array.getJSONObject(i)));
+			listaSesiones.add(json2SesionGp(array.getJSONObject(i)));
 			fecha = listaSesiones.get(i).getFecha();
 		}
 		gp.setFecha(fecha);
@@ -160,11 +162,26 @@ public class Converter {
 	 * @param json
 	 * @return
 	 */
+	public SesionGP json2SesionGp(JSONObject json) {
+		SesionGP sesionGp = new SesionGP();
+		sesionGp.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		sesionGp.setFecha(json.isNull(Constants.PARAM_FECHA) ? "N/A" : json.getString(Constants.PARAM_FECHA));
+		sesionGp.setSesion(json.isNull(Constants.PARAM_SESION) ? new Sesion()
+				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
+		return sesionGp;
+	}
+	
+	/**
+	 * Conversor de JSONObject a Sesion
+	 * 
+	 * @param json
+	 * @return
+	 */
 	public Sesion json2Sesion(JSONObject json) {
 		Sesion sesion = new Sesion();
 		sesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
-		sesion.setFecha(json.isNull(Constants.PARAM_FECHA) ? "N/A" : json.getString(Constants.PARAM_FECHA));
-		sesion.setTipoSesion(json.isNull(Constants.PARAM_FECHA) ? new TipoSesion()
+		sesion.setDescripcion(json.isNull(Constants.PARAM_DESCRIPCION) ? "N/A" : json.getString(Constants.PARAM_DESCRIPCION));
+		sesion.setTipoSesion(json.isNull(Constants.PARAM_TIPO_SESION) ? new TipoSesion()
 				: json2TipoSesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
 		return sesion;
 	}
@@ -192,8 +209,8 @@ public class Converter {
 		resultado.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
 		resultado.setInscripcion(json.isNull(Constants.PARAM_INSCRIPCION) ? new Inscripcion()
 				: json2Inscripcion(json.getJSONObject(Constants.PARAM_INSCRIPCION)));
-		resultado.setSesion(json.isNull(Constants.PARAM_SESION) ? new Sesion()
-				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
+		resultado.setSesionGP(json.isNull(Constants.PARAM_SESION) ? new SesionGP()
+				: json2SesionGp(json.getJSONObject(Constants.PARAM_SESION)));
 		resultado.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
 		resultado.setVueltas(json.isNull(Constants.PARAM_N_VUELTAS) ? 0 : json.getInt(Constants.PARAM_N_VUELTAS));
 		resultado.setvRapida(json.isNull(Constants.PARAM_V_RAPIDA) ? 0 : json.getInt(Constants.PARAM_V_RAPIDA));
@@ -216,7 +233,8 @@ public class Converter {
 		sancion.setDescripcion(
 				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
 		sancion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
-		sancion.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? "0" : "" + Double.valueOf(json.getInt(Constants.PARAM_TIEMPO))/1000);
+		sancion.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? "0"
+				: "" + Double.valueOf(json.getInt(Constants.PARAM_TIEMPO)) / 1000);
 		sancion.setResultado(json.isNull(Constants.PARAM_RESULTADO) ? new Resultado()
 				: json2Resultado(json.getJSONObject(Constants.PARAM_RESULTADO)));
 		return sancion;
@@ -230,6 +248,13 @@ public class Converter {
 				: json2Equipo(json.getJSONObject(Constants.PARAM_INSCRIPCION).getJSONObject(Constants.PARAM_EQUIPO)));
 		clasificacion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
 		return clasificacion;
+	}
+
+	public LoginResponse json2loginResponse(JSONObject json) {
+		LoginResponse response = new LoginResponse();
+		response.setAdmin(json.getBoolean("admin"));
+		response.setJwt(json.getString("jwt"));
+		return response;
 	}
 
 }

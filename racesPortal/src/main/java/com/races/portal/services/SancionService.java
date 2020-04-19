@@ -6,14 +6,14 @@ import com.races.portal.dto.Sancion;
 
 public interface SancionService {
 
-	List<Sancion> buscarSanciones(Long idResultado);
+	List<Sancion> buscarSanciones(Long idResultado, String jwt, String user);
 
-	Boolean borrarSancion(Long id);
+	Boolean borrarSancion(Long id, String jwt, String user);
 
-	Sancion buscarSancion(String id);
+	Sancion buscarSancion(String id, String jwt, String user);
 
-	Boolean editarSancion(Sancion sancion);
+	Boolean editarSancion(Sancion sancion, String jwt, String user);
 
-	Boolean crearSancion(Sancion sancion);
+	Boolean crearSancion(Sancion sancion, String jwt, String user);
 
 }

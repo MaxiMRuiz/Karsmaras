@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,30 +60,38 @@ public class ClasificacionController {
 
 	@GetMapping(value = "/gp/{id}")
 	public ModelAndView clasificacionGP(Model model, @PathVariable Long id,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
-
-		List<Clasificacion> listaPilotos = clasificacionService.clasificacionGp(id);
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		List<Clasificacion> listaPilotos = clasificacionService.clasificacionGp(id, jwt, user);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		model.addAttribute(Constants.LISTA_CLASIFICACION, listaPilotos);
 		model.addAttribute(Constants.LISTA_EQUIPOS, getListaEquipos(listaPilotos));
 		model.addAttribute(Constants.TYPE, Constants.PARAM_PILOTO);
-		model.addAttribute(Constants.PARAM_NOMBRE, gpService.buscarGranPremio(id));
+		model.addAttribute(Constants.PARAM_NOMBRE, gpService.buscarGranPremio(id, jwt, user));
 		return new ModelAndView(Constants.CLASIFICACION);
 	}
 
 	@GetMapping(value = "/campeonato/{id}")
 	public ModelAndView clasificacionCampeonato(Model model, @PathVariable Long id,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia) {
-		List<Clasificacion> listaPilotos = clasificacionService.clasificacionCampeonato(id);
+			@RequestHeader(value = "referer", required = false) final String urlPrevia,final HttpServletRequest request,
+			final HttpServletResponse response) {
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		List<Clasificacion> listaPilotos = clasificacionService.clasificacionCampeonato(id, jwt, user);
 		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
 		model.addAttribute(Constants.LISTA_CLASIFICACION, listaPilotos);
 		model.addAttribute(Constants.LISTA_EQUIPOS, getListaEquipos(listaPilotos));
 		model.addAttribute(Constants.TYPE, Constants.PARAM_PILOTO);
-		model.addAttribute(Constants.PARAM_NOMBRE, campeonatoService.buscarCampeonato(id.toString()));
+		model.addAttribute(Constants.PARAM_NOMBRE, campeonatoService.buscarCampeonato(id.toString(), jwt, user));
 		return new ModelAndView(Constants.CLASIFICACION);
 	}
 
 	private List<Clasificacion> getListaEquipos(List<Clasificacion> listaPilotos) {
+		
 		List<Clasificacion> listaEquipos = new ArrayList<>();
 		for (Clasificacion clasificacion : listaPilotos) {
 			int posicion = getEquipo(listaEquipos, clasificacion);

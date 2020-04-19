@@ -6,7 +6,7 @@ public class GranPremio {
 
 	private Long id;
 	private String ubicacion;
-	List<Sesion> sesiones;
+	List<SesionGP> sesiones;
 	private String fecha;
 
 	/**
@@ -63,14 +63,14 @@ public class GranPremio {
 	/**
 	 * @return the sesiones
 	 */
-	public List<Sesion> getSesiones() {
+	public List<SesionGP> getSesiones() {
 		return sesiones;
 	}
 
 	/**
 	 * @param sesiones the sesiones to set
 	 */
-	public void setSesiones(List<Sesion> sesiones) {
+	public void setSesiones(List<SesionGP> sesiones) {
 		this.sesiones = sesiones;
 	}
 

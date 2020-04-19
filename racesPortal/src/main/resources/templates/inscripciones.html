@@ -29,7 +29,7 @@
 								</th>
 								<th th:if="${type == 'c' || type == 'p'}" width="47.5%" class="thead-dark-th">Equipo
 								</th>
-								<th width="5%" class="thead-dark-th">Borrar</th>
+								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="inscripcion : ${listaInscripciones}">
@@ -39,7 +39,7 @@
 								th:text="${inscripcion.piloto.toString()}"></td>
 							<td class="td-table" th:if="${type == 'c' || type == 'p'}"
 								th:text="${inscripcion.equipo.toString()}"></td>
-							<td class="td-table">
+							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#"
 										th:onclick="'borrarInscripcion('+ ${inscripcion.id} +');'">
@@ -49,7 +49,7 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot id="tfoot">
+						<tfoot id="tfoot" th:if="${session.admin == true}">
 							<tr>
 								<td colspan="3" class="td-table text-center table-success">
 									<div class="row">

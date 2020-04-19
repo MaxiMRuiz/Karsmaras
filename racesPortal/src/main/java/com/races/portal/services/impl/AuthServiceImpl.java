@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
 	Converter converter;
 
 	@Override
-	public LoginResponse login(LoginDto dto) throws Exception {
+	public LoginResponse login(LoginDto dto) throws RacesException {
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);

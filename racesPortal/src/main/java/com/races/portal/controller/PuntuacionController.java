@@ -1,11 +1,15 @@
 package com.races.portal.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +25,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.races.portal.constants.Constants;
@@ -56,7 +62,7 @@ public class PuntuacionController {
 	}
 
 	@GetMapping(value = "/{idSesion}")
-	public ModelAndView listaPuntuaciones(Model model, @PathVariable String idSesion,final HttpServletRequest request,
+	public ModelAndView listaPuntuaciones(Model model, @PathVariable String idSesion, final HttpServletRequest request,
 			final HttpServletResponse response) {
 		HttpSession sesion = request.getSession();
 		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
@@ -68,8 +74,8 @@ public class PuntuacionController {
 	}
 
 	@GetMapping(value = "/{id}/{obj}")
-	public ModelAndView formularioPuntuaciones(Model model, @PathVariable String id, @PathVariable String obj,final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public ModelAndView formularioPuntuaciones(Model model, @PathVariable String id, @PathVariable String obj,
+			final HttpServletRequest request, final HttpServletResponse response) {
 		HttpSession sesion = request.getSession();
 		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
 		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
@@ -90,8 +96,8 @@ public class PuntuacionController {
 	}
 
 	@DeleteMapping(value = "/{id}/{obj}")
-	public ResponseEntity<Boolean> borrarPuntuacion(Model model, @PathVariable String id, @PathVariable String obj,final HttpServletRequest request,
-			final HttpServletResponse response) {
+	public ResponseEntity<Boolean> borrarPuntuacion(Model model, @PathVariable String id, @PathVariable String obj,
+			final HttpServletRequest request, final HttpServletResponse response) {
 		HttpSession sesion = request.getSession();
 		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
 		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
@@ -104,7 +110,7 @@ public class PuntuacionController {
 
 	@PostMapping(value = "/{reglamento}")
 	public ModelAndView postFormularioPuntuacion(Model model, @PathVariable Long reglamento,
-			@ModelAttribute Puntuacion puntuacion,final HttpServletRequest request,
+			@ModelAttribute Puntuacion puntuacion, final HttpServletRequest request,
 			final HttpServletResponse response) {
 		HttpSession sesion = request.getSession();
 		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
@@ -117,4 +123,34 @@ public class PuntuacionController {
 		return new ModelAndView("redirect:/races/puntuaciones/" + reglamento);
 	}
 
+	@PostMapping(value = "/{idSesion}/upload")
+	public ModelAndView uploadPuntuacionesHandler(@PathVariable Long idSesion, @RequestParam("file") MultipartFile file,
+			final HttpServletRequest request, final HttpServletResponse response) {
+
+		HttpSession sesion = request.getSession();
+		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
+		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+		if (!file.isEmpty() && FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")) {
+
+			// Creating the directory to store file
+			String rootPath = env.getProperty("files.upload.basepath");
+			File dir = new File(rootPath + File.separator);
+			if (!dir.exists())
+				dir.mkdirs();
+
+			// Create the file on server
+			File serverFile = new File(dir.getAbsolutePath() + File.separator + file.getOriginalFilename());
+			try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));) {
+
+				stream.write(file.getBytes());
+
+			} catch (Exception e) {
+				LOGGER.error("Fallo en la carga del fichero => " + e.getMessage());
+			}
+			puntuaciones.sendFile(serverFile, idSesion, jwt, user);
+		} else {
+			LOGGER.warn("Error en la carga del fichero debido a que está vacío o no tiene formato txt o csv.");
+		}
+		return new ModelAndView("redirect:/races/puntuaciones/" + idSesion);
+	}
 }

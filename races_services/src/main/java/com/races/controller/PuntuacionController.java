@@ -9,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
@@ -72,6 +74,20 @@ public class PuntuacionController {
 			LOGGER.error("Error actualizando la Puntuacion " + id + ": " + e.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@PostMapping("/puntuacion/upload/{idSesion}")
+	public ResponseEntity<Boolean> uploadFileHandler(@PathVariable Long idSesion,
+			@RequestParam("file") MultipartFile file) {
+
+		try {
+			puntuacionService.processFile(idSesion, file);
+			return new ResponseEntity<>(true, HttpStatus.OK);
+		} catch (RacesException e) {
+			LOGGER.error("Error procesando el fichero: " + e.getMessage(), e);
+			return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 }

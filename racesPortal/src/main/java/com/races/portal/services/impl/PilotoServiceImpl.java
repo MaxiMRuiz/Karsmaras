@@ -1,6 +1,7 @@
 package com.races.portal.services.impl;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +17,15 @@ import org.springframework.stereotype.Service;
 import com.races.portal.component.Converter;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
+import com.races.portal.dto.Password;
 import com.races.portal.dto.Piloto;
 import com.races.portal.services.PilotoService;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 
 /**
  * Implementacion de la interfaz PilotoService
@@ -50,10 +54,24 @@ public class PilotoServiceImpl implements PilotoService {
 		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.buscar");
 
 		try {
+			Map<String, Object> params = new HashMap<>();
+			if (id != null) {
+				params.put("id", id);
+			}
+			if (!StringUtils.isBlank(nombre)) {
+				params.put("nombre", nombre);
+			}
+			if (!StringUtils.isBlank(apellido)) {
+				params.put("apellido", apellido);
+			}
+			if (!StringUtils.isBlank(apodo)) {
+				params.put("apodo", apodo);
+			}
+
 			Map<String, String> headers = new HashMap<>();
 			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
 			headers.put(Constants.USER_HEADER, user);
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.GET);
+			HttpResponse<String> response = utils.executeHttpMethod(url, params, null, headers, HttpMethod.GET);
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
@@ -129,7 +147,7 @@ public class PilotoServiceImpl implements PilotoService {
 		body.put(Constants.PARAM_APELLIDO, piloto.getApellido());
 		body.put(Constants.PARAM_APODO, piloto.getApodo());
 		body.put(Constants.PARAM_PASS, piloto.getPassword());
-		body.put(Constants.PARAM_ADMIN, piloto.getAdmin());
+		body.put(Constants.PARAM_ADMIN, false);
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
@@ -148,6 +166,83 @@ public class PilotoServiceImpl implements PilotoService {
 
 		return false;
 
+	}
+
+	@Override
+	public Piloto editarPiloto(Piloto piloto, String jwt, String user) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.actualizar")
+				+ piloto.getId();
+
+		Map<String, Object> body = new HashMap<>();
+		body.put(Constants.PARAM_NOMBRE, piloto.getNombre());
+		body.put(Constants.PARAM_APELLIDO, piloto.getApellido());
+		body.put(Constants.PARAM_APODO, piloto.getApodo());
+
+		Map<String, String> headers = new HashMap<>();
+		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+		headers.put(Constants.USER_HEADER, user);
+		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
+
+		try {
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
+			} else {
+				return converter.json2Piloto(new JSONObject(response.getBody()));
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return null;
+	}
+
+	@Override
+	public Boolean promocionarPiloto(String id, String jwt, String user) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.promocionar")
+				+ id;
+
+		try {
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.PUT);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
+			} else {
+				return true;
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return false;
+	}
+
+	@Override
+	public Boolean cambiarPassword(Password password, String jwt, String user) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.pilotos.password");
+
+		try {
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			headers.put(Constants.CHANGE_PASS_HEADER, Base64.getEncoder()
+					.encodeToString((user + ":" + password.getCurrentPass() + ":" + password.getNewpass()).getBytes()));
+			HttpResponse<String> response = utils.executeHttpMethod(url, null, null, headers, HttpMethod.PUT);
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
+			} else {
+				return true;
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
+
+		return false;
 	}
 
 }

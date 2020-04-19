@@ -2,6 +2,8 @@ package com.races.services;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
 import com.races.entity.Puntuacion;
@@ -66,5 +68,13 @@ public interface PuntuacionService {
 	 * @param sesion
 	 */
 	void crearPuntuacionesSesion(Sesion sesion);
+
+	/**
+	 * 
+	 * @param idSesion
+	 * @param file
+	 * @throws RacesException 
+	 */
+	void processFile(Long idSesion, MultipartFile file) throws RacesException;
 
 }

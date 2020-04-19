@@ -29,17 +29,23 @@
 								</th>
 								<th th:if="${type == 'c' || type == 'p'}" width="47.5%" class="thead-dark-th">Equipo
 								</th>
-								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
+								<th width="5%" class="thead-dark-th"
+									th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
+									Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="inscripcion : ${listaInscripciones}">
-							<td class="td-table" th:if="${type == 'p' || type == 'e'}"
-								th:text="${inscripcion.campeonato.toString()}"></td>
+							<td class="td-table" th:if="${type == 'p' || type == 'e'}">
+								<a href="#" th:href="@{/races/gp/__${inscripcion.campeonato.id}__}">
+									<span th:text="${inscripcion.campeonato.toString()}"
+										class="d-none d-sm-inline">Ver</span>
+								</a></td>
 							<td class="td-table" th:if="${type == 'c' || type == 'e'}"
 								th:text="${inscripcion.piloto.toString()}"></td>
 							<td class="td-table" th:if="${type == 'c' || type == 'p'}"
 								th:text="${inscripcion.equipo.toString()}"></td>
-							<td class="td-table" th:if="${session.admin == true}">
+							<td class="td-table"
+								th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#"
 										th:onclick="'borrarInscripcion('+ ${inscripcion.id} +');'">
@@ -49,7 +55,8 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot id="tfoot" th:if="${session.admin == true}">
+						<tfoot id="tfoot"
+							th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
 							<tr>
 								<td colspan="3" class="td-table text-center table-success">
 									<div class="row">

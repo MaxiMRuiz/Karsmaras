@@ -19,7 +19,8 @@
 								<th width="80%" class="thead-dark-th">Piloto <input type="text" id="nombre" onkeyup="searchFilter()"
 										placeholder="Buscar" class="col-10"></input></th>
 								<th width="10%" class="thead-dark-th">Inscripciones</th>
-								<th width="10%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
+								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Admin</th>
+								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
 							</tr>
 						</thead>
 						<tbody class="table-warning" th:each="piloto : ${listaPilotos}">
@@ -29,6 +30,20 @@
 									<img class="icons" src="/icons/inscripcion.png" alt="Inscripciones"
 										title="Ver Inscripciones">
 								</a>
+							</td>
+							<td class="td-table" th:if="${session.admin == true}">
+								<div th:if="${piloto.admin == true}" class="col-12 col-xs-12">
+									<a class="button" href="#"></a>
+										<img class="icons" src="/icons/afirmativo.png" alt="Administrador"
+											title="Usuario Administrador"></img>
+									</a>
+								</div>
+								<div th:if="${piloto.admin == false}" class="col-12 col-xs-12">
+									<a class="button" href="#" th:onclick="'promocionarPiloto('+ ${piloto.id} +');'">
+										<img class="icons" src="/icons/negativo.png" alt="Usuario Estandar"
+											title="Usuario Estandar"></img>
+									</a>
+								</div>
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
@@ -69,6 +84,24 @@
 		}
 		$.ajax({
 			type: 'DELETE',
+			url: href + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	function promocionarPiloto(id) {
+		if (id == null) {
+			return;
+		}
+		$.ajax({
+			type: 'PUT',
 			url: href + id,
 			contentType: 'application/json;charset=UTF-8',
 			success: function (data) {

@@ -30,6 +30,20 @@
 								</div>
 							</td>
 						</tbody>
+						<tfoot id="tfoot" th:if="${session.admin == true}">
+							<tr>
+								<td colspan="6" class="text-center td-table table-success">
+									<div class="row">
+										<form align="center" method="post" class="col-12"
+											th:action="@{/races/puntuaciones/__${id}__/upload}"
+											enctype="multipart/form-data">
+											<input type="file" name="file">
+											<input type="submit" value="Upload">
+										</form>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
 					</table>
 				</div>
 			</div>
@@ -55,9 +69,9 @@
 		let heightTitle = document.getElementById("title").offsetHeight;
 		let heightContent = window.screen.height - 2 * document.getElementById("content").offsetTop;
 		let heightHead = document.getElementById("thead").offsetHeight;
-		// let heightFoot = document.getElementById("tfoot").offsetHeight;
+		let heightFoot = document.getElementById("tfoot").offsetHeight;
 		let tam = document.getElementsByClassName("td-table")[0].offsetHeight;
-		return (heightContent - (heightTitle * 2) - (heightHead * 4) - (tam * 2)) / tam;
+		return (heightContent - (heightTitle * 2) - (heightHead * 4) - (heightFoot) - (tam * 2)) / tam;
 	}
 
 </script>

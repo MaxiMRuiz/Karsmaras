@@ -2,6 +2,7 @@ package com.races.portal.services;
 
 import java.util.List;
 
+import com.races.portal.dto.Password;
 import com.races.portal.dto.Piloto;
 
 /**
@@ -46,5 +47,32 @@ public interface PilotoService {
 	 * @param piloto
 	 */
 	Boolean crearPiloto(Piloto piloto);
+
+	/**
+	 * 
+	 * @param piloto
+	 * @param jwt
+	 * @param user
+	 * @return
+	 */
+	Piloto editarPiloto(Piloto piloto, String jwt, String user);
+
+	/**
+	 * 
+	 * @param id
+	 * @param jwt
+	 * @param user
+	 * @return
+	 */
+	Boolean promocionarPiloto(String id, String jwt, String user);
+
+	/**
+	 * 
+	 * @param password
+	 * @param jwt
+	 * @param user
+	 * @return
+	 */
+	Boolean cambiarPassword(Password password, String jwt, String user);
 
 }

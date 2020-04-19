@@ -3,6 +3,7 @@ package com.races.repository;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +25,13 @@ public interface PuntuacionRepository extends JpaRepository<Puntuacion, Serializ
 	 * @return
 	 */
 	List<Puntuacion> findBySesionIdAndPuntosGreaterThan(Long id, int i);
+
+	/**
+	 * 
+	 * @param idSesion
+	 * @param sort
+	 * @return
+	 */
+	List<Puntuacion> findBySesionId(Long idSesion, Sort sort);
 
 }

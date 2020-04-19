@@ -44,28 +44,12 @@ public class PilotoServiceImpl implements PilotoService {
 				throw new RacesException("Piloto duplicado");
 			}
 
-			String jwk = jwtService.encryptData(
-					jwtService.encodeBase64(jwtService.getJWK(pilotoDto.getApodo())));
-
+			String jwk = jwtService.encryptData(jwtService.encodeBase64(jwtService.getJWK(pilotoDto.getApodo())));
+			piloto.setPassword(jwtService.encryptData(jwtService.encodeBase64(piloto.getPassword())));
 			piloto.setJwk(jwk);
 			return pilotoRepo.save(piloto);
 		} catch (JoseException e) {
 			throw new RacesException("Error creando set de claves: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public Piloto actualizarPiloto(Long id, PilotoDto pilotoDto) throws RacesException {
-		Optional<Piloto> optPiloto = pilotoRepo.findById(id);
-		if (optPiloto.isPresent()) {
-			Piloto piloto = optPiloto.get();
-			piloto.setNombre(pilotoDto.getNombre());
-			piloto.setApellido(pilotoDto.getApellido());
-			piloto.setApodo(pilotoDto.getApodo());
-			piloto.setPassword(pilotoDto.getPassword());
-			return pilotoRepo.save(piloto);
-		} else {
-			throw new RacesException(NOT_FOUND_DRIVER);
 		}
 	}
 
@@ -110,9 +94,10 @@ public class PilotoServiceImpl implements PilotoService {
 	}
 
 	@Override
-	public LoginResponse authenticarUsuario(String alias, char[] password) throws RacesException {
+	public LoginResponse authenticarUsuario(String alias, char[] password) throws RacesException, JoseException {
 		Piloto piloto = buscarPiloto(alias);
-		if (piloto.getPassword().equals(new String(password))) {
+		String passwordUser = jwtService.decodeData(piloto.getPassword());
+		if (passwordUser.equals(new String(password))) {
 			return generateRespose(piloto);
 		} else {
 			throw new RacesException("Usuario/Contraseña no válido");
@@ -150,6 +135,35 @@ public class PilotoServiceImpl implements PilotoService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public Piloto editarPiloto(Long id, PilotoDto pilotoDto) throws RacesException {
+		Piloto piloto = buscarPiloto(id);
+		piloto.setNombre(pilotoDto.getNombre());
+		piloto.setApellido(pilotoDto.getApellido());
+		piloto.setApodo(pilotoDto.getApodo());
+		return pilotoRepo.save(piloto);
+	}
+
+	@Override
+	public Piloto setPilotoAdmin(Long id, Boolean admin) throws RacesException {
+		Piloto piloto = buscarPiloto(id);
+		piloto.setAdmin(admin);
+		return pilotoRepo.save(piloto);
+	}
+
+	@Override
+	public Boolean changePassword(String alias, char[] password, char[] newPassword) throws JoseException, RacesException   {
+		Piloto piloto = buscarPiloto(alias);
+		String passwordUser = jwtService.decodeData(piloto.getPassword());
+		if (passwordUser.equals(new String(password))) {
+			piloto.setPassword(jwtService.encryptData(jwtService.encodeBase64(new String(newPassword))));
+			pilotoRepo.save(piloto);
+			return true;
+		} else {
+			throw new RacesException("Usuario/Contraseña no válido");
+		}
 	}
 
 }

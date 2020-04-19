@@ -50,6 +50,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 				sesion.removeAttribute(Constants.USER_ATTR);
 				sesion.removeAttribute(Constants.PARAM_ADMIN);
 				sesion.removeAttribute(Constants.JWT_EXPIRED);
+				sesion.removeAttribute(Constants.PILOTO_ATTR);
 				response.sendRedirect(request.getContextPath() + LOGIN_PAGE);
 				return false;
 			}

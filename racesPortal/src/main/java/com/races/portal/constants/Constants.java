@@ -71,5 +71,8 @@ public class Constants {
 	public static final String JWT_ATTR = "jwt";
 	public static final String USER_ATTR = "user";
 	public static final String JWT_EXPIRED = "expired";
+	public static final String ERROR = "error";
+	public static final String PILOTO_ATTR = "piloto";
+	public static final String CHANGE_PASS_HEADER = "X-Races-Change-Password";
 
 }

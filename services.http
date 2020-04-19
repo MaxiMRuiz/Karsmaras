@@ -91,8 +91,8 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwO
 ### 5 - Pilotos
 # @name buscarPilotos
 GET {{host}}/piloto
-X-Races-User: MMR
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwODIsImV4cCI6MTU4NzIxODY4MiwianRpIjoiRVZiVU1STFpkTkMyaHA3dURqMXYwZyIsImtpZCI6Ik1NUiJ9.TJOue5Ij4-xfh8F3XPgBZ9qlIXT5oDWxJMoO_VWyAq4zN_FEgSdYdNGhQ2Y1wnSWeCnSF-Ds5WWjRU5sHwUoou7ZMB_qwVTHw-o_7yeKdt6yygLYch2G51bFAdHMuDn5Ps0CwVi5NH7qzKfAqvyA2niCWbQcRvhVpgbdmbDq5Sypf-lHnx9Nu053dnePA1CncbjV4JVYqKdQJvHB6xB9IBwzalQVV9TOVgOC6lZnoa3T2p5P7JqMcIhStJpWIZlY5YQjeWS0RdlT7RCLQGy-3_ejkddkoNM0TukEwxUSnQBEcI-0OGCIzS-vavrwt6wbPz3efhi8ZBE2kJNJI9-AKQ
+X-Races-User: MAXTDI
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODczMjEzMDksImV4cCI6MTU4NzMyNDkwOSwianRpIjoiWjk3b2Vnd2NadFJ0MlBxck5jaGhEZyIsImtpZCI6Ik1BWFRESSJ9.YMgD5RNToPIPaYuidMENnAXv7XGzFSK4cxAk4KznR-yhZ_AfRzLdqbYv-ohRe3zHui2o6iAJEfc0aMHqozabMP67U2ASKLGlL7AR57fIuy0gndFMzb2cQc7PYP4ifs9VDv2i2iDbNPO_siF7ssizx4QMpoUQzxQ8OmhrxD8VKoAU98wIEJQuExteoh_B0QQVRn7lY53KI49sW6NISPBZc4S3f0uOIUltjAUEV619VuQm3Z1MVDnipPWIL7W4_ZtEfghkDjWx65QnyA7E8CoLDf4h1Etfa0Zw-RqQ1zHZguDKaXWgqyI3pZz1lPD5aVIZpTz0cr2G2CMQA_D2ogVU7w
 
 ###
 # @name crearPiloto
@@ -115,7 +115,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE1ODcyMTUwO
 ###
 # @name validarPiloto
 POST {{host}}/login HTTP/1.1
-Authorization: Basic TU1SOnRlbXBvcmFs
+Authorization: Basic TUFYVERJOnRlbXBvcmFs
 ###
 ### 6 - Equipos
 # @name crearEquipo

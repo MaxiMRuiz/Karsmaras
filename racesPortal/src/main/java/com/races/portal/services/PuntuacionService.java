@@ -1,5 +1,6 @@
 package com.races.portal.services;
 
+import java.io.File;
 import java.util.List;
 
 import com.races.portal.dto.Puntuacion;
@@ -15,5 +16,7 @@ public interface PuntuacionService {
 	Boolean crearPuntuacion(Long reglamento, Puntuacion puntuacion, String jwt, String user);
 
 	Boolean borrarPuntuacion(String id, String jwt, String user);
+
+	void sendFile(File serverFile, Long idSesion, String jwt, String user);
 
 }

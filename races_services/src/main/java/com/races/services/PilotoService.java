@@ -2,6 +2,8 @@ package com.races.services;
 
 import java.util.List;
 
+import org.jose4j.lang.JoseException;
+
 import com.races.component.RacesException;
 import com.races.dto.LoginResponse;
 import com.races.dto.PilotoDto;
@@ -44,15 +46,6 @@ public interface PilotoService {
 	Piloto buscarPiloto(Long id) throws RacesException;
 
 	/**
-	 * Servicio de actualizacion de un piloto por id y un DTO
-	 * 
-	 * @param id
-	 * @param pilotoDto
-	 * @return
-	 */
-	Piloto actualizarPiloto(Long id, PilotoDto pilotoDto) throws RacesException;
-
-	/**
 	 * Servico de borrado de un piloto
 	 * 
 	 * @param id
@@ -83,7 +76,36 @@ public interface PilotoService {
 	 * @param alias
 	 * @param password
 	 * @return
+	 * @throws JoseException 
 	 */
-	LoginResponse authenticarUsuario(String alias, char[] password) throws RacesException;
+	LoginResponse authenticarUsuario(String alias, char[] password) throws RacesException, JoseException;
+
+	/**
+	 * 
+	 * @param id
+	 * @param pilotoDto
+	 * @return
+	 * @throws RacesException 
+	 */
+	Piloto editarPiloto(Long id, PilotoDto pilotoDto) throws RacesException;
+
+	/**
+	 * 
+	 * @param id
+	 * @param admin
+	 * @return
+	 * @throws RacesException
+	 */
+	Piloto setPilotoAdmin(Long id, Boolean admin) throws RacesException;
+
+	/**
+	 * 
+	 * @param alias
+	 * @param password
+	 * @param newPassword
+	 * @return
+	 * @throws Exception 
+	 */
+	Boolean changePassword(String alias, char[] password, char[] newPassword) throws JoseException, RacesException;
 
 }

@@ -1,12 +1,19 @@
 package com.races.portal.dto;
 
+import java.io.Serializable;
+
 /**
  * DTO de Pilotos
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
-public class Piloto {
+public class Piloto implements Serializable {
+
+	/**
+	 * Default Serial Version
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long id;
 

@@ -1,5 +1,12 @@
 package com.races.services.impl;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +14,11 @@ import java.util.Optional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
@@ -33,6 +42,9 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 
 	@Autowired
 	SesionService sesionService;
+
+	@Autowired
+	Environment env;
 
 	private static final Log LOGGER = LogFactory.getLog(PuntuacionServiceImpl.class);
 
@@ -98,6 +110,52 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 			listaPuntuaciones.add(new Puntuacion(sesion, i + 1, 0));
 		}
 		puntuacionRepo.saveAll(listaPuntuaciones);
+	}
+
+	@Override
+	public void processFile(Long idSesion, MultipartFile file) throws RacesException {
+		Sesion sesion = sesionService.buscarSesion(idSesion);
+		String rootPath = env.getProperty("race.files.upload.basepath");
+		File dir = new File(rootPath);
+		if (!dir.exists())
+			dir.mkdirs();
+
+		File serverFile = new File(
+				dir.getAbsolutePath() + File.separator + "Puntuacion" + idSesion + System.currentTimeMillis() + ".txt");
+		try (BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile))) {
+
+			stream.write(file.getBytes());
+		} catch (IOException e) {
+			LOGGER.error(e);
+		}
+
+		String line;
+		List<Puntuacion> listaPuntuaciones = new ArrayList<>();
+		try (InputStream inputStream = file.getInputStream();
+				BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));) {
+			if ((line = bufferReader.readLine()) != null) {
+				String[] posiciones = line.split(";");
+				if (posiciones.length > 1) {
+					for (int i = 0; i < posiciones.length; i++) {
+						listaPuntuaciones.add(new Puntuacion(sesion, i + 1, Integer.parseInt(posiciones[i])));
+					}
+				}
+			}
+			LOGGER.info("Fichero procesado");
+		} catch (IOException e) {
+			LOGGER.error(e.getMessage());
+		}
+
+		List<Puntuacion> puntuacionesSesion = puntuacionRepo.findBySesionId(idSesion,
+				new Sort(Sort.Direction.DESC, "sesion.id"));
+		for (Puntuacion puntuacionOriginal : puntuacionesSesion) {
+			for (Puntuacion nuevaPuntuacion : listaPuntuaciones) {
+				if (puntuacionOriginal.getPosicion().equals(nuevaPuntuacion.getPosicion())) {
+					puntuacionOriginal.setPuntos(nuevaPuntuacion.getPuntos());
+				}
+			}
+		}
+		puntuacionRepo.saveAll(puntuacionesSesion);
 	}
 
 }

@@ -243,5 +243,30 @@
     "name": "races.services.sancion.actualizar",
     "type": "java.lang.String",
     "description": "A description for 'races.services.sancion.actualizar'"
+  },
+  {
+    "name": "races.services.pilotos.promocionar",
+    "type": "java.lang.String",
+    "description": "A description for 'races.services.pilotos.promocionar'"
+  },
+  {
+    "name": "races.services.pilotos.password",
+    "type": "java.lang.String",
+    "description": "A description for 'races.services.pilotos.password'"
+  },
+  {
+    "name": "races.services.puntuaciones.load",
+    "type": "java.lang.String",
+    "description": "A description for 'races.services.puntuaciones.load'"
+  },
+  {
+    "name": "races.services.sesiones.gp.buscar",
+    "type": "java.lang.String",
+    "description": "A description for 'races.services.sesiones.gp.buscar'"
+  },
+  {
+    "name": "races.services.login",
+    "type": "java.lang.String",
+    "description": "A description for 'races.services.login'"
   }
 ]}

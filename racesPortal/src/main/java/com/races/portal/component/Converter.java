@@ -80,6 +80,7 @@ public class Converter {
 		piloto.setNombre(json.isNull(Constants.PARAM_NOMBRE) ? "null" : json.getString(Constants.PARAM_NOMBRE));
 		piloto.setApellido(json.isNull(Constants.PARAM_APELLIDO) ? "null" : json.getString(Constants.PARAM_APELLIDO));
 		piloto.setApodo(json.isNull(Constants.PARAM_APODO) ? "null" : json.getString(Constants.PARAM_APODO));
+		piloto.setAdmin(json.isNull(Constants.PARAM_ADMIN) ? Boolean.FALSE : json.getBoolean(Constants.PARAM_ADMIN));
 		return piloto;
 	}
 
@@ -170,7 +171,7 @@ public class Converter {
 				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
 		return sesionGp;
 	}
-	
+
 	/**
 	 * Conversor de JSONObject a Sesion
 	 * 
@@ -180,7 +181,8 @@ public class Converter {
 	public Sesion json2Sesion(JSONObject json) {
 		Sesion sesion = new Sesion();
 		sesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
-		sesion.setDescripcion(json.isNull(Constants.PARAM_DESCRIPCION) ? "N/A" : json.getString(Constants.PARAM_DESCRIPCION));
+		sesion.setDescripcion(
+				json.isNull(Constants.PARAM_DESCRIPCION) ? "N/A" : json.getString(Constants.PARAM_DESCRIPCION));
 		sesion.setTipoSesion(json.isNull(Constants.PARAM_TIPO_SESION) ? new TipoSesion()
 				: json2TipoSesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
 		return sesion;

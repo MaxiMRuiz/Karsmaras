@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.races.portal.dto.Puntuacion;
 import com.races.portal.services.PuntuacionService;
 
 import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
 
@@ -180,6 +182,24 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 		}
 
 		return false;
+	}
+
+	@Override
+	public void sendFile(File filePuntuaciones, Long idSesion, String jwt, String user) {
+		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.puntuaciones.load")
+				+ idSesion;
+		try {
+			Map<String, String> headers = new HashMap<>();
+			headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
+			headers.put(Constants.USER_HEADER, user);
+			HttpResponse<?> response = Unirest.post(url).field("file", filePuntuaciones).headers(headers).asEmpty();
+			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
+				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
+			}
+
+		} catch (UnirestException e) {
+			LOGGER.error(e);
+		}
 	}
 
 }

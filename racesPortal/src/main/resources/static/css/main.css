@@ -81,6 +81,10 @@ html {
 }
 
 .header {
+    background: darkblue;
+    opacity: 0.9;
+    margin-left: 10%;
+    margin-right: 10%;
     color: darkorange;
     font-size: x-large;
     padding: 0px;
@@ -246,6 +250,11 @@ input[type="file"] {
 }
 
 .racesTitle {
+    background: darkblue;
+    opacity: 0.9;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
     vertical-align: middle;
     font-weight: bold;
     font-size: x-large;

@@ -45,7 +45,7 @@
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="'borrarSancion('+ ${sancion.id} +');'">
+									<a class="button" href="#" th:onclick="javascript:borrarSancion([[${sancion.id}]], [[${sancion.descripcion}]]);">
 										<img class="icons" src="/icons/borrar.png" alt="Eliminar"
 											title="Borrar Sancion"></img>
 									</a>
@@ -78,8 +78,8 @@
 <script>
 
 	var href = document.getElementById("urlServices").value;
-	function borrarSancion(id) {
-		if (id == null) {
+	function borrarSancion(id, nombre) {
+		if (id == null || !confirm("\n¿Está seguro de que desea borrar la sancion '" + nombre + "'?")) {
 			return;
 		}
 		$.ajax({

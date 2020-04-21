@@ -21,8 +21,7 @@
 										onkeyup="searchFilter()" placeholder="Buscar" class="col-10 col-xs-10"></th>
 								<th width="20%" class="thead-dark-th">Nº Sesiones</th>
 								<th width="10%" class="thead-dark-th">Nº Participantes</th>
-								<th th:if="${session.admin == true}" width="5%" class="thead-dark-th">Editar</th>
-								<th th:if="${session.admin == true}" width="5%" class="thead-dark-th">Clonar</th>
+								<th th:if="${session.admin == true}" width="10%" class="thead-dark-th">Editar</th>
 								<th th:if="${session.admin == true}" width="5%" class="thead-dark-th">Borrar</th>
 							</tr>
 						</thead>
@@ -53,16 +52,7 @@
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
-									<a class="button" href="#"
-										th:href="@{/races/reglamentos/clone__${reglamento.id}__}">
-										<img class="icons" src="/icons/copiar.png" alt="Clonar"
-											title="Clonar Reglamento"></img>
-									</a>
-								</div>
-							</td>
-							<td class="td-table" th:if="${session.admin == true}">
-								<div class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="'borrarreglamento('+ ${reglamento.id} +');'">
+									<a class="button" href="#" th:onclick="javascript:borrarreglamento( [[${reglamento.id}]] , [[${reglamento.descripcion}]]);">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
 											title="Borrar Reglamento"></img>
 									</a>
@@ -93,8 +83,8 @@
 </body>
 <script>
 	var href = document.getElementById("urlServices").value;
-	function borrarreglamento(id) {
-		if (id == null) {
+	function borrarreglamento(id, nombre) {
+		if (id == null || !confirm("Se eliminarán TODOS los Campeonatos, GP, Resultados e Inscripciones asociadas al Reglamento,\n¿Está seguro de que desea borrar el Reglamento: " + nombre + "?")) {
 			return;
 		}
 		$.ajax({

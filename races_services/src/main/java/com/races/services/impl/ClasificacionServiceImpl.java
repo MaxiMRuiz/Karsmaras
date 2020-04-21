@@ -77,6 +77,7 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 				}
 				count++;
 			}
+			Collections.sort(clasificaciones);
 			return clasificaciones;
 		}
 	}

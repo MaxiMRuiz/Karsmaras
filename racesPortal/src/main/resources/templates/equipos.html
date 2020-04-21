@@ -39,11 +39,15 @@
 								</div>
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
-								<div class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="'borrarequipo('+ ${equipo.id} +');'">
+								<div class="col-12 col-xs-12" th:if="${equipo.id != 1}">
+									<a class="button" href="#" th:onclick="javascript:borrarequipo( [[${equipo.id}]] , [[${equipo.toString()}]]);">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
 											title="Borrar Equipo"></img>
 									</a>
+								</div>
+								<div th:if="${equipo.id == 1}" class="col-12 col-xs-12">
+									<img class="icons" src="/icons/borrar_oculto.png" alt="Borrar"
+										title="Equipo Estandar"></img>
 								</div>
 							</td>
 						</tbody>
@@ -71,8 +75,8 @@
 </body>
 <script>
 	var href = document.getElementById("urlServices").value;
-	function borrarequipo(id) {
-		if (id == null) {
+	function borrarequipo(id, nombre) {
+		if (id == null || !confirm("Se eliminarán TODOS los Resultados e Inscripciones del Equipo,\n¿Está seguro de que desea borrar al Equipo: " + nombre + "?")) {
 			return;
 		}
 		$.ajax({

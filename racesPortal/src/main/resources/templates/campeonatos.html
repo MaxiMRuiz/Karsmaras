@@ -15,14 +15,13 @@
 					<table class="table-bordered table-dark centerTable racesTable" id="table">
 						<thead class="thead-dark" align="center" id="thead">
 							<tr>
-								<th width="55%" class="thead-dark-th">Campeonato <input type="text" id="campeonato"
+								<th width="60%" class="thead-dark-th">Campeonato <input type="text" id="campeonato"
 										onkeyup="searchFilter()" placeholder="Buscar" class="col-10 col-xs-10"></input>
 								</th>
 								<th width="10%" class="thead-dark-th">Reglamento</th>
 								<th width="10%" class="thead-dark-th">Inscripciones</th>
 								<th width="10%" class="thead-dark-th">Clasificaciones</th>
 								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Editar</th>
-								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Clonar</th>
 								<th width="5%" class="thead-dark-th" th:if="${session.admin == true}">Borrar</th>
 							</tr>
 						</thead>
@@ -61,23 +60,14 @@
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
-									<a class="button" href="#"
-										th:href="@{/races/campeonatos/clone__${campeonato.id}__}">
-										<img class="icons" src="/icons/copiar.png" alt="Clonar"
-											title="Clonar Campeonato"></img>
-									</a>
-								</div>
-							</td>
-							<td class="td-table" th:if="${session.admin == true}">
-								<div class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="'borrarCampeonato('+ ${campeonato.id} +');'">
+									<a class="button" href="#" th:onclick="javascript:borrarCampeonato([[${campeonato.id}]] , [[${campeonato.descripcion}]]);">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
 											title="Borrar Campeonato"></img>
 									</a>
 								</div>
 							</td>
-				</div>
-				</td>
+						</div>
+					</td>
 				</tbody>
 				<tfoot id="tfoot" th:if="${session.admin == true}">
 					<tr>
@@ -103,8 +93,8 @@
 </body>
 <script>
 	var href = document.getElementById("urlServices").value;
-	function borrarCampeonato(id) {
-		if (id == null) {
+	function borrarCampeonato(id, nombre) {
+		if (id == null || !confirm("Se eliminarán TODOS los Resultados e Inscripciones,\n¿Está seguro de que desea borrar el campeonato " + nombre + "?")) {
 			return;
 		}
 		$.ajax({

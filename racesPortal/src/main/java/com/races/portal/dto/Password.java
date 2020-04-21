@@ -56,7 +56,7 @@ public class Password {
 	/**
 	 * @param password the password to set
 	 */
-	public void setPassword(String currentPass) {
+	public void setCurrentPass(String currentPass) {
 		this.currentPass = currentPass;
 	}
 

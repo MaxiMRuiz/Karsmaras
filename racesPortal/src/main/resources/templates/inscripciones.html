@@ -48,7 +48,7 @@
 								th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
 								<div class="col-12 col-xs-12">
 									<a class="button" href="#"
-										th:onclick="'borrarInscripcion('+ ${inscripcion.id} +');'">
+										th:onclick="javascript:borrarInscripcion( [[${inscripcion.id}]], [[${inscripcion.piloto.nombre}]] , [[${inscripcion.equipo.nombre}]], [[${inscripcion.campeonato.descripcion}]] );">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
 											title="Borrar Inscripcion"></img>
 									</a>
@@ -81,8 +81,8 @@
 </body>
 <script>
 	var href = document.getElementById("urlServices").value;
-	function borrarInscripcion(id) {
-		if (id == null) {
+	function borrarInscripcion(id, piloto, equipo, campeonato) {
+		if (id == null || !confirm("Se eliminarán TODOS los Resultados,\n¿Está seguro de que desea borrar el la Inscripcion de " + piloto + ", con el equipo " + equipo + " en el campeonato " + campeonato + "?")) {
 			return;
 		}
 		$.ajax({

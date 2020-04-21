@@ -45,7 +45,7 @@
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="'borrarGP('+ ${gp.id} +');'">
+									<a class="button" href="#" th:onclick="javascript:borrarGP([[${gp.id}]], [[${gp.toString()}]] );">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
 											title="Borrar Gran Premio"></img>
 									</a>
@@ -76,8 +76,8 @@
 </body>
 <script>
 	var href = document.getElementById("urlServices").value;
-	function borrarGP(id) {
-		if (id == null) {
+	function borrarGP(id, nombre) {
+		if (id == null || !confirm("Se eliminarán TODOS los Resultados,\n¿Está seguro de que desea borrar el Gran Premio " + nombre + "?")) {
 			return;
 		}
 		$.ajax({

@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,7 @@ public class VueltaServiceImpl implements VueltaService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 

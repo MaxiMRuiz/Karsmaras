@@ -5,6 +5,7 @@ public class Sesion {
 	private Long id;
 	private String descripcion;
 	private TipoSesion tipoSesion;
+	private Reglamento reglamento;
 
 	/**
 	 * 
@@ -18,11 +19,12 @@ public class Sesion {
 	 * @param fecha
 	 * @param tipoSesion
 	 */
-	public Sesion(Long id, String descripcion, TipoSesion tipoSesion) {
+	public Sesion(Long id, String descripcion, TipoSesion tipoSesion, Reglamento reglamento) {
 		super();
 		this.id = id;
 		this.descripcion = descripcion;
 		this.tipoSesion = tipoSesion;
+		this.setReglamento(reglamento);
 	}
 
 	/**
@@ -70,6 +72,14 @@ public class Sesion {
 	@Override
 	public String toString() {
 		return this.descripcion;
+	}
+
+	public Reglamento getReglamento() {
+		return reglamento;
+	}
+
+	public void setReglamento(Reglamento reglamento) {
+		this.reglamento = reglamento;
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Password;
@@ -25,7 +26,7 @@ import io.micrometer.core.instrument.util.StringUtils;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
-import kong.unirest.json.JSONObject;
+import kong.unirest.json.JSONException;
 
 /**
  * Implementacion de la interfaz PilotoService
@@ -42,7 +43,7 @@ public class PilotoServiceImpl implements PilotoService {
 	Utils utils;
 
 	@Autowired
-	Converter converter;
+	ObjectMapper mapper;
 
 	@Autowired
 	Environment env;
@@ -77,11 +78,11 @@ public class PilotoServiceImpl implements PilotoService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listaPilotos.add(converter.json2Piloto(jsonArray.getJSONObject(i)));
+					listaPilotos.add(mapper.readValue(jsonArray.getJSONObject(i).toString(), Piloto.class));
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -105,11 +106,11 @@ public class PilotoServiceImpl implements PilotoService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				if (jsonArray.length() > 0) {
-					return converter.json2Piloto(jsonArray.getJSONObject(0));
+					return mapper.readValue(jsonArray.getJSONObject(0).toString(), Piloto.class);
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -188,10 +189,10 @@ public class PilotoServiceImpl implements PilotoService {
 			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
 				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
 			} else {
-				return converter.json2Piloto(new JSONObject(response.getBody()));
+				return mapper.readValue(response.getBody(), Piloto.class);
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 

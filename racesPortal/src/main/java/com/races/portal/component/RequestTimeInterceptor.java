@@ -56,7 +56,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 			}
 			return true;
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
+			LOGGER.error(e.getMessage(), e); 
 			throw e;
 		}
 	}

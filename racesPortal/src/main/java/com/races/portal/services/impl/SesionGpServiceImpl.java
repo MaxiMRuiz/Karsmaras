@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Sesion;
@@ -30,7 +31,7 @@ public class SesionGpServiceImpl implements SesionGpService {
 	Utils utils;
 
 	@Autowired
-	Converter converter;
+	ObjectMapper mapper;
 
 	@Autowired
 	Environment env;
@@ -51,11 +52,11 @@ public class SesionGpServiceImpl implements SesionGpService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				if (jsonArray.length() > 0) {
-					return converter.json2Sesion(jsonArray.getJSONObject(0));
+					return mapper.readValue(response.getBody(), Sesion.class);
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 

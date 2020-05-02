@@ -1,6 +1,7 @@
 package com.races.portal.services.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Puntuacion;
@@ -24,6 +25,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONException;
 
 /**
  * @author Maximino Mañanes Ruiz
@@ -38,7 +40,7 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 	Utils utils;
 
 	@Autowired
-	Converter converter;
+	ObjectMapper mapper;
 
 	@Autowired
 	Environment env;
@@ -61,11 +63,11 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listReglamentos.add(converter.json2Puntuacion(jsonArray.getJSONObject(i)));
+					listReglamentos.add(mapper.readValue(jsonArray.getJSONObject(i).toString(),Puntuacion.class));
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -90,11 +92,11 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				if (jsonArray.length() > 0) {
-					return converter.json2Puntuacion(jsonArray.getJSONObject(0));
+					return mapper.readValue(jsonArray.getJSONObject(0).toString(),Puntuacion.class);
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 

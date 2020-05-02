@@ -2,28 +2,19 @@ package com.races.portal.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.races.portal.constants.Constants;
@@ -34,34 +25,14 @@ import com.races.portal.services.ReglamentoService;
 @RequestMapping("/races/reglamentos")
 public class ReglamentoController {
 
-	private static final Log LOGGER = LogFactory.getLog(ReglamentoController.class);
-
-	@Autowired
-	Environment env;
-
 	@Autowired
 	ReglamentoService reglamentos;
-
-	/**
-	 * Handler bad request
-	 * 
-	 * @param exception
-	 */
-	@ExceptionHandler
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public void handle(Exception exception) {
-		LOGGER.warn("Returning HTTP 400 Bad Request", exception);
-	}
 
 	@GetMapping
 	public ModelAndView listaReglamentos(Model model,
 			@RequestParam(required = false, value = "filterId") String filterId,
-			@RequestHeader(value = "referer", required = false) final String urlPrevia,
-			final HttpServletRequest request, final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
-		model.addAttribute(Constants.URL_VOLVER, urlPrevia);
+			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
+			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {
 		List<Reglamento> listaReglamentos = reglamentos.buscarReglamentos(jwt, user);
 		model.addAttribute("listaReglamentos", listaReglamentos);
 		model.addAttribute("urlServices", "/races/reglamentos/");
@@ -70,18 +41,12 @@ public class ReglamentoController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ModelAndView formularioReglamentos(Model model, @PathVariable String id, final HttpServletRequest request,
-			final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+	public ModelAndView formularioReglamentos(Model model, @PathVariable String id,
+			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
+			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {
 		Reglamento reglamento;
 		if ("new".equals(id)) {
 			reglamento = new Reglamento();
-		} else if (id.startsWith("clone")) {
-			String subId = id.substring(5);
-			reglamento = reglamentos.buscarReglamento(subId, jwt, user);
-			reglamento.setId(null);
 		} else {
 			reglamento = reglamentos.buscarReglamento(id, jwt, user);
 		}
@@ -90,24 +55,20 @@ public class ReglamentoController {
 	}
 
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Boolean> borrarPiloto(Model model, @PathVariable String id, final HttpServletRequest request,
-			final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+	public ResponseEntity<Boolean> borrarReglamento(Model model, @PathVariable String id,
+			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
+			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {
 		if (null == id) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<>(reglamentos.borrarReglamento(id, jwt, user), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(reglamentos.borrarReglamento(id, jwt, user), HttpStatus.OK);
 		}
 	}
 
 	@PostMapping()
-	public ModelAndView postFormularioPilotos(Model model, @ModelAttribute Reglamento reglamento,
-			final HttpServletRequest request, final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+	public ModelAndView postFormularioReglamentos(Model model, @ModelAttribute Reglamento reglamento,
+			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
+			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {
 		if (reglamento.getId() != null) {
 			reglamentos.editarReglamento(reglamento, jwt, user);
 		} else {

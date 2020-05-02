@@ -5,26 +5,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,23 +45,10 @@ public class ResultadoController {
 	@Autowired
 	SesionGpService sesionesGp;
 
-	/**
-	 * Handler bad request
-	 * 
-	 * @param exception
-	 */
-	@ExceptionHandler
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public void handle(Exception exception) {
-		LOGGER.warn("Returning HTTP 400 Bad Request", exception);
-	}
-
 	@GetMapping(value = "/{idGp}/{idSesion}")
 	public ModelAndView listaResultados(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			final HttpServletRequest request, final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
+			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
+			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {
 		List<Resultado> listaResultados = resultados.buscarResultados(idSesion, jwt, user);
 		model.addAttribute("listaResultados", listaResultados);
 		model.addAttribute(Constants.PARAM_ID, idGp);
@@ -77,39 +57,12 @@ public class ResultadoController {
 		return new ModelAndView("resultados");
 	}
 
-	@GetMapping(value = "/{idGp}/{idSesion}/{id}")
-	public ModelAndView formularioResultados(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@PathVariable Long id, final HttpServletRequest request, final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
-		Resultado resultado = resultados.buscarResultado(id, jwt, user);
-		model.addAttribute("resultado", resultado);
-		model.addAttribute(Constants.PARAM_ID, idGp);
-		model.addAttribute(Constants.PARAM_ID_SESION, idSesion);
-		model.addAttribute("nombre", resultado.getInscripcion().getPiloto().toString());
-		model.addAttribute("sesion", resultado.getSesionGP().toString());
-		return new ModelAndView("resultado");
-	}
-
-	@PostMapping(value = "/{idGp}/{idSesion}")
-	public ModelAndView postFormularioPuntuacion(Model model, @PathVariable Long idGp, @PathVariable Long idSesion,
-			@ModelAttribute Resultado resultado, final HttpServletRequest request, final HttpServletResponse response) {
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
-		resultados.editarResultado(resultado, jwt, user);
-		return new ModelAndView("redirect:/races/sesion/" + idGp + "/" + idSesion);
-	}
-
 	@PostMapping(value = "/{idGp}/{idSesion}/upload")
 	public ModelAndView uploadFileHandler(@PathVariable Long idGp, @PathVariable Long idSesion,
-			@RequestParam("file") MultipartFile file, final HttpServletRequest request,
-			final HttpServletResponse response) {
+			@RequestParam("file") MultipartFile file,
+			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
+			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {
 
-		HttpSession sesion = request.getSession();
-		String jwt = (String) sesion.getAttribute(Constants.JWT_ATTR);
-		String user = (String) sesion.getAttribute(Constants.USER_ATTR);
 		if (!file.isEmpty() && FilenameUtils.getExtension(file.getOriginalFilename()).equals("txt")) {
 
 			// Creating the directory to store file

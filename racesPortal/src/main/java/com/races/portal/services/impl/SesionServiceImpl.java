@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Sesion;
@@ -22,6 +23,7 @@ import com.races.portal.services.SesionService;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONException;
 
 @Service
 public class SesionServiceImpl implements SesionService {
@@ -32,7 +34,7 @@ public class SesionServiceImpl implements SesionService {
 	Utils utils;
 
 	@Autowired
-	Converter converter;
+	ObjectMapper mapper;
 
 	@Autowired
 	Environment env;
@@ -53,11 +55,11 @@ public class SesionServiceImpl implements SesionService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listSesiones.add(converter.json2Sesion(jsonArray.getJSONObject(i)));
+					listSesiones.add(mapper.readValue(jsonArray.getJSONObject(i).toString(),Sesion.class));
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 

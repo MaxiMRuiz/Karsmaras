@@ -11,8 +11,6 @@ public interface ResultadoService {
 
 	Resultado buscarResultado(Long id, String jwt, String user);
 
-	void editarResultado(Resultado resultado, String jwt, String user);
-
 	void sendFile(File serverFile, Long idSesion, Long idGp, String jwt, String user);
 
 }

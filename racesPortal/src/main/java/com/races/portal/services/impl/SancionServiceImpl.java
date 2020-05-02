@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +10,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -42,9 +42,6 @@ public class SancionServiceImpl implements SancionService {
 	@Autowired
 	Environment env;
 
-	@Value(value = "${races.services.host}")
-	String serviceHost;
-
 	@Override
 	public List<Sancion> buscarSanciones(Long idResultado, String jwt, String user) {
 		List<Sancion> listaSanciones = new ArrayList<>();
@@ -67,7 +64,7 @@ public class SancionServiceImpl implements SancionService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -117,7 +114,7 @@ public class SancionServiceImpl implements SancionService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 

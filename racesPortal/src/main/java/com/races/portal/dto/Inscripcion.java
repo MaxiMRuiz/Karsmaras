@@ -79,7 +79,7 @@ public class Inscripcion {
 
 	@Override
 	public String toString() {
-		return piloto.toString() + " [" + equipo.getAlias()+"]";
+		return (piloto == null ? "" : piloto.toString()) + " [" + (equipo == null ? "" : equipo.getAlias()) + "]";
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Inscripcion;
@@ -22,6 +23,7 @@ import com.races.portal.services.InscripcionService;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONException;
 
 /**
  * 
@@ -38,11 +40,11 @@ public class InscripcionServiceImpl implements InscripcionService {
 	Utils utils;
 
 	@Autowired
-	Converter converter;
-
-	@Autowired
 	Environment env;
 
+	@Autowired
+	ObjectMapper mapper;
+	
 	@Override
 	public List<Inscripcion> buscarInscripciones(String idCampeonato, String idPiloto, String idEquipo, String jwt,
 			String user) {
@@ -70,11 +72,11 @@ public class InscripcionServiceImpl implements InscripcionService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listReglamentos.add(converter.json2Inscripcion(jsonArray.getJSONObject(i)));
+					listReglamentos.add(mapper.readValue(jsonArray.getJSONObject(i).toString(),Inscripcion.class));
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 

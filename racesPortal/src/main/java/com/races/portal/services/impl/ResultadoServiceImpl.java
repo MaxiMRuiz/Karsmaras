@@ -1,6 +1,7 @@
 package com.races.portal.services.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class ResultadoServiceImpl implements ResultadoService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -94,36 +95,11 @@ public class ResultadoServiceImpl implements ResultadoService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 
 		return new Resultado();
-	}
-
-	@Override
-	public void editarResultado(Resultado resultado, String jwt, String user) {
-		String url = env.getProperty(Constants.SERVICES_HOST) + env.getProperty("races.services.resultados.actualizar")
-				+ resultado.getId();
-		Map<String, Object> body = new HashMap<>();
-		body.put(Constants.PARAM_N_VUELTAS, resultado.getVueltas());
-		body.put(Constants.PARAM_TIEMPO, resultado.getTiempo());
-
-		Map<String, String> headers = new HashMap<>();
-		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
-		headers.put(Constants.USER_HEADER, user);
-		headers.put(Constants.CONTENT_TYPE, Constants.APP_JSON);
-
-		try {
-			HttpResponse<String> response = utils.executeHttpMethod(url, null, body, headers, HttpMethod.PUT);
-			if (response == null || response.getStatus() != HttpStatus.SC_OK) {
-				LOGGER.warn(Constants.RESPONSE + (response == null ? "null" : response.getStatus()));
-			}
-
-		} catch (UnirestException e) {
-			LOGGER.error(e);
-		}
-
 	}
 
 	@Override

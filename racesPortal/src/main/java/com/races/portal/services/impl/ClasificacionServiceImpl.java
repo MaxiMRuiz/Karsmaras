@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.races.portal.services.ClasificacionService;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONException;
 
 /**
  * @author Maximino Mañanes Ruiz
@@ -62,7 +64,7 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -90,7 +92,7 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 

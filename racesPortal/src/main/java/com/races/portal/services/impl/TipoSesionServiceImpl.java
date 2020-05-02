@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.TipoSesion;
@@ -32,7 +33,7 @@ public class TipoSesionServiceImpl implements TipoSesionService{
 	Utils utils;
 
 	@Autowired
-	Converter converter;
+	ObjectMapper mapper;
 
 	@Autowired
 	Environment env;
@@ -53,11 +54,11 @@ public class TipoSesionServiceImpl implements TipoSesionService{
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listReglamentos.add(converter.json2TipoSesion(jsonArray.getJSONObject(i)));
+					listReglamentos.add(mapper.readValue(jsonArray.getJSONObject(i).toString(),TipoSesion.class));
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | IOException e) {
 			LOGGER.error(e);
 		}
 

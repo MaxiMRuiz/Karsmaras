@@ -58,10 +58,10 @@
 								</div>
 							</td>
 						</tbody>
-						<tfoot id="tfoot" th:if="${session.admin == true}">
+						<tfoot id="tfoot">
 							<tr>
 								<td colspan="4" class="text-center table-success ">
-									<div class="row">
+									<div class="row" th:if="${session.admin == true}">
 										<a class="button col-12 pull-center centerVertical" href="/races/pilotos/new">
 											<button type="button" class="btn btn-success btn-primary pull-center"
 												style="width: -webkit-fill-available;">

@@ -1,5 +1,6 @@
 package com.races.portal.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
-import com.races.portal.component.Converter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.Utils;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Reglamento;
@@ -22,6 +23,7 @@ import com.races.portal.services.ReglamentoService;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONException;
 
 @Service
 public class ReglamentoServiceImpl implements ReglamentoService {
@@ -32,7 +34,7 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 	Utils utils;
 
 	@Autowired
-	Converter converter;
+	ObjectMapper mapper;
 
 	@Autowired
 	Environment env;
@@ -54,11 +56,11 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				for (int i = 0; i < jsonArray.length(); i++) {
-					listReglamentos.add(converter.json2Reglamento(jsonArray.getJSONObject(i)));
+					listReglamentos.add(mapper.readValue(jsonArray.getJSONObject(i).toString(), Reglamento.class));
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 
@@ -83,11 +85,11 @@ public class ReglamentoServiceImpl implements ReglamentoService {
 			} else {
 				JSONArray jsonArray = new JSONArray(response.getBody());
 				if (jsonArray.length() > 0) {
-					return converter.json2Reglamento(jsonArray.getJSONObject(0));
+					return mapper.readValue(jsonArray.getJSONObject(0).toString(), Reglamento.class);
 				}
 			}
 
-		} catch (UnirestException e) {
+		} catch (UnirestException | JSONException | IOException e) {
 			LOGGER.error(e);
 		}
 

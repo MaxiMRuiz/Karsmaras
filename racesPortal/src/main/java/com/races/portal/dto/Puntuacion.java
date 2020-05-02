@@ -10,6 +10,8 @@ public class Puntuacion {
 
 	private TipoSesion tipoSesion;
 
+	private Sesion sesion;
+
 	/**
 	 * 
 	 */
@@ -23,12 +25,13 @@ public class Puntuacion {
 	 * @param puntos
 	 * @param sesion
 	 */
-	public Puntuacion(Long id, Integer posicion, Integer puntos, TipoSesion tipoSesion) {
+	public Puntuacion(Long id, Integer posicion, Integer puntos, TipoSesion tipoSesion, Sesion sesion) {
 		super();
 		this.id = id;
 		this.posicion = posicion;
 		this.puntos = puntos;
 		this.tipoSesion = tipoSesion;
+		this.setSesion(sesion);
 	}
 
 	/**
@@ -90,6 +93,14 @@ public class Puntuacion {
 	@Override
 	public String toString() {
 		return posicion + "º -> " + puntos + "p.";
+	}
+
+	public Sesion getSesion() {
+		return sesion;
+	}
+
+	public void setSesion(Sesion sesion) {
+		this.sesion = sesion;
 	}
 
 }

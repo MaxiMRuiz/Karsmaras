@@ -21,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.races.component.RacesException;
 import com.races.dto.FileUploadDto;
 import com.races.dto.GranPremioSesionesDto;
 import com.races.dto.ResultadoDto;
@@ -34,6 +33,7 @@ import com.races.entity.Sancion;
 import com.races.entity.SesionGP;
 import com.races.entity.TipoSesion;
 import com.races.entity.Vuelta;
+import com.races.exception.RacesException;
 import com.races.repository.ResultadoRepository;
 import com.races.services.GranPremioService;
 import com.races.services.InscripcionService;

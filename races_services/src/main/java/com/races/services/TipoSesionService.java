@@ -2,8 +2,8 @@ package com.races.services;
 
 import java.util.List;
 
-import com.races.component.RacesException;
 import com.races.entity.TipoSesion;
+import com.races.exception.RacesException;
 
 /**
  * Interfaz de servicios para TipoSesion

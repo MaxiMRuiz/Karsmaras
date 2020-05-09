@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.dto.SancionDto;
 import com.races.entity.Sancion;
+import com.races.exception.RacesException;
 import com.races.repository.SancionRepository;
 import com.races.services.ResultadoService;
 import com.races.services.SancionService;

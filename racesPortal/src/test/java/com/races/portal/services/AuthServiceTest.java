@@ -7,11 +7,13 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.core.env.Environment;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.component.RacesException;
@@ -23,6 +25,7 @@ import com.races.portal.services.impl.AuthServiceImpl;
 import kong.unirest.HttpResponse;
 import kong.unirest.UnirestException;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AuthServiceTest {
 
 	private static final String TEST = "TEST";

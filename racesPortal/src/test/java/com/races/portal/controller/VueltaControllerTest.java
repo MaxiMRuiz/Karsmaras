@@ -8,10 +8,14 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -24,22 +28,26 @@ import com.races.portal.dto.SesionGP;
 import com.races.portal.services.ResultadoService;
 import com.races.portal.services.VueltaService;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(VueltaController.class)
 public class VueltaControllerTest {
-	private static final Object JWT = "jwt-test";
-
-	private static final Object USER = "user-test";
-
-	@Mock
+	
+	@MockBean
 	ResultadoService resultados;
 
-	@Mock
+	@MockBean
 	VueltaService vueltas;
 
 	@InjectMocks
 	VueltaController vueltaController;
 
-	private MockMvc mockMvc;
+	@Autowired 
+	MockMvc mockMvc;
 
+	private static final Object JWT = "jwt-test";
+
+	private static final Object USER = "user-test";
+	
 	String base = "/races/vueltas/1/1/1";
 
 	@Before

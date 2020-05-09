@@ -8,10 +8,14 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -23,26 +27,30 @@ import com.races.portal.services.CampeonatoService;
 import com.races.portal.services.ClasificacionService;
 import com.races.portal.services.GranPremioService;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(ClasificacionController.class)
 public class ClasificacionControllerTest {
-	private static final Object JWT = "jwt-test";
 
-	private static final Object USER = "user-test";
-
-	@Mock
+	@MockBean
 	CampeonatoService campeonatoService;
 
-	@Mock
+	@MockBean
 	ClasificacionService clasificacionService;
 
-	@Mock
+	@MockBean
 	GranPremioService gpService;
 
 	@InjectMocks
 	ClasificacionController clasificacionController;
 
-	private MockMvc mockMvc;
+	@Autowired
+	MockMvc mockMvc;
 
 	String base = "/races/clasificacion";
+	
+	private static final Object JWT = "jwt-test";
+
+	private static final Object USER = "user-test";
 
 	@Before
 	public void init() {
@@ -63,7 +71,8 @@ public class ClasificacionControllerTest {
 					.thenReturn(new ArrayList<>());
 			Mockito.when(gpService.buscarGranPremio(Mockito.any(), Mockito.any(), Mockito.any()))
 					.thenReturn(new GranPremio());
-			mockMvc.perform(get(base+"/gp/1").sessionAttr(Constants.JWT_ATTR, JWT).sessionAttr(Constants.USER_ATTR, USER))
+			mockMvc.perform(
+					get(base + "/gp/1").sessionAttr(Constants.JWT_ATTR, JWT).sessionAttr(Constants.USER_ATTR, USER))
 					.andExpect(status().is2xxSuccessful()).andReturn();
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -77,9 +86,8 @@ public class ClasificacionControllerTest {
 					.thenReturn(new ArrayList<>());
 			Mockito.when(campeonatoService.buscarCampeonato(Mockito.any(), Mockito.any(), Mockito.any()))
 					.thenReturn(new Campeonato());
-			mockMvc.perform(
-					get(base + "/campeonato/1").sessionAttr(Constants.JWT_ATTR, JWT).sessionAttr(Constants.USER_ATTR, USER))
-					.andExpect(status().is2xxSuccessful()).andReturn();
+			mockMvc.perform(get(base + "/campeonato/1").sessionAttr(Constants.JWT_ATTR, JWT)
+					.sessionAttr(Constants.USER_ATTR, USER)).andExpect(status().is2xxSuccessful()).andReturn();
 		} catch (Exception e) {
 			fail(e.getMessage());
 		}

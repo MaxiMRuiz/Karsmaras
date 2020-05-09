@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.races.component.RacesException;
 import com.races.dto.SancionDto;
 import com.races.entity.Sancion;
+import com.races.exception.RacesException;
 import com.races.services.SancionService;
 
 /**

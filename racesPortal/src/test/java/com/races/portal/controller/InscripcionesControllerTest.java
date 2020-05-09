@@ -11,10 +11,14 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -30,28 +34,32 @@ import com.races.portal.services.EquipoService;
 import com.races.portal.services.InscripcionService;
 import com.races.portal.services.PilotoService;
 
+@RunWith(SpringRunner.class)
+@WebMvcTest(InscripcionesController.class)
 public class InscripcionesControllerTest {
+
+	@MockBean
+	InscripcionService inscripciones;
+
+	@MockBean
+	CampeonatoService campeonatos;
+
+	@MockBean
+	PilotoService pilotos;
+
+	@MockBean
+	EquipoService equipos;
+	@InjectMocks
+	InscripcionesController inscripcionesController;
+
+	@Autowired
+	MockMvc mockMvc;
+
 	private static final Object JWT = "jwt-test";
 
 	private static final Object USER = "user-test";
 
 	private static final String TEST = "Test";
-
-	@Mock
-	InscripcionService inscripciones;
-
-	@Mock
-	CampeonatoService campeonatos;
-
-	@Mock
-	PilotoService pilotos;
-
-	@Mock
-	EquipoService equipos;
-	@InjectMocks
-	InscripcionesController inscripcionesController;
-
-	private MockMvc mockMvc;
 
 	String base = "/races/inscripciones";
 
@@ -144,7 +152,7 @@ public class InscripcionesControllerTest {
 					Mockito.any(), Mockito.any())).thenReturn(listaPilotos);
 			Mockito.when(
 					equipos.buscarEquipos(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-			.thenReturn(listaEquipos);
+					.thenReturn(listaEquipos);
 			Mockito.when(inscripciones.buscarInscripciones(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
 					Mockito.any())).thenReturn(listInscripciones);
 			Mockito.when(campeonatos.buscarCampeonato(Mockito.any(), Mockito.any(), Mockito.any()))
@@ -215,6 +223,7 @@ public class InscripcionesControllerTest {
 			fail(e.getMessage());
 		}
 	}
+
 	@Test
 	public void crearInscripcionPilotoTest() {
 		try {
@@ -227,6 +236,7 @@ public class InscripcionesControllerTest {
 			fail(e.getMessage());
 		}
 	}
+
 	@Test
 	public void crearInscripcionEquipoTest() {
 		try {

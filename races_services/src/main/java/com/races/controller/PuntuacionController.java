@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
 import com.races.entity.Puntuacion;
+import com.races.exception.RacesException;
 import com.races.services.PuntuacionService;
 
 /**

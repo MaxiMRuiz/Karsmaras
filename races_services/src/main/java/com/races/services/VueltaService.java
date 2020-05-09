@@ -2,11 +2,11 @@ package com.races.services;
 
 import java.util.List;
 
-import com.races.component.RacesException;
 import com.races.dto.FileUploadDto;
 import com.races.entity.Resultado;
 import com.races.entity.SesionGP;
 import com.races.entity.Vuelta;
+import com.races.exception.RacesException;
 
 /**
  * Interfaz de servicios para Vueltas

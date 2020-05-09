@@ -1,4 +1,4 @@
-package com.races.component;
+package com.races.exception;
 
 /**
  * Clase de Excepcion personalizada para el proyecto.

@@ -6,14 +6,13 @@ import java.util.Optional;
 import org.apache.commons.lang.StringUtils;
 import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.dto.LoginResponse;
 import com.races.dto.PilotoDto;
 import com.races.entity.Piloto;
+import com.races.exception.RacesException;
 import com.races.repository.PilotoRepository;
 import com.races.services.JwtService;
 import com.races.services.PilotoService;
@@ -30,7 +29,6 @@ public class PilotoServiceImpl implements PilotoService {
 	private static final String NOT_FOUND_DRIVER = "Piloto no encontrado";
 
 	@Autowired
-	@Qualifier("PilotoRepository")
 	PilotoRepository pilotoRepo;
 
 	@Autowired

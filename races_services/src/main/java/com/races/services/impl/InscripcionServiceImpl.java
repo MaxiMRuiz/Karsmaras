@@ -11,12 +11,12 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.dto.InscripcionDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Equipo;
 import com.races.entity.Inscripcion;
 import com.races.entity.Piloto;
+import com.races.exception.RacesException;
 import com.races.repository.InscripcionRepository;
 import com.races.services.CampeonatoService;
 import com.races.services.EquipoService;

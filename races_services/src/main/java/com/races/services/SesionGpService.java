@@ -3,10 +3,10 @@ package com.races.services;
 import java.util.Date;
 import java.util.List;
 
-import com.races.component.RacesException;
 import com.races.dto.SesionGpDto;
 import com.races.entity.GranPremio;
 import com.races.entity.SesionGP;
+import com.races.exception.RacesException;
 
 /**
  * Interfaz de servicios para Sesion

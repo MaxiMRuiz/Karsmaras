@@ -2,10 +2,10 @@ package com.races.services;
 
 import java.util.List;
 
-import com.races.component.RacesException;
 import com.races.dto.GranPremioDto;
 import com.races.dto.GranPremioSesionesDto;
 import com.races.entity.GranPremio;
+import com.races.exception.RacesException;
 
 /**
  * Interfaz de servicios para Grandes Premios

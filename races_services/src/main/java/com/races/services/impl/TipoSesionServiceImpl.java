@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.entity.TipoSesion;
+import com.races.exception.RacesException;
 import com.races.repository.TipoSesionRepository;
 import com.races.services.TipoSesionService;
 

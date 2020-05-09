@@ -29,7 +29,8 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Serial
 	 * @param equipo
 	 * @return
 	 */
-	Optional<Inscripcion> findByCampeonatoAndPilotoAndEquipo(Campeonato campeonato, Piloto piloto, Equipo equipo);
+	Optional<Inscripcion> findByCampeonatoAndPilotoAndEquipo(Campeonato campeonato, 
+			Piloto piloto, Equipo equipo);
 
 	/**
 	 * Busca el numero de equipos inscritos en un campeonato

@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.races.component.RacesException;
 import com.races.dto.SesionGpDto;
 import com.races.entity.SesionGP;
+import com.races.exception.RacesException;
 import com.races.services.SesionGpService;
 
 /**
@@ -41,7 +41,7 @@ public class SesionGpController {
 	 * @return
 	 */
 	@PutMapping("/sesionGP/{id}")
-	public ResponseEntity<SesionGP> crearSesion(@PathVariable(name = "id") Long id,
+	public ResponseEntity<SesionGP> editarSesion(@PathVariable(name = "id") Long id,
 			@RequestBody SesionGpDto sesionGpDto) {
 
 		try {

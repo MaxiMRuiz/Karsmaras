@@ -214,8 +214,8 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
-	public String decodeData(String jwk) throws JoseException {
-		return this.decodeBase64(this.decryptData(jwk));
+	public String decodeData(String data) throws JoseException {
+		return this.decodeBase64(this.decryptData(data));
 	}
 
 	private String decryptData(String data) throws JoseException {

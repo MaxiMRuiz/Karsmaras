@@ -84,9 +84,8 @@ public class ClasificacionServiceImpl implements ClasificacionService {
 
 	private List<ClasificacionDto> calcularClasificacionSesion(SesionGP sesionGP, List<Puntuacion> puntuaciones) {
 		List<ClasificacionDto> clasificaciones = new ArrayList<>();
-		List<ResultadoResponseDto> resultados;
 		LOGGER.info("Calculando resultados de la sesion " + sesionGP);
-		resultados = resultadoService.buscarResultadosValidos(sesionGP);
+		List<ResultadoResponseDto> resultados = resultadoService.buscarResultadosValidos(sesionGP);
 		LOGGER.info("Encontrados " + resultados.size() + " resultados válidos.");
 		int j = 1;
 		for (ResultadoResponseDto resultado : resultados) {

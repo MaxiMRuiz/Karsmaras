@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.races.component.RacesException;
 import com.races.dto.ResultadoDto;
 import com.races.dto.ResultadoResponseDto;
+import com.races.exception.RacesException;
 import com.races.services.ResultadoService;
 
 /**

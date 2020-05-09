@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.dto.GranPremioDto;
 import com.races.dto.GranPremioSesionesDto;
 import com.races.entity.GranPremio;
+import com.races.exception.RacesException;
 import com.races.repository.GranPremioRepository;
 import com.races.services.CampeonatoService;
 import com.races.services.GranPremioService;

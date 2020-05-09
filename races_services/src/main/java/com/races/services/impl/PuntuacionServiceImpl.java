@@ -20,10 +20,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.races.component.RacesException;
 import com.races.dto.PuntuacionDto;
 import com.races.entity.Puntuacion;
 import com.races.entity.Sesion;
+import com.races.exception.RacesException;
 import com.races.repository.PuntuacionRepository;
 import com.races.services.PuntuacionService;
 import com.races.services.SesionService;
@@ -94,19 +94,8 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 
 	@Override
 	public void crearPuntuacionesSesion(Sesion sesion) {
-		crearPuntuaciones(sesion, sesion.getReglamento().getnPilotos());
-	}
-
-	/**
-	 * Metodo para crear las puntuaciones de un reglamento
-	 * 
-	 * @param reglamento
-	 * @param tipoSesion
-	 * @param nPilotos
-	 */
-	private void crearPuntuaciones(Sesion sesion, Integer nPilotos) {
 		List<Puntuacion> listaPuntuaciones = new ArrayList<>();
-		for (int i = 0; i < nPilotos; i++) {
+		for (int i = 0; i < sesion.getReglamento().getnPilotos(); i++) {
 			listaPuntuaciones.add(new Puntuacion(sesion, i + 1, 0));
 		}
 		puntuacionRepo.saveAll(listaPuntuaciones);

@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.races.component.RacesException;
 import com.races.dto.EquipoDto;
 import com.races.entity.Equipo;
+import com.races.exception.RacesException;
 import com.races.services.EquipoService;
 
 /**
@@ -34,7 +33,6 @@ public class EquipoController {
 	private static final Log LOGGER = LogFactory.getLog(EquipoController.class);
 
 	@Autowired
-	@Qualifier("EquipoService")
 	EquipoService equipoService;
 
 	/**
@@ -82,7 +80,8 @@ public class EquipoController {
 	 * @return Equipo actualizado
 	 */
 	@PutMapping("/equipo/{id}")
-	public ResponseEntity<Equipo> actualizarEquipo(@PathVariable(name = "id") Long id, @RequestBody EquipoDto equipoDto) {
+	public ResponseEntity<Equipo> actualizarEquipo(@PathVariable(name = "id") Long id,
+			@RequestBody EquipoDto equipoDto) {
 
 		try {
 			LOGGER.info("Actualizando el Equipo: " + equipoDto.getNombre());
@@ -104,7 +103,7 @@ public class EquipoController {
 
 		try {
 			LOGGER.info("Borrando el Equipo: " + id);
-			return new ResponseEntity<>(equipoService.borrarEquipo(id),HttpStatus.OK);
+			return new ResponseEntity<>(equipoService.borrarEquipo(id), HttpStatus.OK);
 		} catch (RacesException ex) {
 			LOGGER.error(ex.getMessage());
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

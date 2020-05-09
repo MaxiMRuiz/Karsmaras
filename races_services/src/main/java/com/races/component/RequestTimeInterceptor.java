@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.races.entity.Piloto;
+import com.races.exception.RacesException;
 import com.races.services.JwtService;
 import com.races.services.PilotoService;
 
@@ -23,6 +24,12 @@ import com.races.services.PilotoService;
 @Component("RequestTimeInterceptor")
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
+	@Autowired
+	PilotoService pilotoService;
+
+	@Autowired
+	JwtService jwtService;
+
 	private static final Log LOGGER = LogFactory.getLog(RequestTimeInterceptor.class);
 
 	private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -32,12 +39,6 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	private static final String BASIC_AUTH = "Basic";
 
 	private static final String BEARER_AUTH = "Bearer";
-
-	@Autowired
-	PilotoService pilotoService;
-
-	@Autowired
-	JwtService jwtService;
 
 	/**
 	 * Metodo pre ejecucion de todas las peticiones

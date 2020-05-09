@@ -11,7 +11,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.constants.Constants;
 import com.races.dto.FileUploadDto;
 import com.races.dto.VueltaDto;
@@ -19,11 +18,11 @@ import com.races.entity.Inscripcion;
 import com.races.entity.Resultado;
 import com.races.entity.SesionGP;
 import com.races.entity.Vuelta;
+import com.races.exception.RacesException;
 import com.races.repository.VueltaRepository;
 import com.races.services.InscripcionService;
 import com.races.services.PilotoService;
 import com.races.services.ResultadoService;
-import com.races.services.SesionService;
 import com.races.services.VueltaService;
 
 /**
@@ -40,9 +39,6 @@ public class VueltaServiceImpl implements VueltaService {
 
 	@Autowired
 	PilotoService pilotoService;
-
-	@Autowired
-	SesionService sesionService;
 
 	@Autowired
 	InscripcionService inscripciones;

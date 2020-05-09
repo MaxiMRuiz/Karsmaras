@@ -2,11 +2,11 @@ package com.races.services;
 
 import java.util.List;
 
-import com.races.component.RacesException;
 import com.races.dto.InscripcionDto;
 import com.races.entity.Campeonato;
 import com.races.entity.Inscripcion;
 import com.races.entity.Piloto;
+import com.races.exception.RacesException;
 
 /**
  * Interfaz de servicios para Inscripciones

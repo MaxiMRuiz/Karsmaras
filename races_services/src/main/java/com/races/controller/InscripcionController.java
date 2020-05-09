@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.races.component.RacesException;
 import com.races.dto.InscripcionDto;
 import com.races.entity.Inscripcion;
+import com.races.exception.RacesException;
 import com.races.services.InscripcionService;
 
 /**
@@ -33,7 +32,6 @@ public class InscripcionController {
 	private static final Log LOGGER = LogFactory.getLog(InscripcionController.class);
 
 	@Autowired
-	@Qualifier("InscripcionService")
 	InscripcionService inscriptionService;
 
 	/**

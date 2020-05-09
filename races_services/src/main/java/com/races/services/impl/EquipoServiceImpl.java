@@ -5,13 +5,12 @@ import java.util.Optional;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.dto.EquipoDto;
 import com.races.entity.Equipo;
+import com.races.exception.RacesException;
 import com.races.repository.EquipoRepository;
 import com.races.services.EquipoService;
 
@@ -25,7 +24,6 @@ import com.races.services.EquipoService;
 public class EquipoServiceImpl implements EquipoService {
 
 	@Autowired
-	@Qualifier("EquipoRepository")
 	EquipoRepository equipoRepo;
 
 	public Equipo crearEquipo(EquipoDto equipoDto) throws RacesException {

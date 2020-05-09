@@ -2,9 +2,9 @@ package com.races.services;
 
 import java.util.List;
 
-import com.races.component.RacesException;
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
+import com.races.exception.RacesException;
 
 /**
  * Interfaz de servicios para Reglamento

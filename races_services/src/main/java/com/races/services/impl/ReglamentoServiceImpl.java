@@ -8,10 +8,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
-import com.races.component.RacesException;
 import com.races.constants.Constants;
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
+import com.races.exception.RacesException;
 import com.races.repository.ReglamentoRepository;
 import com.races.services.ReglamentoService;
 import com.races.services.SesionService;

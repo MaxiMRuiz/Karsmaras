@@ -53,5 +53,10 @@
     "name": "race.files.upload.basepath",
     "type": "java.lang.String",
     "description": "A description for 'race.files.upload.basepath'"
+  },
+  {
+    "name": "races.sig.jwk",
+    "type": "java.lang.String",
+    "description": "A description for 'races.sig.jwk'"
   }
 ]}

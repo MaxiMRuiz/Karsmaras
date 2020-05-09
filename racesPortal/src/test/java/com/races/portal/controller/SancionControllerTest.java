@@ -28,24 +28,24 @@ import com.races.portal.dto.Piloto;
 import com.races.portal.dto.Resultado;
 import com.races.portal.dto.Sancion;
 import com.races.portal.dto.SesionGP;
-import com.races.portal.services.ResultadoService;
-import com.races.portal.services.SancionService;
+import com.races.portal.services.impl.ResultadoServiceImpl;
+import com.races.portal.services.impl.SancionServiceImpl;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(EquiposController.class)
+@WebMvcTest(SancionController.class)
 public class SancionControllerTest {
 
 	@MockBean
-	SancionService sanciones;
+	SancionServiceImpl sanciones;
 
 	@MockBean
-	ResultadoService resultados;
-
-	@InjectMocks
-	SancionController sancionController;
+	ResultadoServiceImpl resultados;
 
 	@Autowired
 	MockMvc mockMvc;
+
+	@InjectMocks
+	SancionController sancionController;
 
 	private static final Object JWT = "jwt-test";
 

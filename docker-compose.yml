@@ -21,12 +21,12 @@ services:
     depends_on: 
       - racesDB
   racesDB:
-    image: races-database:1.0.0
+    image: mysql:5.7
     container_name: racesDB
     volumes:
       - /races/mysql/dumps:/dumps:z
       - /races/mysql/scripts:/scripts:z
-      - /data:/var/lib/mysql:z
+      - /races/mysql/data:/var/lib/mysql:z
     environment:
       - MYSQL_ROOT_PASSWORD='races-mngmnt'
     ports:

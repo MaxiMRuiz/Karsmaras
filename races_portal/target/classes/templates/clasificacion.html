@@ -1,0 +1,111 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement" id="content">
+					<h2 class="text-center racesTitle" id="title">Clasificacion de [[${nombre}]]</h2>
+					<div class="row col-12">
+						<div class="col-6 col-xs-12">
+							<table class="table-bordered  table-dark centerTable racesTable" id="tablePilotos" onload="searchFilter()">
+								<thead class="thead-dark" align="center" id="thead">
+									<tr>
+										<th width="5%" class="thead-dark-th">Posicion</th>
+										<th width="65%" class="thead-dark-th">Piloto</th>
+										<th width="30%" class="thead-dark-th">Puntos</th>
+									</tr>
+								</thead>
+								<tbody class="table-warning" th:each="clasificacion : ${listaClasificacion}">
+									<td class="td-table" th:if="${clasificacionStat.index == 0}"
+										th:text="${clasificacionStat.index + 1}"
+										style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>
+									<td class="td-table" th:if="${clasificacionStat.index == 1}"
+										th:text="${clasificacionStat.index + 1}"
+										style="background-color: rgb(138, 149, 151); font-weight: bold;"></td>
+									<td class="td-table" th:if="${clasificacionStat.index == 2}"
+										th:text="${clasificacionStat.index + 1}"
+										style="background-color: rgb(205, 127, 50); font-weight: bold; "></td>
+									<td class="td-table" th:if="${clasificacionStat.index > 2}"
+										th:text="${clasificacionStat.index + 1}"
+										style="background-color: black; font-weight: bold; color: white;"></td>
+									<td class="td-table" th:text="${clasificacion.piloto.toString()}"></td>
+									<td class="td-table" th:text="${clasificacion.puntos}"></td>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-6 col-xs-12">
+							<table class="table-bordered table-dark racesTable" id="tableEquipos" onload="searchFilter()">
+								<thead class="thead-dark" align="center" id="thead">
+									<tr>
+										<th width="5%" class="thead-dark-th">Posicion</th>
+										<th width="65%" class="thead-dark-th">Equipo</th>
+										<th width="30%" class="thead-dark-th">Puntos</th>
+									</tr>
+								</thead>
+								<tbody class="table-warning" th:each="equipos : ${listaEquipos}">
+									<td class="td-table" th:if="${equiposStat.index == 0}"
+										th:text="${equiposStat.index + 1}"
+										style="background-color: rgb(234, 193, 2); font-weight: bold;"></td>
+									<td class="td-table" th:if="${equiposStat.index == 1}"
+										th:text="${equiposStat.index + 1}"
+										style="background-color: rgb(138, 149, 151); font-weight: bold;"></td>
+									<td class="td-table" th:if="${equiposStat.index == 2}"
+										th:text="${equiposStat.index + 1}"
+										style="background-color: rgb(205, 127, 50); font-weight: bold; "></td>
+									<td class="td-table" th:if="${equiposStat.index > 2}"
+										th:text="${equiposStat.index + 1}"
+										style="background-color: black; font-weight: bold; color: white;"></td>
+									<td class="td-table" th:text="${equipos.equipo.toString()}"></td>
+									<td class="td-table" th:text="${equipos.puntos}"></td>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	$('#tablePilotos').paginate({
+		limit: getNumberOfElements(),
+		filter: true
+	});
+
+	$('#tableEquipos').paginate({
+		limit: getNumberOfElements(),
+		filter: true
+	});
+
+	function searchFilter() {
+		$('.page-navigation').remove();
+		$('#tablePilotos').paginate({
+			limit: getNumberOfElementsPilotos(),
+			filter: true
+		})
+		$('#tableEquipos').paginate({
+			limit: getNumberOfElementsEquipos(),
+			filter: true
+		})
+	}
+
+	function getNumberOfElements() {
+		let heightTitle = document.getElementById("title").offsetHeight;
+		let heightContent = window.screen.height - 2 * document.getElementById("content").offsetTop;
+		let heightHead = document.getElementById("thead").offsetHeight;
+		// let heightFoot = document.getElementById("tfoot").offsetHeight;
+		let tam = document.getElementsByClassName("td-table")[0].offsetHeight;
+		return (heightContent - (heightTitle * 2) - (heightHead * 2) - (tam * 2)) / tam;
+	}
+
+</script>
+
+</html>

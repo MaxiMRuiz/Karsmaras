@@ -9,7 +9,7 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>Races Services</name>
+	<name>Races-Services</name>
 	<description>Races Services</description>
 
 	<parent>

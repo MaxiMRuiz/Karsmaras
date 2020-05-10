@@ -1,0 +1,159 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera" onload="searchFilter()">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement" id="content">
+					<h2 class="text-center racesTitle" id="title">LISTA DE REGLAMENTOS</h2>
+					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th width="5%" class="thead-dark-th"><input type="text" id="id" onkeyup="searchFilter()"
+										placeholder="Id" class="col-12 col-xs-12" th:value="${filterId}"></input></th>
+								<th width="50%" class="thead-dark-th">Descripcion <input type="text" id="descripcion"
+										onkeyup="searchFilter()" placeholder="Buscar" class="col-10 col-xs-10"></th>
+								<th width="20%" class="thead-dark-th">Nº Sesiones</th>
+								<th width="10%" class="thead-dark-th">Nº Participantes</th>
+								<th th:if="${session.admin == true}" width="10%" class="thead-dark-th">Editar</th>
+								<th th:if="${session.admin == true}" width="5%" class="thead-dark-th">Borrar</th>
+							</tr>
+						</thead>
+						<tbody class="table-warning" th:each="reglamento : ${listaReglamentos}">
+							<td class="td-table" th:text="${reglamento.id}"></td>
+							<td class="td-table">
+								<a href="#" th:href="@{/races/sesiones/__${reglamento.id}__}">
+									<img class="icons" src="/icons/sesiones.png"></img> <span
+										th:text="${reglamento.descripcion}" class="d-none d-sm-inline"></span>
+								</a>
+							</td>
+							<td class="td-table">
+								Carreras: [[${reglamento.nCarreras}]]<br />
+								Clasificaciones: [[${reglamento.nClasificaciones}]]<br />
+								Entrenamientos: [[${reglamento.nEntrenamientos}]]
+							</td>
+							<td class="td-table">
+								Pilotos: [[${reglamento.nPilotos}]]<br />
+								Equipos: [[${reglamento.nEquipos}]]<br />
+							</td>
+							<td class="td-table" th:if="${session.admin == true}">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#" th:href="@{/races/reglamentos/__${reglamento.id}__}">
+										<img class="icons" src="/icons/editar.png" alt="Editar"
+											title="Editar Reglamento"></img>
+									</a>
+								</div>
+							</td>
+							<td class="td-table" th:if="${session.admin == true}">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#" th:onclick="javascript:borrarreglamento( [[${reglamento.id}]] , [[${reglamento.descripcion}]]);">
+										<img class="icons" src="/icons/borrar.png" alt="Borrar"
+											title="Borrar Reglamento"></img>
+									</a>
+								</div>
+							</td>
+						</tbody>
+						<tfoot id="tfoot" th:if="${session.admin == true}">
+							<tr>
+								<td colspan="8" class="td-table text-center table-success">
+									<div class="row">
+										<a class="button centerVertical col-12" href="/races/reglamentos/new">
+											<button type="button" class="btn btn-success btn-primary pull-right"
+												style="width: -webkit-fill-available;">
+												<img class="icons" src="/icons/reglamento.png"></img> <span
+													class="d-none d-sm-inline"></span>Crear Nuevo Reglamento</span>
+											</button>
+										</a>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+	var href = document.getElementById("urlServices").value;
+	function borrarreglamento(id, nombre) {
+		if (id == null || !confirm("Se eliminarán TODOS los Campeonatos, GP, Resultados e Inscripciones asociadas al Reglamento,\n¿Está seguro de que desea borrar el Reglamento: " + nombre + "?")) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: true
+	});
+	function searchFilter() {
+		this.filter();
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: true
+		})
+	}
+
+	function getNumberOfElements() {
+		let heightTitle = document.getElementById("title").offsetHeight;
+		let heightContent = window.screen.height - 2 * document.getElementById("content").offsetTop;
+		let heightHead = document.getElementById("thead").offsetHeight;
+		let heightFoot = document.getElementById("tfoot").offsetHeight;
+		let tam = document.getElementsByClassName("td-table")[0].offsetHeight;
+		return (heightContent - (heightTitle * 2) - (heightHead * 2) - (heightFoot * 2) - (tam * 2)) / tam;
+	}
+
+	function filter() {
+		var select, table, tbody, tr, td, i, j;
+		table = document.getElementById("table");
+		tbody = table.getElementsByTagName("tbody");
+		i = 0;
+		while (tbody.length > i) {
+			tr = tbody[i].getElementsByTagName("tr")[0];
+			j = 0;
+			while (tbody.length > j) {
+				td = tr.children[0];
+				checkColumn(tr, td, document.getElementById("id").value, true);
+
+				td = tr.children[1];
+				checkColumn(tr, td, document.getElementById("descripcion").value,
+					tr.style.display == "table-row");
+				j++;
+			}
+			i++;
+		}
+	}
+
+	function checkColumn(tr, td, filter, display) {
+		if (td && display) {
+			if (td.innerHTML.indexOf(filter) > -1) {
+				tr.style.display = "table-row";
+			} else {
+				tr.style.display = "none";
+			}
+		}
+	}
+
+</script>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card">
+                <div class="card-header" align="center">
+                    <h3>Login</h3>
+                </div>
+                <div th:if="${error != null}" class="alert alert-danger" role="alert">[[${error}]]: Usuario/Password no
+                    válidos</div>
+                <div class="card-body">
+                    <form method="POST" action="/races/login">
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><img src="/icons/casco.png" class="icons" alt="User"
+                                        title="User"></span>
+                            </div>
+                            <input type="text" name="user" class="form-control" placeholder="username">
+
+                        </div>
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><img src="/icons/password.png" class="icons"
+                                        alt="Password" title="Password"></span>
+                            </div>
+                            <input type="password" name="password" class="form-control" placeholder="password">
+                        </div>
+                        <div class="row align-items-center remember">
+                            <input type="checkbox">Recordar
+                        </div>
+                        <div class="form-group" align="center">
+                            <input type="submit" value="Login" class="btn login_btn">
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center links">
+                        <a class="links" href="/races/registro">
+                            <button type="button" class="btn btn-success btn-primary"
+                                style="width: -webkit-fill-available;">
+                                <img class="icons" src="/icons/registro.png"></img> <span
+                                    class="d-none d-sm-inline"></span>Registrarse</span>
+                            </button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

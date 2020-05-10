@@ -1,0 +1,125 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10">
+				<div class="table-responsive centerElement" id="content">
+					<div th:if="${type.equals('p')}" class="text-center racesTitle">
+						<h2 class="text-center racesTitle" id="title">INSCRIPCIONES DEL PILOTO [[${nombre}]]</h2>
+					</div>
+					<div th:if="${type == 'c'}" class="text-center racesTitle">
+						<h2 class="text-center racesTitle" id="title">INSCRIPCIONES DEL CAMPEONATO [[${nombre}]]</h2>
+					</div>
+					<div th:if="${type == 'e'}" class="text-center racesTitle">
+						<h2 class="text-center racesTitle" id="title">INSCRIPCIONES DEL EQUIPO [[${nombre}]]</h2>
+					</div>
+					<table class="table-bordered  table-dark centerTable racesTable" id="table" onload="searchFilter()">
+						<thead class="thead-dark" align="center" id="thead">
+							<tr>
+								<th th:if="${type == 'p' || type == 'e'}" width="47.5%" class="thead-dark-th">Campeonato
+								</th>
+								<th th:if="${type == 'c' || type == 'e'}" width="47.5%" class="thead-dark-th">Piloto
+								</th>
+								<th th:if="${type == 'c' || type == 'p'}" width="47.5%" class="thead-dark-th">Equipo
+								</th>
+								<th width="5%" class="thead-dark-th"
+									th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
+									Borrar</th>
+							</tr>
+						</thead>
+						<tbody class="table-warning" th:each="inscripcion : ${listaInscripciones}">
+							<td class="td-table" th:if="${type == 'p' || type == 'e'}">
+								<a href="#" th:href="@{/races/gp/__${inscripcion.campeonato.id}__}">
+									<span th:text="${inscripcion.campeonato.toString()}"
+										class="d-none d-sm-inline">Ver</span>
+								</a></td>
+							<td class="td-table" th:if="${type == 'c' || type == 'e'}"
+								th:text="${inscripcion.piloto.toString()}"></td>
+							<td class="td-table" th:if="${type == 'c' || type == 'p'}"
+								th:text="${inscripcion.equipo.toString()}"></td>
+							<td class="td-table"
+								th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
+								<div class="col-12 col-xs-12">
+									<a class="button" href="#"
+										th:onclick="javascript:borrarInscripcion( [[${inscripcion.id}]], [[${inscripcion.piloto.nombre}]] , [[${inscripcion.equipo.nombre}]], [[${inscripcion.campeonato.descripcion}]] );">
+										<img class="icons" src="/icons/borrar.png" alt="Borrar"
+											title="Borrar Inscripcion"></img>
+									</a>
+								</div>
+							</td>
+						</tbody>
+						<tfoot id="tfoot"
+							th:if="${session.admin == true || (type == 'p' && nombre == session.piloto.toString())}">
+							<tr>
+								<td colspan="3" class="td-table text-center table-success">
+									<div class="row">
+										<a class="button col-12 centerVertical pull-right"
+											th:href="@{/races/inscripciones/__${type}__/__${id}__}">
+											<button type="button" class="btn btn-success btn-primary pull-right"
+												style="width: -webkit-fill-available;">
+												<img class="icons" src="/icons/inscripcion.png"></img> <span
+													class="d-none d-sm-inline"></span>Añadir Inscipcion</span>
+											</button>
+										</a>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
+</body>
+<script>
+	var href = document.getElementById("urlServices").value;
+	function borrarInscripcion(id, piloto, equipo, campeonato) {
+		if (id == null || !confirm("Se eliminarán TODOS los Resultados,\n¿Está seguro de que desea borrar el la Inscripcion de " + piloto + ", con el equipo " + equipo + " en el campeonato " + campeonato + "?")) {
+			return;
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: href + '/' + id,
+			contentType: 'application/json;charset=UTF-8',
+			success: function (data) {
+				location.reload();
+			},
+			error: function (error) {
+				console.log(error);
+				location.reload();
+			}
+		})
+	};
+
+	$('#table').paginate({
+		limit: getNumberOfElements(),
+		filter: false
+	});
+	function searchFilter() {
+		$('.page-navigation').remove();
+		$('#table').paginate({
+			limit: getNumberOfElements(),
+			filter: false
+		})
+	}
+
+	function getNumberOfElements() {
+		let heightTitle = document.getElementById("title").offsetHeight;
+		let heightContent = window.screen.height - 2 * document.getElementById("content").offsetTop;
+		let heightHead = document.getElementById("thead").offsetHeight;
+		let heightFoot = document.getElementById("tfoot").offsetHeight;
+		let tam = document.getElementsByClassName("td-table")[0].offsetHeight;
+		return (heightContent - (heightTitle * 2) - (heightHead * 2) - (heightFoot * 2) - (tam * 2)) / tam;
+	}
+
+</script>
+
+</html>

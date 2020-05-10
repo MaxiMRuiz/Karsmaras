@@ -1,0 +1,85 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header::header-css">
+</head>
+
+<body class="body columnaentera">
+	<div class="container-fluid columnaentera">
+		<div class="row columnaentera">
+			<div th:replace="fragments/menu::menu">
+			</div>
+			<div class="col-xs-10 col-10 align-self-center columnaentera">
+				<div class="panel panel-default panel-body centerElement">
+					<div class="container row col-md-12 well well-sm">
+						<form id="formulariopuntuacion" th:action="@{/races/inscripciones/__${type}__/__${id}__}"
+							class="form-horizontal formAlign" action="#" method="post">
+							<fieldset>
+								<legend th:if="${type == 'p'}" class="header" align="center">Nueva Inscripcion para el
+									Piloto [[${nombre}]]</legend>
+								<legend th:if="${type == 'c'}" class="header" align="center">Nueva Inscripcion para el
+									Campeonato [[${nombre}]]</legend>
+								<legend th:if="${type == 'e'}" class="header" align="center">Nueva Inscripcion para el
+									Equipo [[${nombre}]]</legend>
+								<div th:if="${type == 'p'}">
+									<input type="hidden" th:field="*{inscripcion.piloto.id}" th:value="${id}"></input>
+								</div>
+								<div th:if="${type == 'c'}">
+									<input type="hidden" th:field="*{inscripcion.campeonato.id}"
+										th:value="${id}"></input>
+								</div>
+								<div th:if="${type == 'e'}">
+									<input type="hidden" th:field="*{inscripcion.equipo.id}" th:value="${id}"></input>
+								</div>
+								<div class="form-group" th:if="${type != 'c'}">
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img src="/icons/campeonato.png"
+											class="icons" alt="Campeonato" title="Campeonato">Campeonato</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<select th:field="*{inscripcion.campeonato.id}" class="inputForm"
+											name="campeonato">
+											<option th:each="campeonato : ${campeonatos}" th:value="${campeonato.id}"
+												th:text="${campeonato.toString()}"
+												th:selected="${campeonato.id == inscripcion.campeonato.id}">
+											</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group" th:if="${type != 'p'}">
+									<span class="col-2 col-md-2 col-xs-2 text-center"><img src="/icons/piloto.png"
+											class="icons" alt="Piloto" title="Piloto">
+										Piloto</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<select th:field="*{inscripcion.piloto.id}" class="inputForm" name="piloto">
+											<option th:each="piloto : ${pilotos}" th:value="${piloto.id}"
+												th:text="${piloto.toString()}"
+												th:selected="${piloto.id == inscripcion.piloto.id}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group" th:if="${type != 'e'}">
+									<span class="col-2 col-md-2 col-xs-2 text-center "><img src="/icons/equipo.png"
+											class="icons" alt="Equipo" title="Equipo">
+										Equipo</span>
+									<div class="col-12 col-md-12 col-xs-12">
+										<select th:field="*{inscripcion.equipo.id}" class="inputForm" name="equipo">
+											<option th:each="equipo : ${equipos}" th:value="${equipo.id}"
+												th:text="${equipo.toString()}"
+												th:selected="${equipo.id == inscripcion.equipo.id}"></option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-md-12 text-center">
+										<button type="submit" class="btn btn-primary pull-center">Aceptar</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

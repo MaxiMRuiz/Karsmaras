@@ -1,0 +1,52 @@
+version: '3.4'
+services:
+  raceServices:
+    image: races-services:1.0.0
+    container_name: raceServices
+    volumes:
+      - /races/logs/services:/logs:z
+      - /races/history/services:/history:z
+    environment:
+      - DATABASE=racesDB:3306
+      - DB_USER=racemgmt
+      - DB_PASS=RaceManagement
+      - UPLOAD_PATH=/history
+      - ROUTELOG=/logs
+      - PORT=8081
+    ports:
+      - 8081:8081/tcp
+    restart: always
+    links:
+      - racesDB:racesDB
+    depends_on: 
+      - racesDB
+  racesDB:
+    image: mysql:5.7
+    container_name: racesDB
+    volumes:
+      - /races/mysql/dumps:/dumps:z
+      - /races/mysql/scripts:/scripts:z
+      - /races/mysql/data:/var/lib/mysql:z
+    environment:
+      - MYSQL_ROOT_PASSWORD='races-mngmnt'
+    ports:
+      - 3306:3306/tcp
+    restart: always
+    user: mysql:mysql
+  racesPortal:
+    image: races-portal:1.0.0
+    container_name: racesPortal
+    volumes:
+      - /races/logs/portal:/logs:z
+      - /races/history/portal:/history:z
+    environment:
+      - SERVICES=http://raceServices:8081
+      - UPLOAD_PATH=/history
+      - ROUTELOG=/logs
+    ports:
+      - 8080:8080/tcp
+    restart: always
+    links:
+      - raceServices
+    depends_on: 
+      - raceServices

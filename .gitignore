@@ -94,3 +94,9 @@ hs_err_pid*
 
 # End of https://www.gitignore.io/api/java,eclipse
 .sonarlint/
+races_services/target/
+racesPortal/.gitignore
+racesPortal/.mvn/wrapper/maven-wrapper.jar
+racesPortal/.mvn/
+racesPortal/mvnw
+racesPortal/mvnw.cmd

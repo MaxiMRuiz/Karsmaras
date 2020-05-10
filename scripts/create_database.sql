@@ -32,7 +32,8 @@ CREATE TABLE `reglamento` (
 	`n_carreras` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
 	`n_pilotos` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
 	`n_equipos` TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`descripcion`)
 )
 COMMENT='Tabla de gestion del reglamento de los campeonatos'
 COLLATE='latin1_spanish_ci'
@@ -53,6 +54,7 @@ CREATE TABLE `sesion` (
 	`id_reglamento` INT(11) NOT NULL,
 	`id_tipo_sesion` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`descripcion`, `id_reglamento`),
 	INDEX `FK_sesion_tipo_sesion` (`id_tipo_sesion`),
 	INDEX `FK_reglamento_puntuacion` (`id_reglamento`),
 	CONSTRAINT `FK_sesion_reglamento` FOREIGN KEY (`id_reglamento`) REFERENCES `reglamento` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
@@ -67,7 +69,7 @@ CREATE TABLE `puntuacion` (
 	`puntos` SMALLINT(5) UNSIGNED NOT NULL DEFAULT '0',
 	`id_sesion` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `KEY` (`puntos`, `posicion`, `id_sesion`),
+	UNIQUE INDEX `KEY` (`puntos`, `posicion`, `id_sesion`),
 	INDEX `FK_puntuacion_sesion` (`id_sesion`),
 	CONSTRAINT `FK_puntuacion_sesion` FOREIGN KEY (`id_sesion`) REFERENCES `sesion` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 )
@@ -81,7 +83,7 @@ CREATE TABLE `campeonato` (
 	`temporada` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
 	`id_reglamento` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `KEY` (`nombre`, `temporada`),
+	UNIQUE INDEX `KEY` (`nombre`, `temporada`),
 	INDEX `FK__reglamento_campeonato` (`id_reglamento`),
 	CONSTRAINT `FK__reglamento_campeonato` FOREIGN KEY (`id_reglamento`) REFERENCES `reglamento` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
@@ -94,6 +96,7 @@ CREATE TABLE `gran_premio` (
 	`id_campeonato` INT(11) NOT NULL,
 	`ubicacion` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
 	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`id_campeonato`, `ubicacion`),
 	INDEX `FK__campeonato` (`id_campeonato`),
 	CONSTRAINT `FK__campeonato` FOREIGN KEY (`id_campeonato`) REFERENCES `campeonato` (`id`) ON UPDATE CASCADE ON DELETE CASCADE
 )
@@ -120,9 +123,11 @@ CREATE TABLE `piloto` (
 	`nombre` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
 	`apellido` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
 	`apodo` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
-	`password` VARCHAR(30) NOT NULL DEFAULT 'temporal' COLLATE 'latin1_spanish_ci',
+	`password` VARCHAR(4096) NOT NULL COLLATE 'latin1_spanish_ci',
 	`admin` TINYINT(1) NOT NULL DEFAULT '0',
-	PRIMARY KEY (`id`)
+	`jwk` VARCHAR(4096) NOT NULL COLLATE 'latin1_spanish_ci',
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`apodo`)
 )
 COLLATE='latin1_spanish_ci'
 ENGINE=InnoDB;
@@ -131,7 +136,8 @@ CREATE TABLE `equipo` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`Nombre` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
 	`Alias` VARCHAR(255) NOT NULL COLLATE 'latin1_spanish_ci',
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`Alias`)
 )
 COLLATE='latin1_spanish_ci'
 ENGINE=InnoDB;
@@ -142,6 +148,7 @@ CREATE TABLE `inscripcion` (
 	`id_piloto` INT(11) NOT NULL,
 	`id_equipo` INT(11) NOT NULL,
 	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`id_campeonato`, `id_piloto`),
 	INDEX `FK__campeonato_inscipcion` (`id_campeonato`),
 	INDEX `FK__piloto_inscripcion` (`id_piloto`),
 	INDEX `FK__equipo_inscripcion` (`id_equipo`),
@@ -159,10 +166,11 @@ CREATE TABLE `resultado` (
 	`n_vueltas` SMALLINT(5) UNSIGNED NOT NULL,
 	`tiempo` INT(10) UNSIGNED NOT NULL,
 	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`id_inscripcion`, `id_sesion_gp`),
 	INDEX `FK_inscripcion` (`id_inscripcion`),
 	INDEX `FK_sesion` (`id_sesion_gp`),
 	CONSTRAINT `FK__inscripcion` FOREIGN KEY (`id_inscripcion`) REFERENCES `inscripcion` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE,
-	CONSTRAINT `FK_sesion_gp` FOREIGN KEY (`id_sesion_gp`) REFERENCES `sesion_gp` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+	CONSTRAINT `FK_sesion_gp` FOREIGN KEY (`id_sesion_gp`) REFERENCES `sesiongp` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 )
 COLLATE='latin1_spanish_ci'
 ENGINE=InnoDB;
@@ -186,6 +194,7 @@ CREATE TABLE `sancion` (
 	`puntos` TINYINT(4) NULL DEFAULT NULL,
 	`tiempo` INT(10) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`),
+	UNIQUE INDEX `KEY` (`id_resultado`, `descripcion`(100)),
 	INDEX `FK__resultado_sancion` (`id_resultado`),
 	CONSTRAINT `FK__resultado_sancion` FOREIGN KEY (`id_resultado`) REFERENCES `resultado` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
 )

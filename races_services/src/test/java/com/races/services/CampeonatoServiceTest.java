@@ -8,11 +8,13 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.CampeonatoDto;
 import com.races.entity.Campeonato;
@@ -22,6 +24,7 @@ import com.races.repository.CampeonatoRepository;
 import com.races.services.impl.CampeonatoServiceImpl;
 import com.races.services.impl.ReglamentoServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class CampeonatoServiceTest {
 
 	private static final String TEST = "TEST";
@@ -58,7 +61,7 @@ public class CampeonatoServiceTest {
 			fail(e.getMessage());
 		}
 	}
-
+ 
 	@Test
 	public void crearCampeonatoExistenteTest() {
 		try {

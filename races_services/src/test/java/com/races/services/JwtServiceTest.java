@@ -8,12 +8,15 @@ import static org.junit.Assert.fail;
 import org.jose4j.lang.JoseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.races.services.impl.JwtServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class JwtServiceTest {
 
 	private static final String TEST = "test";

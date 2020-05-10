@@ -11,12 +11,14 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.InscripcionDto;
 import com.races.entity.Campeonato;
@@ -32,6 +34,7 @@ import com.races.services.impl.InscripcionServiceImpl;
 import com.races.services.impl.PilotoServiceImpl;
 import com.races.services.impl.ResultadoServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class InscripcionServiceTest {
 
 	@Mock

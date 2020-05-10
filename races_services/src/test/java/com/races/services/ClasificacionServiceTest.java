@@ -8,10 +8,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.GranPremioSesionesDto;
 import com.races.dto.ResultadoResponseDto;
@@ -35,6 +37,7 @@ import com.races.services.impl.ResultadoServiceImpl;
 import com.races.services.impl.SancionServiceImpl;
 import com.races.services.impl.SesionServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class ClasificacionServiceTest {
 
 	@Mock

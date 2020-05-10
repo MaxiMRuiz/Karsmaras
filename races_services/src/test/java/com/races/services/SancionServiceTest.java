@@ -10,11 +10,13 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.SancionDto;
 import com.races.entity.Campeonato;
@@ -33,6 +35,7 @@ import com.races.repository.SancionRepository;
 import com.races.services.impl.ResultadoServiceImpl;
 import com.races.services.impl.SancionServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class SancionServiceTest {
 
 	@Mock

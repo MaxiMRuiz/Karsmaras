@@ -45,6 +45,9 @@ public class PilotoServiceImpl implements PilotoService {
 			String jwk = jwtService.encryptData(jwtService.encodeBase64(jwtService.getJWK(pilotoDto.getApodo())));
 			piloto.setPassword(jwtService.encryptData(jwtService.encodeBase64(piloto.getPassword())));
 			piloto.setJwk(jwk);
+			if (pilotoRepo.count() == 0) {
+				piloto.setAdmin(true);
+			}
 			return pilotoRepo.save(piloto);
 		} catch (JoseException e) {
 			throw new RacesException("Error creando set de claves: " + e.getMessage());
@@ -152,7 +155,8 @@ public class PilotoServiceImpl implements PilotoService {
 	}
 
 	@Override
-	public Boolean changePassword(String alias, char[] password, char[] newPassword) throws JoseException, RacesException   {
+	public Boolean changePassword(String alias, char[] password, char[] newPassword)
+			throws JoseException, RacesException {
 		Piloto piloto = buscarPiloto(alias);
 		String passwordUser = jwtService.decodeData(piloto.getPassword());
 		if (passwordUser.equals(new String(password))) {

@@ -10,11 +10,13 @@ import java.util.Optional;
 import org.jose4j.lang.JoseException;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.PilotoDto;
 import com.races.entity.Piloto;
@@ -23,6 +25,7 @@ import com.races.repository.PilotoRepository;
 import com.races.services.impl.JwtServiceImpl;
 import com.races.services.impl.PilotoServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class PilotoServiceTest {
 
 	@Mock

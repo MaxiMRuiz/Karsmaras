@@ -9,11 +9,13 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.ReglamentoDto;
 import com.races.entity.Reglamento;
@@ -22,6 +24,7 @@ import com.races.repository.ReglamentoRepository;
 import com.races.services.impl.ReglamentoServiceImpl;
 import com.races.services.impl.SesionServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class ReglamentoServiceTest {
 
 	@Mock

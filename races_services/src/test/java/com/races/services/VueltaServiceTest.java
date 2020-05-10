@@ -10,12 +10,14 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.races.dto.FileUploadDto;
 import com.races.dto.VueltaDto;
@@ -37,6 +39,7 @@ import com.races.services.impl.PilotoServiceImpl;
 import com.races.services.impl.ResultadoServiceImpl;
 import com.races.services.impl.VueltaServiceImpl;
 
+@RunWith(SpringRunner.class)
 public class VueltaServiceTest {
 
 	@Mock
@@ -158,7 +161,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasUnderMinTest() {
 		try {
@@ -188,7 +191,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasMasMinTest() {
 		try {
@@ -218,7 +221,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasMasMinFormatTest() {
 		try {
@@ -248,7 +251,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasMasHoraTest() {
 		try {
@@ -278,7 +281,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasTiempoInvalidoTest() {
 		try {
@@ -308,7 +311,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasMasHoraFormatTest() {
 		try {
@@ -338,7 +341,7 @@ public class VueltaServiceTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void cargarVueltasNuevaTest() {
 		try {
@@ -381,7 +384,8 @@ public class VueltaServiceTest {
 			listaRegistros.add(new FileUploadDto(TEST, listaVueltas));
 			List<Inscripcion> listInscripciones = new ArrayList<>();
 			listInscripciones.add(inscriptionTest);
-			Mockito.when(pilotoService.buscarPiloto(Mockito.anyString())).thenThrow(new RacesException("Simulated Error"));
+			Mockito.when(pilotoService.buscarPiloto(Mockito.anyString()))
+					.thenThrow(new RacesException("Simulated Error"));
 			Mockito.when(inscripciones.buscarInscripciones(Mockito.any(), Mockito.any(), Mockito.any()))
 					.thenReturn(listInscripciones);
 			service.cargarVueltas(listaRegistros, sesionGpTest);
@@ -396,7 +400,7 @@ public class VueltaServiceTest {
 		Mockito.when(vueltaRepo.findById(Mockito.any())).thenReturn(op);
 		assertNotNull(service.existeVuelta(1L));
 	}
-	
+
 	@Test
 	public void buscarVueltaRapidaTest() {
 		List<Vuelta> lista = new ArrayList<>();

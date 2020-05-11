@@ -60,7 +60,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 				}
 			}
 
-		} catch (UnirestException | IOException e) {
+		} catch (UnirestException e) {
 			LOGGER.error(e);
 		}
 

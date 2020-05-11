@@ -38,7 +38,7 @@
 									</a>
 								</div>
 								<div th:if="${piloto.admin == false}" class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="'promocionarPiloto('+ ${piloto.id} +');'">
+									<a class="button" href="#" th:onclick="javascript:promocionarPiloto( [[${piloto.id}]] , [[${piloto.toString()}]]);">
 										<img class="icons" src="/icons/negativo.png" alt="Usuario Estandar"
 											title="Usuario Estandar"></img>
 									</a>
@@ -100,8 +100,8 @@
 		})
 	};
 
-	function promocionarPiloto(id) {
-		if (id == null) {
+	function promocionarPiloto(id, nombre) {
+		if (id == null || !confirm("¿Está seguro de que desea conceder permisos de administrador al piloto: " + nombre + "?")) {
 			return;
 		}
 		$.ajax({

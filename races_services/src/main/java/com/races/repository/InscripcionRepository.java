@@ -45,5 +45,7 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Serial
 	 * @return
 	 */
 	List<Inscripcion> findDistinctPilotoByCampeonato(Campeonato campeonato);
+
+	List<Equipo> findDisctinctEquipoByCampeonato(Campeonato campeonato);
 	
 }

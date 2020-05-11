@@ -7,8 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.races.portal.constants.Constants;
 import com.races.portal.dto.Clasificacion;
@@ -18,11 +16,12 @@ import com.races.portal.dto.Inscripcion;
 import com.races.portal.dto.Piloto;
 import com.races.portal.dto.Resultado;
 import com.races.portal.dto.Sancion;
+import com.races.portal.dto.Sesion;
 import com.races.portal.dto.SesionGP;
+import com.races.portal.dto.TipoSesion;
 import com.races.portal.dto.Vuelta;
 
 import kong.unirest.json.JSONArray;
-import kong.unirest.json.JSONException;
 import kong.unirest.json.JSONObject;
 
 @Component
@@ -36,12 +35,8 @@ public class Converter {
 	 * 
 	 * @param jsonObject
 	 * @return
-	 * @throws IOException
-	 * @throws JSONException
-	 * @throws JsonMappingException
-	 * @throws JsonParseException
 	 */
-	public GranPremio json2Gp(JSONObject json) throws IOException {
+	public GranPremio json2Gp(JSONObject json) {
 		GranPremio gp = new GranPremio();
 		JSONObject jsonGp;
 		String fecha = null;
@@ -56,14 +51,58 @@ public class Converter {
 				: json.getJSONArray(Constants.PARAM_SESIONES);
 		List<SesionGP> listaSesiones = new ArrayList<>();
 		for (int i = 0; i < array.length(); i++) {
-			listaSesiones.add(mapper.readValue(array.getJSONObject(i).toString(), SesionGP.class));
+			listaSesiones.add(json2SesionGp(array.getJSONObject(i)));
 			fecha = listaSesiones.get(i).getFecha();
 		}
 		gp.setFecha(fecha);
 		gp.setSesiones(listaSesiones);
 		return gp;
 	}
+	
+	/**
+	 * Conversor de JSONObject a Sesion
+	 * 
+	 * @param json
+	 * @return
+	 */
+	public SesionGP json2SesionGp(JSONObject json) {
+		SesionGP sesionGp = new SesionGP();
+		sesionGp.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		sesionGp.setFecha(json.isNull(Constants.PARAM_FECHA) ? "N/A" : json.getString(Constants.PARAM_FECHA));
+		sesionGp.setSesion(json.isNull(Constants.PARAM_SESION) ? new Sesion()
+				: json2Sesion(json.getJSONObject(Constants.PARAM_SESION)));
+		return sesionGp;
+	}
 
+	/**
+	 * Conversor de JSONObject a Sesion
+	 * 
+	 * @param json
+	 * @return
+	 */
+	public Sesion json2Sesion(JSONObject json) {
+		Sesion sesion = new Sesion();
+		sesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		sesion.setDescripcion(json.isNull(Constants.PARAM_DESCRIPCION) ? "N/A" : json.getString(Constants.PARAM_DESCRIPCION));
+		sesion.setTipoSesion(json.isNull(Constants.PARAM_TIPO_SESION) ? new TipoSesion()
+				: json2TipoSesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
+		return sesion;
+	}
+	
+	/**
+	 * Conversor de JSONObject a TipoSesion
+	 * 
+	 * @param jsonObject
+	 * @return
+	 */
+	public TipoSesion json2TipoSesion(JSONObject json) {
+		TipoSesion tSesion = new TipoSesion();
+		tSesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
+		tSesion.setDescripcion(
+				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
+		return tSesion;
+	}
+	
 	/**
 	 * Conversor de json a Resultado
 	 * 

@@ -74,5 +74,6 @@ public class Constants {
 	public static final String ERROR = "error";
 	public static final String PILOTO_ATTR = "piloto";
 	public static final String CHANGE_PASS_HEADER = "X-Races-Change-Password";
+	public static final String PARAM_SESIONGP = "sesionGP";
 
 }

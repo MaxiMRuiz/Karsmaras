@@ -4,8 +4,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,7 +67,7 @@ public class GranPremioServiceTest {
 			Mockito.when(converter.json2Gp(Mockito.any())).thenReturn(new GranPremio());
 
 			assertNotNull(gpService.buscarGrandesPremios(TEST, TEST, TEST));
-		} catch (UnirestException | IOException e) {
+		} catch (UnirestException e) {
 			fail(e.getMessage());
 		}
 	}
@@ -115,7 +113,7 @@ public class GranPremioServiceTest {
 			Mockito.when(converter.json2Gp(Mockito.any())).thenReturn(new GranPremio());
 
 			assertNotNull(gpService.buscarGranPremio(1L, TEST, TEST));
-		} catch (UnirestException | IOException e) {
+		} catch (UnirestException e) {
 			fail(e.getMessage());
 		}
 	}

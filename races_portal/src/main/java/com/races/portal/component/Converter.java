@@ -58,7 +58,7 @@ public class Converter {
 		gp.setSesiones(listaSesiones);
 		return gp;
 	}
-	
+
 	/**
 	 * Conversor de JSONObject a Sesion
 	 * 
@@ -83,12 +83,13 @@ public class Converter {
 	public Sesion json2Sesion(JSONObject json) {
 		Sesion sesion = new Sesion();
 		sesion.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
-		sesion.setDescripcion(json.isNull(Constants.PARAM_DESCRIPCION) ? "N/A" : json.getString(Constants.PARAM_DESCRIPCION));
+		sesion.setDescripcion(
+				json.isNull(Constants.PARAM_DESCRIPCION) ? "N/A" : json.getString(Constants.PARAM_DESCRIPCION));
 		sesion.setTipoSesion(json.isNull(Constants.PARAM_TIPO_SESION) ? new TipoSesion()
 				: json2TipoSesion(json.getJSONObject(Constants.PARAM_TIPO_SESION)));
 		return sesion;
 	}
-	
+
 	/**
 	 * Conversor de JSONObject a TipoSesion
 	 * 
@@ -102,7 +103,7 @@ public class Converter {
 				json.isNull(Constants.PARAM_DESCRIPCION) ? "" : json.getString(Constants.PARAM_DESCRIPCION));
 		return tSesion;
 	}
-	
+
 	/**
 	 * Conversor de json a Resultado
 	 * 
@@ -115,8 +116,8 @@ public class Converter {
 		resultado.setId(json.isNull(Constants.PARAM_ID) ? 0 : json.getLong(Constants.PARAM_ID));
 		resultado.setInscripcion(json.isNull(Constants.PARAM_INSCRIPCION) ? new Inscripcion()
 				: mapper.readValue(json.getJSONObject(Constants.PARAM_INSCRIPCION).toString(), Inscripcion.class));
-		resultado.setSesionGP(json.isNull(Constants.PARAM_SESION) ? new SesionGP()
-				: mapper.readValue(json.getJSONObject(Constants.PARAM_SESION).toString(), SesionGP.class));
+		resultado.setSesionGP(json.isNull(Constants.PARAM_SESIONGP) ? new SesionGP()
+				: json2SesionGp(json.getJSONObject(Constants.PARAM_SESIONGP)));
 		resultado.setTiempo(json.isNull(Constants.PARAM_TIEMPO) ? 0 : json.getInt(Constants.PARAM_TIEMPO));
 		resultado.setVueltas(json.isNull(Constants.PARAM_N_VUELTAS) ? 0 : json.getInt(Constants.PARAM_N_VUELTAS));
 		resultado.setvRapida(json.isNull(Constants.PARAM_V_RAPIDA) ? 0 : json.getInt(Constants.PARAM_V_RAPIDA));
@@ -170,9 +171,9 @@ public class Converter {
 	public Clasificacion json2Clasificacion(JSONObject json) throws IOException {
 		Clasificacion clasificacion = new Clasificacion();
 		clasificacion.setPiloto(json.isNull(Constants.PARAM_INSCRIPCION) ? new Piloto()
-				: mapper.readValue(json.getJSONObject(Constants.PARAM_PILOTO).toString(), Piloto.class));
+				: mapper.readValue(json.getJSONObject(Constants.PARAM_INSCRIPCION).getJSONObject(Constants.PARAM_PILOTO).toString(), Piloto.class));
 		clasificacion.setEquipo(json.isNull(Constants.PARAM_INSCRIPCION) ? new Equipo()
-				: mapper.readValue(json.getJSONObject(Constants.PARAM_EQUIPO).toString(), Equipo.class));
+				: mapper.readValue(json.getJSONObject(Constants.PARAM_INSCRIPCION).getJSONObject(Constants.PARAM_EQUIPO).toString(), Equipo.class));
 		clasificacion.setPuntos(json.isNull(Constants.PARAM_PUNTOS) ? 0 : json.getInt(Constants.PARAM_PUNTOS));
 		return clasificacion;
 	}

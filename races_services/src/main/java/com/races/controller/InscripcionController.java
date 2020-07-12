@@ -20,12 +20,22 @@ import com.races.entity.Inscripcion;
 import com.races.exception.RacesException;
 import com.races.services.InscripcionService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Inscripciones de campeonatos
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Inscripciones" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Inscripciones", description = "Esta api ofrece las funcionalidades para la gestion de Inscripciones.") })
 @RestController
 public class InscripcionController {
 
@@ -40,6 +50,9 @@ public class InscripcionController {
 	 * @param inscripcionDto
 	 * @return Inscripcion creada
 	 */
+	@ApiOperation(value = "Crear Inscripcion", notes = "Servicio de creacion de una nueva inscripcion.", response = Inscripcion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Inscripcion creada."),
+			@ApiResponse(code = 409, message = "Error en la creacion de la Inscripcion.") })
 	@PostMapping("/inscripcion")
 	public ResponseEntity<Inscripcion> crearInscripcion(@RequestBody InscripcionDto inscripcionDto) {
 
@@ -62,6 +75,8 @@ public class InscripcionController {
 	 * @param equipo
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Inscripciones", notes = "Servicio de consulta de inscripcion. Admite filtros por parametros.", responseContainer = "List", response = Inscripcion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de Inscripciones devuelto.") })
 	@GetMapping("/inscripcion")
 	public ResponseEntity<List<Inscripcion>> buscarInscripcion(
 			@RequestParam(required = false, name = "campeonato") Long campeonato,
@@ -79,6 +94,9 @@ public class InscripcionController {
 	 * @param inscripcionDto
 	 * @return 200/404
 	 */
+	@ApiOperation(value = "Borrar Inscripcion", notes = "Servicio de Borrado de una inscripcion.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Inscripcion borrada."),
+			@ApiResponse(code = 404, message = "Inscripcion no encontrada.") })
 	@DeleteMapping("/inscripcion/{id}")
 	public ResponseEntity<Boolean> borrarInscripcion(@PathVariable Long id) {
 		try {

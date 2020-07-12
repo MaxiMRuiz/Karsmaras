@@ -21,12 +21,22 @@ import com.races.entity.Equipo;
 import com.races.exception.RacesException;
 import com.races.services.EquipoService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Equipos
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Equipos" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Equipos", description = "Esta api ofrece las funcionalidades para la gestion de Equipos.") })
 @RestController
 public class EquipoController {
 
@@ -41,6 +51,9 @@ public class EquipoController {
 	 * @param equipoDto
 	 * @return Equipo creado
 	 */
+	@ApiOperation(value = "Crear Equipo", notes = "Servicio de creacion de Equipos.", response = Equipo.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Equipo Creado."),
+			@ApiResponse(code = 409, message = "Equipo Duplicado.")})
 	@PostMapping("/equipo")
 	public ResponseEntity<Equipo> crearEquipo(@RequestBody EquipoDto equipoDto) {
 
@@ -62,6 +75,8 @@ public class EquipoController {
 	 * @param alias
 	 * @return Lista de equipos
 	 */
+	@ApiOperation(value = "Consultar Equipos", notes = "Servicio de consulta de Equipos.", responseContainer = "List", response = Equipo.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de Equipos obtenido.") })
 	@GetMapping("/equipo")
 	public ResponseEntity<List<Equipo>> buscarEquipo(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "nombre") String nombre,
@@ -79,6 +94,9 @@ public class EquipoController {
 	 * @param equipoDto
 	 * @return Equipo actualizado
 	 */
+	@ApiOperation(value = "Edicion de Equipo", notes = "Servicio de edicion de Equipos.", response = Equipo.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de Clasificaciones de Gran premio obtenido."),
+			@ApiResponse(code = 404, message = "Equipo no encontrado.")})
 	@PutMapping("/equipo/{id}")
 	public ResponseEntity<Equipo> actualizarEquipo(@PathVariable(name = "id") Long id,
 			@RequestBody EquipoDto equipoDto) {
@@ -98,6 +116,9 @@ public class EquipoController {
 	 * @param id
 	 * @return 200/404
 	 */
+	@ApiOperation(value = "Borrado Equipo", notes = "Servicio de borrado de Equipo.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Servicio de Borrado de Equipo."),
+			@ApiResponse(code = 404, message = "Equipo no encontrado.")})
 	@DeleteMapping("/equipo/{id}")
 	public ResponseEntity<Boolean> borrarEquipo(@PathVariable(name = "id") Long id) {
 

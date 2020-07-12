@@ -1,4 +1,3 @@
-
 package com.races.controller;
 
 import java.util.List;
@@ -22,12 +21,22 @@ import com.races.dto.ResultadoResponseDto;
 import com.races.exception.RacesException;
 import com.races.services.ResultadoService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Resultados de Grandes Premios
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Resultados" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Resultados", description = "Esta api ofrece las funcionalidades para la gestion de Resultados.") })
 @RestController
 public class ResultadoController {
 
@@ -41,6 +50,8 @@ public class ResultadoController {
 	 * 
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Resultados", notes = "Servicio de consulta de Resultados.", responseContainer = "List", response = ResultadoResponseDto.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de Resultados obtenido.") })
 	@GetMapping("/resultado")
 	public ResponseEntity<List<ResultadoResponseDto>> buscarResultados(
 			@RequestParam(required = false, name = "id") Long id,
@@ -61,6 +72,9 @@ public class ResultadoController {
 	 * @param reglamentoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Editar Resultado", notes = "Servicio de edicion de Resultados.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Resultado Actualizado."),
+			@ApiResponse(code = 409, message = "Error en la edicion de un Resultado.") })
 	@PutMapping("/resultado/{id}")
 	public ResponseEntity<Boolean> actualizarResultado(@PathVariable(name = "id") Long id,
 			@RequestBody ResultadoDto resultadoDto) {
@@ -74,6 +88,15 @@ public class ResultadoController {
 		}
 	}
 
+	/**
+	 * Servicio de carga de Resultados
+	 * 
+	 * @param id
+	 * @param file
+	 * @return
+	 */
+	@ApiOperation(value = "Carga de Resultados", notes = "Servicio de carga de Resultados en una sesion de un Gran Premio.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Fichero de resultados Procesado.") })
 	@PostMapping(value = "/resultado/load/{id}")
 	public ResponseEntity<Boolean> uploadFileHandler(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
 

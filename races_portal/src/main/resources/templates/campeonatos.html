@@ -60,34 +60,34 @@
 							</td>
 							<td class="td-table" th:if="${session.admin == true}">
 								<div class="col-12 col-xs-12">
-									<a class="button" href="#" th:onclick="javascript:borrarCampeonato([[${campeonato.id}]] , [[${campeonato.descripcion}]]);">
+									<a class="button" href="#"
+										th:onclick="javascript:borrarCampeonato([[${campeonato.id}]] , [[${campeonato.descripcion}]]);">
 										<img class="icons" src="/icons/borrar.png" alt="Borrar"
 											title="Borrar Campeonato"></img>
 									</a>
 								</div>
 							</td>
-						</div>
-					</td>
-				</tbody>
-				<tfoot id="tfoot" th:if="${session.admin == true}">
-					<tr>
-						<td colspan="7" class="td-table table-success text-center">
-							<div class="row">
-								<a class="button pull-right col-12 centerVertical" href="/races/campeonatos/new">
-									<button type="button" class="btn btn-success btn-primary pull-right"
-										style="width: -webkit-fill-available;">
-										<img class="icons" src="/icons/campeonato.png"></img> <span
-											class="d-none d-sm-inline"></span>Crear Nuevo Campeonato</span>
-									</button>
-								</a>
-							</div>
-						</td>
-					</tr>
-				</tfoot>
-				</table>
+						</tbody>
+						<tfoot id="tfoot" th:if="${session.admin == true}">
+							<tr>
+								<td colspan="7" class="td-table table-success text-center">
+									<div class="row">
+										<a class="button pull-right col-12 centerVertical"
+											href="/races/campeonatos/new">
+											<button type="button" class="btn btn-success btn-primary pull-right"
+												style="width: -webkit-fill-available;">
+												<img class="icons" src="/icons/campeonato.png"></img> <span
+													class="d-none d-sm-inline"></span>Crear Nuevo Campeonato</span>
+											</button>
+										</a>
+									</div>
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
 			</div>
 		</div>
-	</div>
 	</div>
 	<input type="hidden" id="urlServices" th:value="${urlServices}"></input>
 </body>

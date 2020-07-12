@@ -21,12 +21,22 @@ import com.races.entity.Sancion;
 import com.races.exception.RacesException;
 import com.races.services.SancionService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Sanciones en Sesiones
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Sanciones" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Sanciones", description = "Esta api ofrece las funcionalidades para la gestion de Sanciones.") })
 @RestController
 public class SancionController {
 
@@ -41,6 +51,9 @@ public class SancionController {
 	 * @param reglamentoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Crear Sancion", notes = "Servicio de creacion de una sancion.", response = Sancion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Sancion creada."),
+			@ApiResponse(code = 409, message = "Sancion duplicada.") })
 	@PostMapping("/sancion")
 	public ResponseEntity<Sancion> crearSancion(@RequestBody SancionDto sancionDto) {
 
@@ -58,6 +71,8 @@ public class SancionController {
 	 * 
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Sanciones", notes = "Servicio de consulta de sanciones. Admite filtros por parametro..", responseContainer = "List", response = Sancion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de sanciones devuelto.") })
 	@GetMapping("/sancion")
 	public ResponseEntity<List<Sancion>> buscarSanciones(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "idResultado") Long idResultado,
@@ -75,6 +90,9 @@ public class SancionController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Borrar Sancion", notes = "Servicio de Borrado de una sancion.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Sancion borrada."),
+			@ApiResponse(code = 404, message = "Sancion no encontrada.") })
 	@DeleteMapping("/sancion/{id}")
 	public ResponseEntity<Boolean> borrarSancion(@PathVariable(name = "id") Long id) {
 
@@ -93,6 +111,9 @@ public class SancionController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Editar Sancion", notes = "Servicio de edicion de una sancion.", response = Sancion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Sancion modificada."),
+			@ApiResponse(code = 404, message = "Sancion no encontrada.") })
 	@PutMapping("/sancion/{id}")
 	public ResponseEntity<Sancion> editarSancion(@PathVariable(name = "id") Long id,
 			@RequestBody SancionDto sancionDto) {

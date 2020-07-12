@@ -93,24 +93,6 @@ public class InscripcionServiceTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void crearInscripcionLiminTest() {
-		try {
-			Mockito.when(campeonatoService.buscarCampeonato(Mockito.anyLong())).thenReturn(campeonatoTest);
-			Mockito.when(pilotoService.buscarPiloto(Mockito.anyLong())).thenReturn(pilotoTest);
-			Mockito.when(equipoService.buscarEquipo(Mockito.anyLong())).thenReturn(equipoTest);
-			Mockito.when(inscriptionRepo.findOne(Mockito.any(Example.class))).thenReturn(Optional.empty());
-			Mockito.when(inscriptionRepo.countDisctinctEquipoByCampeonato(Mockito.any())).thenReturn(5);
-			Mockito.when(inscriptionRepo.save(Mockito.any())).thenReturn(inscriptionTest);
-			Mockito.doNothing().when(resultadoService).crearResultados(Mockito.any());
-			service.crearInscripcion(new InscripcionDto(1L, 1L, 1L));
-			fail("Exception Expected");
-		} catch (RacesException e) {
-			assertNotNull(e);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	@Test
 	public void crearInscripcionExistenteTest() {
 		try {
 			Mockito.when(campeonatoService.buscarCampeonato(Mockito.anyLong())).thenReturn(campeonatoTest);

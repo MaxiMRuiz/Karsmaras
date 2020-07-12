@@ -41,7 +41,7 @@ public class InscripcionServiceImpl implements InscripcionService {
 
 	@Autowired
 	CampeonatoService campeonatoService;
-	
+
 	@Autowired
 	ResultadoService resultadoService;
 
@@ -64,8 +64,8 @@ public class InscripcionServiceImpl implements InscripcionService {
 				throw new RacesException("Inscripcion duplicada");
 			}
 			newInscripcion.setEquipo(equipo);
-			if (buscarInscripciones(campeonato.getId(), null, equipo.getId()).isEmpty() && inscriptionRepo
-					.countDisctinctEquipoByCampeonato(campeonato).equals(campeonato.getReglamento().getnEquipos())) {
+			
+			if (buscarInscripciones(campeonato.getId(), null, equipo.getId()).isEmpty() && getNequiposCampeonato(campeonato).size() == campeonato.getReglamento().getnEquipos().intValue()) {
 				throw new RacesException("Máximo de equipos por reglamento alcanzado");
 			}
 			newInscripcion = inscriptionRepo.save(newInscripcion);
@@ -74,6 +74,17 @@ public class InscripcionServiceImpl implements InscripcionService {
 		} else {
 			throw new RacesException("Máximo de inscripciones por reglamento alcanzado");
 		}
+	}
+
+	private List<Equipo> getNequiposCampeonato(Campeonato campeonato) {
+		List<Inscripcion> lista = buscarInscripciones(campeonato.getId(), null, null);
+		List<Equipo> listaEquipos = new ArrayList<>();
+		for(Inscripcion inscripcion : lista) {
+			if(listaEquipos.indexOf(inscripcion.getEquipo())== -1) {
+				listaEquipos.add(inscripcion.getEquipo());
+			}
+		}
+		return listaEquipos;
 	}
 
 	public boolean borrarInscripcion(Long id) throws RacesException {

@@ -26,12 +26,22 @@ import com.races.entity.Piloto;
 import com.races.exception.RacesException;
 import com.races.services.PilotoService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Pilotos
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Pilotos" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Pilotos", description = "Esta api ofrece las funcionalidades para la gestion de Pilotos.") })
 @RestController
 public class PilotoController {
 
@@ -46,6 +56,9 @@ public class PilotoController {
 	 * @param pilotoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Crear Piloto", notes = "Servicio de creacion de un nuevo piloto.", response = Piloto.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Piloto creado."),
+			@ApiResponse(code = 409, message = "El Piloto ya existe.") })
 	@PostMapping("/piloto")
 	public ResponseEntity<Piloto> crearPiloto(@RequestBody PilotoDto pilotoDto) {
 
@@ -65,6 +78,9 @@ public class PilotoController {
 	 * @param pilotoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Editar Piloto", notes = "Servicio de edicion de un piloto.", response = Piloto.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Piloto modificado."),
+			@ApiResponse(code = 404, message = "Piloto no encontrado.") })
 	@PutMapping("/piloto/{id}")
 	public ResponseEntity<Piloto> editarPiloto(@PathVariable(name = "id") Long id, @RequestBody PilotoDto pilotoDto) {
 
@@ -84,6 +100,9 @@ public class PilotoController {
 	 * @param pilotoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Promocionar Piloto", notes = "Servicio de promocion de un piloto a administrador.", response = Piloto.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Piloto promocionado."),
+			@ApiResponse(code = 404, message = "Piloto no encontrado.") })
 	@PutMapping("/admin/{id}")
 	public ResponseEntity<Piloto> setPilotoAdmin(@PathVariable(name = "id") Long id) {
 
@@ -103,6 +122,10 @@ public class PilotoController {
 	 * @param pilotoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Cambio de Contraseña", notes = "Servicio de cambio de contraseña.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Contraseña modificada."),
+			@ApiResponse(code = 400, message = "Petición no válida."),
+			@ApiResponse(code = 404, message = "Piloto/credenciales no válidos.") })
 	@PutMapping("/password")
 	public ResponseEntity<Boolean> changePassword(
 			@RequestHeader(name = "X-Races-Change-Password", required = true) String header) {
@@ -137,6 +160,8 @@ public class PilotoController {
 	 * @param apodo
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Pilotos", notes = "Servicio de consulta de pilotos. Admite filtros por parametros.", responseContainer = "List", response = Piloto.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de pilotos devuelto.") })
 	@GetMapping("/piloto")
 	public ResponseEntity<List<Piloto>> buscarPiloto(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "nombre") String nombre,
@@ -155,6 +180,9 @@ public class PilotoController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Borrar Piloto", notes = "Servicio de Borrado de un Piloto.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Piloto borrado."),
+			@ApiResponse(code = 404, message = "Piloto no encontrado.") })
 	@DeleteMapping("/piloto/{id}")
 	public ResponseEntity<Boolean> borrarPiloto(@PathVariable(name = "id") Long id) {
 
@@ -173,6 +201,10 @@ public class PilotoController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Login", notes = "Servicio de Login de la aplicación.", response = LoginResponse.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Login correcto."),
+			@ApiResponse(code = 401, message = "Sistema de Autenticacion no válido."),
+			@ApiResponse(code = 403, message = "Credenciales no validas.") })
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse> login(
 			@RequestHeader(name = "Authorization", required = true) String authorization) {

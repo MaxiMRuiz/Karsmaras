@@ -14,12 +14,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.races.entity.Sesion;
 import com.races.services.SesionService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Sesiones de Grandes Premios
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Sesiones" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Sesiones", description = "Esta api ofrece las funcionalidades para la gestion de Sesiones.") })
 @RestController
 public class SesionController {
 
@@ -33,6 +43,8 @@ public class SesionController {
 	 * 
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Sesiones", notes = "Servicio de consulta de Sesiones en la plataforma.", responseContainer = "List", response = Sesion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Sesiones encontradas.") })
 	@GetMapping("/sesion")
 	public ResponseEntity<List<Sesion>> buscarSesiones(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "idReglamento") Long idReglamento,

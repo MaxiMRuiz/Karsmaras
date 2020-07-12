@@ -21,12 +21,22 @@ import com.races.entity.Reglamento;
 import com.races.exception.RacesException;
 import com.races.services.ReglamentoService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Reglamentos de campeonatos
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Reglamentos" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Reglamentos", description = "Esta api ofrece las funcionalidades para la gestion de Reglamentos.") })
 @RestController
 public class ReglamentoController {
 
@@ -41,6 +51,9 @@ public class ReglamentoController {
 	 * @param reglamentoDto
 	 * @return
 	 */
+	@ApiOperation(value = "Crear Reglamento", notes = "Servicio de creacion de un nuevo reglamento.", response = Reglamento.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Reglamento creado."),
+			@ApiResponse(code = 404, message = "Reglamento duplicado.") })
 	@PostMapping("/reglamento")
 	public ResponseEntity<Reglamento> crearReglamento(@RequestBody ReglamentoDto reglamentoDto) {
 
@@ -60,6 +73,8 @@ public class ReglamentoController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Reglamentos", notes = "Servicio de consulta de reglamentos. Admite filtros por parametro.", responseContainer = "List", response = Reglamento.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de reglamentos devuelto.") })
 	@GetMapping("/reglamento")
 	public ResponseEntity<List<Reglamento>> buscarReglamentos(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "descripcion") String descripcion,
@@ -81,6 +96,9 @@ public class ReglamentoController {
 	 * @param reglamentoBody
 	 * @return
 	 */
+	@ApiOperation(value = "Editar Reglamento", notes = "Servicio de modificacion de un reglamento.", response = Reglamento.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Reglamento modificado."),
+			@ApiResponse(code = 404, message = "Reglamento no encontrado.") })
 	@PutMapping("/reglamento/{id}")
 	public ResponseEntity<Reglamento> actualizarReglamento(@PathVariable(name = "id") Long id,
 			@RequestBody ReglamentoDto reglamentoBody) {
@@ -100,6 +118,9 @@ public class ReglamentoController {
 	 * @param id
 	 * @return
 	 */
+	@ApiOperation(value = "Borrar Reglamento", notes = "Servicio de Borrado de un reglamento.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Reglamento borrado."),
+			@ApiResponse(code = 404, message = "Reglamento no encontrado.") })
 	@DeleteMapping("/reglamento/{id}")
 	public ResponseEntity<Boolean> borrarReglamento(@PathVariable(name = "id") Long id) {
 		try {

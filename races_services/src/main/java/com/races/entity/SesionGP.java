@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * Entidad de la tabla Sesion
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @Entity
+@Table(name = "sesion_gp")
 public class SesionGP {
 
 	@Id

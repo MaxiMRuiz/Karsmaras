@@ -21,12 +21,22 @@ import com.races.entity.Puntuacion;
 import com.races.exception.RacesException;
 import com.races.services.PuntuacionService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+
 /**
  * Controlador para los servicios de Puntuaciones de Reglamentos
  * 
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Puntuaciones" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Puntuaciones", description = "Esta api ofrece las funcionalidades para la gestion de Puntuaciones.") })
 @RestController
 public class PuntuacionController {
 
@@ -45,6 +55,8 @@ public class PuntuacionController {
 	 * @param idTipoSesion
 	 * @return
 	 */
+	@ApiOperation(value = "Consultar Puntuaciones", notes = "Servicio de consulta de puntuaciones. Admite filtros por parametro", responseContainer = "List", response = Puntuacion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Listado de puntuaciones devuelto.") })
 	@GetMapping("/puntuacion")
 	public ResponseEntity<List<Puntuacion>> buscarPuntuacion(@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "idSesion") Long idSesion,
@@ -64,6 +76,9 @@ public class PuntuacionController {
 	 * @param puntuacionDto
 	 * @return
 	 */
+	@ApiOperation(value = "Editar Puntuacion", notes = "Servicio de modificacion de una puntuacion.", response = Puntuacion.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Puntuacion modificada."),
+			@ApiResponse(code = 404, message = "Puntuacion no encontrada.") })
 	@PutMapping("/puntuacion/{id}")
 	public ResponseEntity<Puntuacion> actualizarPuntuacion(@PathVariable(name = "id") Long id,
 			@RequestBody PuntuacionDto puntuacionDto) {
@@ -76,6 +91,15 @@ public class PuntuacionController {
 		}
 	}
 
+	/**
+	 * 
+	 * @param idSesion
+	 * @param file
+	 * @return
+	 */
+	@ApiOperation(value = "Cargar Puntuaciones", notes = "Servicio de carga de puntuaciones por fichero.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Fichero procesado."),
+			@ApiResponse(code = 500, message = "Error en el procesado del fichero.") })
 	@PostMapping("/puntuacion/upload/{idSesion}")
 	public ResponseEntity<Boolean> uploadFileHandler(@PathVariable Long idSesion,
 			@RequestParam("file") MultipartFile file) {

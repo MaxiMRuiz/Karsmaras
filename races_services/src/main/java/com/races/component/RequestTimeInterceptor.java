@@ -65,7 +65,8 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 					|| !request.getHeader(AUTHORIZATION_HEADER).startsWith(BASIC_AUTH))) {
 				throw new RacesException("Service " + request.getRequestURI() + " is protected: Invalid credentials.");
 			} else if ((uri[1].equals(LOGIN) && request.getHeader(AUTHORIZATION_HEADER).startsWith(BASIC_AUTH))
-					|| (uri[1].equals("piloto") && HttpMethod.valueOf(request.getMethod()).equals(HttpMethod.POST))) {
+					|| (uri[1].equals("piloto") && HttpMethod.valueOf(request.getMethod()).equals(HttpMethod.POST))
+					|| esExcepcion(uri[1])) {
 				return true;
 			} else {
 				return processServices(request, uri[1]);
@@ -77,6 +78,10 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 			response.setContentType("application/json");
 			throw e;
 		}
+	}
+
+	private boolean esExcepcion(String uri) {
+		return "v3".equals(uri);
 	}
 
 	private boolean processServices(HttpServletRequest request, String basepath) throws RacesException {

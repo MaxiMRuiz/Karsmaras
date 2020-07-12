@@ -1,6 +1,5 @@
 package com.races.portal.services.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +59,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 				}
 			}
 
-		} catch (UnirestException | IOException e) {
+		} catch (UnirestException e) {
 			LOGGER.error(e);
 		}
 
@@ -88,7 +87,7 @@ public class GranPremioServiceImpl implements GranPremioService {
 				}
 			}
 
-		} catch (UnirestException | IOException e) {
+		} catch (UnirestException e) {
 			LOGGER.error(e);
 		}
 

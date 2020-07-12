@@ -25,7 +25,7 @@ public class ClasificacionDto implements Comparable<ClasificacionDto> {
 		for(int i =0 ; i < puestos.length; i++) {
 			this.puestos[i]=0;
 		}
-		if (isCarrera && puesto > puestos.length) {
+		if (isCarrera && puesto < puestos.length) {
 			this.puestos[puesto] = 1;
 		}
 	}

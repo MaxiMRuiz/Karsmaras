@@ -100,3 +100,5 @@ racesPortal/.mvn/wrapper/maven-wrapper.jar
 racesPortal/.mvn/
 racesPortal/mvnw
 racesPortal/mvnw.cmd
+races_portal/target/
+races_services/generated/

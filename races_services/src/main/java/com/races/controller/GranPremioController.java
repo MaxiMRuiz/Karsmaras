@@ -17,9 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.races.dto.GranPremioDto;
 import com.races.dto.GranPremioSesionesDto;
+import com.races.entity.Equipo;
 import com.races.entity.GranPremio;
 import com.races.exception.RacesException;
 import com.races.services.GranPremioService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
 
 /**
  * Controlador para los servicios de Grandes premios
@@ -27,6 +35,9 @@ import com.races.services.GranPremioService;
  * @author Maximino Mañanes Ruiz
  *
  */
+@Api(tags = { "Api Grandes Premios" })
+@SwaggerDefinition(tags = {
+		@Tag(name = "Api Grandes Premios", description = "Esta api ofrece las funcionalidades para la gestion de Grendios Premios.") })
 @RestController
 public class GranPremioController {
 
@@ -41,6 +52,9 @@ public class GranPremioController {
 	 * @param gpDto
 	 * @return Gran Premio creado
 	 */
+	@ApiOperation(value = "Crear Gran Premio", notes = "Servicio de creacion de un nuevo Gran Premio.", response = Equipo.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Gran Premio Creado."),
+			@ApiResponse(code = 409, message = "Gran Premio Duplicado.") })
 	@PostMapping("/gp")
 	public ResponseEntity<GranPremio> crearGp(@RequestBody GranPremioDto gpDto) {
 
@@ -62,8 +76,11 @@ public class GranPremioController {
 	 * @param idCampeonato Filtro por ID del Campeonato
 	 * @return Lista de GP aplicando los filtros
 	 */
+	@ApiOperation(value = "Buscar Grandes Premios", notes = "Servicio de consulta de Grandes Premios.", responseContainer = "List", response = GranPremioSesionesDto.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Lista de Grandes Premios devuelta.") })
 	@GetMapping("/gp")
-	public ResponseEntity<List<GranPremioSesionesDto>> buscarGrandesPremios(@RequestParam(required = false, name = "id") Long id,
+	public ResponseEntity<List<GranPremioSesionesDto>> buscarGrandesPremios(
+			@RequestParam(required = false, name = "id") Long id,
 			@RequestParam(required = false, name = "ubicacion") String ubicacion,
 			@RequestParam(required = false, name = "idCampeonato") Long idCampeonato) {
 
@@ -78,6 +95,9 @@ public class GranPremioController {
 	 * @param id
 	 * @return 200/404
 	 */
+	@ApiOperation(value = "Borrar Gran Premio", notes = "Servicio de borrado de un Gran Premio.", response = Boolean.class)
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Gran Premio Borrado."),
+			@ApiResponse(code = 404, message = "Gran Premio no encontrado.") })
 	@DeleteMapping("/gp/{id}")
 	public ResponseEntity<Boolean> borrarGranPremio(@PathVariable(name = "id") Long id) {
 

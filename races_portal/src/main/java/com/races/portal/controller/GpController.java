@@ -62,7 +62,7 @@ public class GpController {
 		return new ModelAndView("redirect:/races/gp/" + id);
 	}
 
-	@DeleteMapping(value = "/{id}")
+	@DeleteMapping(value = "/{idCamp}/{id}")
 	public ResponseEntity<Boolean> borrarGrandesPremios(Model model, @PathVariable String id,
 			@SessionAttribute(name = Constants.JWT_ATTR, required = true) String jwt,
 			@SessionAttribute(name = Constants.USER_ATTR, required = true) String user) {

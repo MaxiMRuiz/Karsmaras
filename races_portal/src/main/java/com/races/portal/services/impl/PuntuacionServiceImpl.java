@@ -111,7 +111,6 @@ public class PuntuacionServiceImpl implements PuntuacionService {
 		Map<String, Object> body = new HashMap<>();
 		body.put(Constants.PARAM_POSICION, puntuacion.getPosicion());
 		body.put(Constants.PARAM_PUNTOS, puntuacion.getPuntos());
-		body.put(Constants.PARAM_ID_TIPO_SESION, puntuacion.getTipoSesion().getId());
 		body.put(Constants.PARAM_ID_REGLAMENTO, reglamento);
 		Map<String, String> headers = new HashMap<>();
 		headers.put(Constants.AUTHORIZATION_HEADER, Constants.BEARER_PREFIX + jwt);
